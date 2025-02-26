@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Laravel</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @inertiaHead
 </head>
 <body>
-    <div id="app">
-        <Home></Home>
-    </div>
+    @inertia
 </body>
 </html>

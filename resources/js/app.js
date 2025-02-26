@@ -1,8 +1,16 @@
 import './bootstrap';
-import { createApp } from 'vue';
-const app = createApp({});
-
-import Home from './components/Home.vue';
-app.component('Home', Home);
-
-app.mount('#app');
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+import { Link } from '@inertiajs/vue3';
+createInertiaApp({
+  resolve: name => {
+    const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
+    return pages[`./Pages/${name}.vue`]
+  },
+  setup({ el, App, props, plugin }) {
+    const app = createApp({ render: () => h(App, props) })
+      .use(plugin)
+      .component('Link', Link)
+      .mount(el)
+  },
+})
