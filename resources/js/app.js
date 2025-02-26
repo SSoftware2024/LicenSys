@@ -2,6 +2,7 @@ import './bootstrap';
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { Link } from '@inertiajs/vue3';
+
 createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
@@ -11,6 +12,6 @@ createInertiaApp({
     const app = createApp({ render: () => h(App, props) })
       .use(plugin)
       .component('Link', Link)
-      .mount(el)
+      .mount(el);
   },
 })
