@@ -1,8 +1,18 @@
 <template>
-    <div>
-        <h2 class="text-red-500">Template</h2>
+    <SideBar>
         <slot></slot>
-    </div>
+    </SideBar>
 </template>
 <script setup>
+import SideBar from "../components/SideBar.vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import { initFlowbite } from "flowbite";
+
+// initialize components based on data attribute selectors
+onMounted(() => {
+    initFlowbite();
+});
+onUnmounted(() => {
+    initFlowbite();
+});
 </script>
