@@ -1,6 +1,7 @@
 <template>
     <div>
         <Link :href="route('home')" class="font-bold">Home</Link>
+
     </div>
 </template>
 
