@@ -1,10 +1,12 @@
 <template>
-    <p>{{ page }}</p>
-    <Link :href="route('index')" class="text-blue-400">To Index</Link>
+    <SidebarLayout>
+        <Link :href="route('index')" class="font-bold">Index</Link>
+    </SidebarLayout>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { route } from 'ziggy-js';
-const page = ref('home');
+import { route } from "ziggy-js";
+import SidebarLayout from '../layouts/SidebarLayout.vue';
+
 </script>
