@@ -1,4 +1,5 @@
 <template>
+    <Head title="Home"/>
     <div>
         <Link :href="route('index')" class="font-bold">Index</Link>
     </div>
