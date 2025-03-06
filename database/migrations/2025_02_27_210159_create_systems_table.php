@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('systems', function (Blueprint $table) {
             $table->id();
+            $table->unsignedTinyInteger('limit_days');
+            $table->string('code_access_api');
+            $table->string('code_access_api_generics_systems');
+            $table->text('code_access_api_cripty')->nullable();
+            $table->text('code_access_api_generics_systems_cripty')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -1,9 +1,13 @@
 <?php
 namespace App\Traits;
+/**
+ * @method array toArray()
+ */
 trait EnumFunctions {
     /**
      * toArray
      *
+     * Transforma valores(value) em único array
      * @return array
      */
     public static function toArray() : array {
