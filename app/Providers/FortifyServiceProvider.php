@@ -46,7 +46,6 @@ class FortifyServiceProvider extends ServiceProvider
 
         //views
         Fortify::loginView(function () {
-
             return Inertia::render('Auth/Login', [
                 'logo' => asset('assets/quadro_logo.png')
             ]);
