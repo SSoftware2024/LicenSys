@@ -1,6 +1,9 @@
 <template>
     <Head title="Login" />
     <AuthLayout title="Login">
+        <div class="w-full flex justify-center mt-2">
+            <img :src="$page.props.logo" alt="" class="w-30 rounded-full">
+        </div>
         <form action="">
             <div>
                 <label
@@ -53,5 +56,6 @@
     </AuthLayout>
 </template>
 <script setup>
+// import { onMounted } from 'vue'
 import AuthLayout from "../../layouts/AuthLayout.vue";
 </script>
