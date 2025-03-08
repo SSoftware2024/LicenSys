@@ -18,7 +18,7 @@
                     {{ form.errors.email }}
                 </div>
                 <Input
-                    type="passwrod"
+                    type="password"
                     label="Senha"
                     id="senha"
                     v-model="form.password"
