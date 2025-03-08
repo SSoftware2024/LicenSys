@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "148ba81c50039af47e6be63fde76ccf6",
+    "content-hash": "3727668c332c74cbda72dede0dc65b1c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6752,6 +6752,65 @@
             "time": "2025-01-24T15:45:36+00:00"
         },
         {
+            "name": "lucascudo/laravel-pt-br-localization",
+            "version": "v3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucascudo/laravel-pt-BR-localization.git",
+                "reference": "76e4fc4939416debf1595d59d4f0d49b4700c089"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucascudo/laravel-pt-BR-localization/zipball/76e4fc4939416debf1595d59d4f0d49b4700c089",
+                "reference": "76e4fc4939416debf1595d59d4f0d49b4700c089",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lucascudo\\LaravelPtBrLocalization\\LaravelPtBrLocalizationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lucascudo\\LaravelPtBrLocalization\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Cascudo",
+                    "email": "lucas.sisau@gmail.com"
+                }
+            ],
+            "description": "Arquivos de linguagem em Português do Brasil (pt-BR) para Laravel",
+            "homepage": "https://github.com/lucascudo/laravel-pt-br-localization",
+            "support": {
+                "issues": "https://github.com/lucascudo/laravel-pt-BR-localization/issues",
+                "source": "https://github.com/lucascudo/laravel-pt-BR-localization/tree/v3.0.3"
+            },
+            "funding": [
+                {
+                    "url": "https://buymeacoffee.com/lucasrocha",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/lucascudo",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/lucascudo/laravel-pt-br-localization",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-02-27T10:05:34+00:00"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.6.12",
             "source": {
@@ -7435,16 +7494,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.5.11",
+            "version": "11.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3946ac38410be7440186c6e74584f31b15107fc7"
+                "reference": "d42785840519401ed2113292263795eb4c0f95da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3946ac38410be7440186c6e74584f31b15107fc7",
-                "reference": "3946ac38410be7440186c6e74584f31b15107fc7",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d42785840519401ed2113292263795eb4c0f95da",
+                "reference": "d42785840519401ed2113292263795eb4c0f95da",
                 "shasum": ""
             },
             "require": {
@@ -7465,7 +7524,7 @@
                 "phpunit/php-timer": "^7.0.1",
                 "sebastian/cli-parser": "^3.0.2",
                 "sebastian/code-unit": "^3.0.2",
-                "sebastian/comparator": "^6.3.0",
+                "sebastian/comparator": "^6.3.1",
                 "sebastian/diff": "^6.0.2",
                 "sebastian/environment": "^7.2.0",
                 "sebastian/exporter": "^6.3.0",
@@ -7516,7 +7575,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.11"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.12"
             },
             "funding": [
                 {
@@ -7532,7 +7591,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-05T07:36:02+00:00"
+            "time": "2025-03-07T07:31:03+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -7706,16 +7765,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "6.3.0",
+            "version": "6.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "d4e47a769525c4dd38cea90e5dcd435ddbbc7115"
+                "reference": "24b8fbc2c8e201bb1308e7b05148d6ab393b6959"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/d4e47a769525c4dd38cea90e5dcd435ddbbc7115",
-                "reference": "d4e47a769525c4dd38cea90e5dcd435ddbbc7115",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/24b8fbc2c8e201bb1308e7b05148d6ab393b6959",
+                "reference": "24b8fbc2c8e201bb1308e7b05148d6ab393b6959",
                 "shasum": ""
             },
             "require": {
@@ -7734,7 +7793,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "6.2-dev"
+                    "dev-main": "6.3-dev"
                 }
             },
             "autoload": {
@@ -7774,7 +7833,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/comparator/issues",
                 "security": "https://github.com/sebastianbergmann/comparator/security/policy",
-                "source": "https://github.com/sebastianbergmann/comparator/tree/6.3.0"
+                "source": "https://github.com/sebastianbergmann/comparator/tree/6.3.1"
             },
             "funding": [
                 {
@@ -7782,7 +7841,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-06T10:28:19+00:00"
+            "time": "2025-03-07T06:57:01+00:00"
         },
         {
             "name": "sebastian/complexity",
