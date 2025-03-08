@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('type', TypeUser::toArray())->default(TypeUser::DEFAULT->value);
-            $table->boolean('activated');
+            $table->boolean('activated')->default(true);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
