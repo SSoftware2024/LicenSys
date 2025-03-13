@@ -1,6 +1,6 @@
 const TypeButton = Object.freeze({
-    PRIMARY: 1,
-    DARK: 2,
+    PRIMARY: 'primary',
+    DARK: 'dark',
 });
 export {
     TypeButton

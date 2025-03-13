@@ -50,7 +50,7 @@
                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >Esqueci a senha!</a
                 >
-                <Button text="login" type="submit" :typeButton="TypeButton.PRIMARY" :isDisable="form.processing" :isLoading="form.processing"></Button>
+                <Button text="login" type="submit" typeButton='primary' :isDisable="form.processing" :isLoading="form.processing"></Button>
             </div>
         </form>
     </AuthLayout>
@@ -59,7 +59,6 @@
 // import { onMounted } from 'vue'
 import { useForm, usePage } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
-import { TypeButton } from '@/utils/enum';
 //LAYOUTS E COMPONENTS
 import AuthLayout from "../../layouts/AuthLayout.vue";
 import Input from "@/components/Input.vue";

@@ -35,12 +35,13 @@
 </template>
 <script setup>
 import { TypeButton } from "@/utils/enum";
-defineProps({
+import { onMounted } from "vue";
+const props = defineProps({
     text: {
         type: String,
         required: true,
     },
-    typeButton: Number,
+    typeButton: String,
     isDisable: {
         type: Boolean,
         default: false,
@@ -49,5 +50,16 @@ defineProps({
         type: Boolean,
         default: false,
     },
+});
+
+
+function _validateTypeButton(){
+    if(!Object.values(TypeButton).includes(props.typeButton)){
+        throw new Error(`TypeButton ${props.typeButton} is undefinied`);
+    }
+}
+
+onMounted(() => {
+    _validateTypeButton()
 });
 </script>
