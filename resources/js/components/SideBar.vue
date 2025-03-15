@@ -54,7 +54,9 @@
                                 d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"
                             />
                         </svg>
-                        <span class="ms-3">Dashboard</span>
+                        <span class="ms-3">
+                            <Link :href="route('index')">Dashboard</Link>
+                        </span>
                     </a>
                 </li>
                 <li>
@@ -81,9 +83,9 @@
                             />
                         </svg>
 
-                        <span class="flex-1 ms-3 whitespace-nowrap"
-                            >Sistema</span
-                        >
+                        <span class="flex-1 ms-3 whitespace-nowrap">
+                            <Link :href="route('system')">Sistema</Link>
+                        </span>
                     </a>
                 </li>
                 <li>
@@ -330,6 +332,7 @@
 <script setup>
 import { ref } from "vue";
 import { usePage, router } from "@inertiajs/vue3";
+import { route } from "ziggy-js";
 
 //LAYOUTS E COMPONENTS
 import Card from "@/components/Card.vue";
@@ -338,7 +341,7 @@ const page = usePage();
 
 function logout() {
     router.post(page.props.routes_fortify.logout_post, {
-        onSuccess: () => router.get(page.props.routes_fortify.login_get)
+        onSuccess: () => router.get(page.props.routes_fortify.login_get),
     });
 }
 </script>
