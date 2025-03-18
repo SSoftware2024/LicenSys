@@ -38,8 +38,8 @@
         >
             <ul class="space-y-2 font-medium">
                 <li>
-                    <a
-                        href="#"
+                    <Link
+                        :href="route('index')"
                         :class="{
                             'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                             'text-lime-700': route().current('index'),
@@ -63,13 +63,13 @@
                             />
                         </svg>
                         <span class="ms-3">
-                            <Link :href="route('index')">Dashboard</Link>
+                            Dashboard
                         </span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a
-                        href="#"
+                    <Link
+                        :href="route('system')"
                         :class="{
                             'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group':true,
                             'text-lime-700': route().current('system'),
@@ -98,9 +98,9 @@
                         </svg>
 
                         <span class="flex-1 ms-3 whitespace-nowrap">
-                            <Link :href="route('system')">Sistema</Link>
+                            Sistema
                         </span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
                     <button
@@ -345,7 +345,7 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { usePage, router } from "@inertiajs/vue3";
+import { usePage, router, Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 
 //LAYOUTS E COMPONENTS

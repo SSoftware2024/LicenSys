@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -10,7 +11,10 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/system', function () {
-        return Inertia::render('System');
-    })->name('system');
+
+    Route::prefix('system')->name('system')->group(function () {
+        Route::get('/', [SystemController::class, 'index']);
+        // Route::post('/save', [SystemController::class, 'save'])->name('.save');
+    });
+    Route::post('/save', [SystemController::class, 'save'])->name('system.save');
 });
