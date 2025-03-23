@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'routes_fortify' => routesFortify(),
-            'response_data' => session('data') ?? null
+            'response_data' => session('response_data') ?? null
         ]);
     }
 }

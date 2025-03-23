@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Toast;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,24 +34,31 @@ class SystemController extends Controller
             'code_access_api_generics_systems' => 'Código de acesso API - genérico'
         ]);
         try {
-            $system = System::findOrFail(1);
-            if ($system->code_access_api != $request->code_access_api || $system->code_access_api_generics_systems != $request->code_access_api_generics_systems) { //verficar se alguma chave mudou
-                $system->code_access_api = $request->code_access_api;
-                $system->code_access_api_cripty = Crypt::encryptString($request->code_access_api);
-                $system->code_access_api_generics_systems = $request->code_access_api_generics_systems;
-                $system->code_access_api_generics_systems_cripty = Crypt::encryptString($request->code_access_api_generics_systems);
+            try {
+                $system = System::findOrFail(1);
+                if ($system->code_access_api != $request->code_access_api || $system->code_access_api_generics_systems != $request->code_access_api_generics_systems) { //verficar se alguma chave mudou
+                    $system->code_access_api = $request->code_access_api;
+                    $system->code_access_api_cripty = Crypt::encryptString($request->code_access_api);
+                    $system->code_access_api_generics_systems = $request->code_access_api_generics_systems;
+                    $system->code_access_api_generics_systems_cripty = Crypt::encryptString($request->code_access_api_generics_systems);
+                }
+                $system->limit_days = $request->limit_days;
+                $system->save();
+            } catch (\Exception $e) { //cadastrar
+                $system = System::create([
+                    'limit_days' => $request->limit_days,
+                    'code_access_api' => $request->code_access_api,
+                    'code_access_api_cripty' => Crypt::encryptString($request->code_access_api),
+                    'code_access_api_generics_systems' => $request->code_access_api_generics_systems,
+                    'code_access_api_generics_systems_cripty' => Crypt::encryptString($request->code_access_api_generics_systems),
+                ]);
             }
-            $system->limit_days = $request->limit_days;
-            $system->save();
-        } catch (\Exception $e) { //cadastrar
-            $system = System::create([
-                'limit_days' => $request->limit_days,
-                'code_access_api' => $request->code_access_api,
-                'code_access_api_cripty' => Crypt::encryptString($request->code_access_api),
-                'code_access_api_generics_systems' => $request->code_access_api_generics_systems,
-                'code_access_api_generics_systems_cripty' => Crypt::encryptString($request->code_access_api_generics_systems),
-            ]);
+            //toast de aviso
+            Toast::success('Dados salvos com sucesso');
+        } catch (\Exception $e) {
+            Toast::warning($e->getMessage());
+        } catch (\Error $e) {
+            Toast::error($e->getMessage());
         }
-        //toast de aviso
     }
 }

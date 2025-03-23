@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 @import "flowbite/src/themes/default";
+/* tema: sugar, default, bootstrap */
+@import 'vue-toast-notification/dist/theme-bootstrap.css';
 @custom-variant dark (&:where(.dark, .dark *));
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';

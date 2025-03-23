@@ -12,13 +12,13 @@
 </template>
 <script setup>
 import Card from "@/components/Card.vue";
+
 defineProps({
     title: {
         type: String,
         require: true,
     },
 });
-</script>
-<style scoped>
 
-</style>
+</script>
+<style scoped></style>

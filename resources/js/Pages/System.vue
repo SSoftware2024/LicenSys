@@ -86,7 +86,9 @@
                 ></Button>
             </div>
             <div>
-                <p>Última edição: <span>{{ last_edition }}</span></p>
+                <p>
+                    Última edição: <span>{{ last_edition }}</span>
+                </p>
             </div>
         </form>
     </div>
@@ -96,14 +98,14 @@
 import { ref, onMounted } from "vue";
 import { route } from "ziggy-js";
 import { useForm, usePage } from "@inertiajs/vue3";
-import { TZDate } from "@date-fns/tz";
-import { format } from "date-fns";
+import dateObject from "@/utils/date";
+
 //COMPONENTS E LAYOUTS
 import SidebarLayout from "../layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 
-const last_edition = ref('');
+const last_edition = ref("");
 
 const page = usePage();
 const form = useForm({
@@ -119,8 +121,7 @@ function save() {
         onSuccess: () => _loadForm(),
     });
 }
-const originalDate = ref("2025-03-18 15:52:35"); // Data do Laravel
-const formattedDate = ref("");
+
 
 function _loadForm() {
     const data = page.props.system_saved;
@@ -132,8 +133,7 @@ function _loadForm() {
         form.code_access_api_readonly = data.code_access_api_cripty;
         form.code_access_api_generics_systems_readonly =
             data.code_access_api_generics_systems_cripty;
-        let date = new TZDate(data.updated_at, "America/Fortaleza");
-        last_edition.value = format(date, 'dd/MM/yyyy H:mm:ss').toString();
+        last_edition.value = dateObject.formatDate(data.updated_at);
     }
 }
 
