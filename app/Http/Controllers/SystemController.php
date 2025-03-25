@@ -16,7 +16,6 @@ class SystemController extends Controller
     {
 
         $system_saved = System::find(1);
-        // dd($system_saved);
         return Inertia::render('System', [
             'system_saved' => $system_saved
         ]);

@@ -14,7 +14,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('system')->name('system')->group(function () {
         Route::get('/', [SystemController::class, 'index']);
+        Route::post('/save', [SystemController::class, 'save'])->name('.save');
+    });
+
+
+    Route::prefix('system')->name('system')->group(function () {
+        Route::get('/', [SystemController::class, 'index']);
         // Route::post('/save', [SystemController::class, 'save'])->name('.save');
     });
-    Route::post('/save', [SystemController::class, 'save'])->name('system.save');
 });
