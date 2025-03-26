@@ -5,13 +5,13 @@ namespace App\Enum;
 use App\Traits\EnumFunctions;
 
 /**
- * ! Usado na migration:
+ * ! Usado na migration: [companies, historic_companies]
  */
 enum MonthlyFee: string
 {
     use EnumFunctions;
-    case PAY = 'PAGAR';
-    case PAID = 'PAGA';
-    case LATE = 'ATRASADA';
-    case OVERDUE = 'VENCIDA';
+    case PAY = 'pagar';
+    case PAID = 'paga';
+    case LATE = 'atrasada';
+    case OVERDUE = 'vencida';
 }

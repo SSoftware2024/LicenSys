@@ -20,7 +20,7 @@ class SystemController extends Controller
             'system_saved' => $system_saved
         ]);
     }
-    public function save(Request $request)
+    public function save(Request $request): void
     {
         //validação
         $request->validate([

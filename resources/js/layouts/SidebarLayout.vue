@@ -13,12 +13,14 @@ import { useToast } from "vue-toast-notification";
 const toast = useToast();
 
 function _showToast(event) {
-    let messageToast = event.detail.page.props.response_data.toast;
-    let instance = toast.open({
-        message: messageToast.message,
-        type: messageToast.type,
-        duration: messageToast.duration,
-    });
+    let messageToast = event.detail.page.props.response_data?.toast;
+    if (messageToast) {
+        let instance = toast.open({
+            message: messageToast.message,
+            type: messageToast.type,
+            duration: messageToast.duration,
+        });
+    }
 }
 
 // initialize components based on data attribute selectors - FLOWBITE
@@ -27,7 +29,6 @@ onMounted(() => {
     router.on("success", (event) => {
         _showToast(event);
     });
-
 });
 onUnmounted(() => {
     initFlowbite();

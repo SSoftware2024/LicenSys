@@ -3,17 +3,19 @@
     <h2 class="font-bold text-2xl underline mb-2">Sistema</h2>
     <div class="xl:w-200">
         <form @submit.prevent="save">
-            <Input
-                type="number"
-                label="Limite de dias (expiração)"
-                id="number_days"
-                name="limit_days"
-                :isInputRequired="true"
-                :isInvalid="!!form.errors.limit_days"
-                v-model="form.limit_days"
-            />
-            <div v-if="form.errors.limit_days" class="text-red-500">
-                {{ form.errors.limit_days }}
+            <div class="mx-1">
+                <Input
+                    type="number"
+                    label="Limite de dias (expiração)"
+                    id="number_days"
+                    name="limit_days"
+                    :isInputRequired="true"
+                    :isInvalid="!!form.errors.limit_days"
+                    v-model="form.limit_days"
+                />
+                <div v-if="form.errors.limit_days" class="text-red-500">
+                    {{ form.errors.limit_days }}
+                </div>
             </div>
             <div class="flex sm:flex-wrap md:flex-nowrap">
                 <div class="flex flex-col w-full m-1">
@@ -121,7 +123,6 @@ function save() {
         onSuccess: () => _loadForm(),
     });
 }
-
 
 function _loadForm() {
     const data = page.props.system_saved;
