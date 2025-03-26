@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enum\TypeUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -26,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
 
     private function gates()
     {
-        // Gate::define('admin-access', function (?string $type, User $user) {
-        //     return $type === $user->type;
-        // });
+        Gate::define('admin-access', function (User $user) {
+            return $user->type === TypeUser::ADMIN->value;
+        });
     }
 }

@@ -31,7 +31,6 @@
     <aside
         id="sidebar-multi-level-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full md:translate-x-0"
-        aria-label="Sidebar"
     >
         <div
             class="h-full px-3 py-4 overflow-y-auto bg-gradient-to-r from-gray-100 to-zinc-100 dark:bg-gray-800 dark:bg-none"
@@ -151,7 +150,9 @@
                                 :href="route('user')"
                                 :class="{
                                     'flex pl-11 items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
-                                    'text-lime-700': route().current('user', {type: ''}),
+                                    'text-lime-700': route().current('user', {
+                                        type: '',
+                                    }),
                                 }"
                             >
                                 Comum
@@ -159,10 +160,12 @@
                         </li>
                         <li>
                             <Link
-                                :href="route('user', {type: 'admin'})"
+                                :href="route('user', { type: 'admin' })"
                                 :class="{
                                     'flex pl-11 items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
-                                    'text-lime-700': route().current('user',  {type: 'admin' }),
+                                    'text-lime-700': route().current('user', {
+                                        type: 'admin',
+                                    }),
                                 }"
                             >
                                 Administrador
@@ -352,12 +355,13 @@
     <!-- END CONTENT -->
 </template>
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { usePage, router, Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 
 //LAYOUTS E COMPONENTS
 import Card from "@/components/Card.vue";
+import { initDrawers, initDropdowns } from "flowbite";
 
 const page = usePage();
 
@@ -366,4 +370,8 @@ function logout() {
         onSuccess: () => router.get(page.props.routes_fortify.login_get),
     });
 }
+
+onMounted(() => {
+    initDrawers();
+});
 </script>

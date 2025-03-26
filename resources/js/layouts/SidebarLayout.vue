@@ -6,7 +6,6 @@
 <script setup>
 import SideBar from "../components/SideBar.vue";
 import { onMounted, onUnmounted, ref } from "vue";
-import { initFlowbite } from "flowbite";
 import { router } from "@inertiajs/vue3";
 import { useToast } from "vue-toast-notification";
 
@@ -25,12 +24,9 @@ function _showToast(event) {
 
 // initialize components based on data attribute selectors - FLOWBITE
 onMounted(() => {
-    initFlowbite();
     router.on("success", (event) => {
         _showToast(event);
+
     });
-});
-onUnmounted(() => {
-    initFlowbite();
 });
 </script>

@@ -22,5 +22,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('user')->name('user')->group(function () {
         Route::get('/{type?}', [UserController::class, 'index'])->whereIn('type', TypeUser::cases());
+        Route::get('save/{type?}', [UserController::class, 'saveView'])->whereIn('type', TypeUser::cases())->name('.saveView');
     });
 });
