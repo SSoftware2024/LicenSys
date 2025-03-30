@@ -7,7 +7,6 @@ use Inertia\Inertia;
 use App\Facades\Toast;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response as InertiaResponse;
