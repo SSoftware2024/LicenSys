@@ -3,7 +3,7 @@
     <h2 class="font-bold text-2xl underline mb-2">
         Usuários
         <span class="uppercase">{{
-            $page.props.type_user ? ` - ${$page.props.type_user}` : ""
+            $page.props.type_user == 'admin' ? ` - ${$page.props.type_user}` : ""
         }}</span>
     </h2>
     <div>
@@ -128,7 +128,7 @@
                                 >
                                     <li>
                                         <Link
-                                            :href="route('user.saveView', {type: $page.props.type_user ?? '', operation:'update'})"
+                                            :href="route('user.saveView', {type: $page.props.type_user, operation:'update', id:9})"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                         >
                                             Editar

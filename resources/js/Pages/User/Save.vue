@@ -4,7 +4,7 @@
     <h2 class="font-bold text-2xl underline mb-2">
         {{ $page.props.operation == "create" ? "Cadastrar" : "Editar" }}
         <span class="uppercase">
-            {{ $page.props.type_user ? ` - ${$page.props.type_user}` : "" }}
+            {{ $page.props.type_user == 'admin' ? ` - ${$page.props.type_user}` : "" }}
         </span>
     </h2>
     <div class="xl:w-200">

@@ -10,6 +10,6 @@ use App\Traits\EnumFunctions;
 enum TypeUser: string
 {
     use EnumFunctions;
-    case ADMIN = 'admin';
-    case DEFAULT = 'padrao';
+    case ADMIN = 'admin'; //administrador
+    case DEFAULT = 'default'; //padrão
 }

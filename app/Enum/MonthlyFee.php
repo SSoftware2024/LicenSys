@@ -10,8 +10,8 @@ use App\Traits\EnumFunctions;
 enum MonthlyFee: string
 {
     use EnumFunctions;
-    case PAY = 'pagar';
-    case PAID = 'paga';
-    case LATE = 'atrasada';
-    case OVERDUE = 'vencida';
+    case PAY = 'pay'; //pagar
+    case PAID = 'paid'; //paga
+    case LATE = 'late'; //atrasada
+    case OVERDUE = 'overdue'; //vencida
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Enum\TypeUser;
@@ -41,12 +42,13 @@ class UserController extends Controller
         ]);
     }
 
-    private function create($data, $type)
+    private function create(array $data, string $type)
     {
         $user = null;
         switch ($type) {
             case 'admin':
-
+                    $createNewUser = new CreateNewUser();
+                    $user = $createNewUser->create(input: $data);
                 break;
 
             default:
@@ -72,24 +74,28 @@ class UserController extends Controller
                 ]);
                 break;
         }
-        Toast::success('Usuário cadastrado com sucesso');
         return $user;
     }
-
+    private function update(array $data, string $type)
+    {
+        #teste
+    }
     public function save(Request $request)
     {
         $data = $request->except('operation');
         switch ($request->operation) {
             case 'create':
-                $user = $this->create($data, type: $request->type);
+                $user = $this->create($data, $request->type);
+                Toast::success('Usuário cadastrado com sucesso');
                 $user->fresh();
                 return redirect()->route('user.saveView', [
                     'operation' => 'update',
-                    'type' => $data['type']
+                    'type' => $data['type'],
+                    'id' => $user->id
                 ]);
                 break;
             case 'update':
-                # code...
+                // $this->update([],'');
                 break;
 
             default:

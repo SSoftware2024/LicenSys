@@ -22,9 +22,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('user')->name('user')->group(function () {
         Route::get('/{type?}', [UserController::class, 'index'])->whereIn('type', TypeUser::cases());
-        Route::get('save/{operation}/{type?}', [UserController::class, 'saveView'])
+        Route::get('save/{operation}/{type}/{id?}/', [UserController::class, 'saveView'])
             ->whereIn('operation', ['create','update'])
-            ->whereIn('type', TypeUser::cases())->name('.saveView');
+            ->whereIn('type', TypeUser::cases())
+            ->where('id', '[0-9]+')
+            ->name('.saveView');
         Route::post('/save', [UserController::class, 'save'])->name('.save');
     });
 });
