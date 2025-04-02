@@ -1,6 +1,11 @@
 <template>
     <Head title="Usuários" />
-    <h2 class="font-bold text-2xl underline mb-2">Usuários <span class="uppercase">{{ $page.props.type_user ? ` - ${$page.props.type_user}` : '' }}</span></h2>
+    <h2 class="font-bold text-2xl underline mb-2">
+        Usuários
+        <span class="uppercase">{{
+            $page.props.type_user ? ` - ${$page.props.type_user}` : ""
+        }}</span>
+    </h2>
     <div>
         <!-- FILTERS -->
         <div class="xl:w-200">
@@ -43,7 +48,14 @@
                         type="button"
                         typeButton="green"
                         class="relative top-1.5"
-                        @click="router.get(route('user.saveView', {type: $page.props.type_user ?? ''}))"
+                        @click="
+                            router.get(
+                                route('user.saveView', {
+                                    type: $page.props.type_user ?? '',
+                                    operation: 'create',
+                                })
+                            )
+                        "
                     ></Button>
                 </div>
             </form>
@@ -115,11 +127,12 @@
                                     aria-labelledby="dropdownMenuIconButton"
                                 >
                                     <li>
-                                        <a
-                                            href="#"
+                                        <Link
+                                            :href="route('user.saveView', {type: $page.props.type_user ?? '', operation:'update'})"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            >Editar</a
                                         >
+                                            Editar
+                                        </Link>
                                     </li>
                                     <li>
                                         <a
@@ -131,15 +144,15 @@
                                     <li>
                                         <a
                                             href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            >Remover TW.FA</a
+                                            class="block px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            >Remover 2FA</a
                                         >
                                     </li>
                                 </ul>
                                 <div class="py-2">
                                     <a
                                         href="#"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        class="block px-4 py-2 text-sm text-red-600 font-bold hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                         >Deletar</a
                                     >
                                 </div>
@@ -162,11 +175,6 @@ import { router } from "@inertiajs/vue3";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
-import { initDropdowns } from "flowbite";
-
-onMounted(() => {
-    initDropdowns();
-});
 
 defineOptions({
     layout: SidebarLayout,

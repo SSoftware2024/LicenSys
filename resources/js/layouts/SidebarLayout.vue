@@ -8,7 +8,7 @@ import SideBar from "../components/SideBar.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useToast } from "vue-toast-notification";
-
+import { initFlowbite } from "flowbite";
 const toast = useToast();
 
 function _showToast(event) {
@@ -26,7 +26,10 @@ function _showToast(event) {
 onMounted(() => {
     router.on("success", (event) => {
         _showToast(event);
+    });
 
+    router.on("finish", (event) => {
+        initFlowbite();
     });
 });
 </script>

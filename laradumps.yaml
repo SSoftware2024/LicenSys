@@ -16,7 +16,7 @@ observers:
   queries: false
   slow_queries: false
   mail: false
-  logs: false
+  logs: true
   http: false
   jobs: false
   commands: false
@@ -30,11 +30,11 @@ code_snippet:
   above: 9
   below: 3
 logs:
-  info: false
+  info: true
   warning: false
-  emergency: false
+  emergency: true
   alert: false
-  debug: false
+  debug: true
   error: true
   critical: true
   notice: true

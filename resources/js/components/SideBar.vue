@@ -355,13 +355,11 @@
     <!-- END CONTENT -->
 </template>
 <script setup>
-import { onMounted, ref } from "vue";
 import { usePage, router, Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 
 //LAYOUTS E COMPONENTS
 import Card from "@/components/Card.vue";
-import { initDrawers, initDropdowns } from "flowbite";
 
 const page = usePage();
 
@@ -371,7 +369,4 @@ function logout() {
     });
 }
 
-onMounted(() => {
-    initDrawers();
-});
 </script>
