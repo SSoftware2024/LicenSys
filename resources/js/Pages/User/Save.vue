@@ -96,7 +96,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useForm, usePage } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
@@ -104,21 +104,41 @@ import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 const page = usePage();
 const form = useForm({
+    id: 0,
     name: "",
     email: "",
     password: "",
     password_confirmation: "",
     activated: true,
 });
+const operation = ref('create');
 function save() {
+    const requestMethod = operation.value == 'create' ? 'post' : 'patch';
     form.transform((data) => ({
         ...data,
         operation: page.props.operation,
         type: page.props.type_user,
-    })).post(route("user.save"), {
-        onSuccess: () => form.reset('password','password_confirmation')
+    }))[requestMethod](route("user.save"), {
+        onSuccess: () => {
+            operation.value == 'create' ? _loadFormUpdate() : null;
+            form.reset('password','password_confirmation');
+        }
     });
 }
+
+function _loadFormUpdate() {
+    if(page.props.operation == 'update' && page.props.id) {
+        operation.value = 'update';
+        form.id = page.props.user.id;
+        form.name = page.props.user.name;
+        form.email = page.props.user.email;
+        form.activated = Boolean(page.props.user.activated);
+    }
+}
+
+onMounted(() => {
+    _loadFormUpdate();
+});
 defineOptions({
     layout: SidebarLayout,
 });
