@@ -41,8 +41,8 @@ class UserController extends Controller
         }
         $id = $request->id;
         $user = null;
-        if(!empty($id)){
-            $user = User::select('id','name','email','activated')->find($id);
+        if (!empty($id)) {
+            $user = User::select('id', 'name', 'email', 'activated')->find($id);
 
             //verficar se posso editar esse usuário, não pode ser eu mesmo e user comum não pode editar admin
         }
@@ -57,7 +57,7 @@ class UserController extends Controller
 
     public function save(Request $request)
     {
-        $data = $request->except('operation','type');
+        $data = $request->except('operation', 'type');
         switch ($request->operation) {
             case 'create':
                 $user = $this->create($data, $request->type);
@@ -107,10 +107,30 @@ class UserController extends Controller
     }
     private function update(array $data, string $type)
     {
+
         switch ($type) {
             case 'admin':
-                // $createNewUser = new CreateNewUser();
-                // $user = $createNewUser->create(input: $data);
+
+                $this->validateSaveData($data, 'update');
+                $user = User::find($data['id']);
+                $user->name = $data['name'];
+                $user->activated = (bool) $data['activated'];
+                if (!empty($data['password'])) {
+                    $user->password = Hash::make($data['password']);
+                }
+
+                //verficação de mudança de email
+                if($data['email'] !== $user->email && $user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail){
+                    //não testada
+                    $user->email = $data['email'];
+                    $user->email_verified_at = null;
+                    $user->save();
+                    $user->sendEmailVerificationNotification();
+                }else{
+                    $user->email = $data['email'];
+                    $user->save();
+                }
+
                 break;
 
             default:
