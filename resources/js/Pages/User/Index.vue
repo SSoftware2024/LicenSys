@@ -3,7 +3,9 @@
     <h2 class="font-bold text-2xl underline mb-2">
         Usuários
         <span class="uppercase">{{
-            $page.props.type_user == 'admin' ? ` - ${$page.props.type_user}` : ""
+            $page.props.type_user == "admin"
+                ? ` - ${$page.props.type_user}`
+                : ""
         }}</span>
     </h2>
     <div>
@@ -84,19 +86,52 @@
                 <tbody>
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-                        v-for="(n, index) in 20"
+                        v-for="(user, index) in page.props.users.data"
                         :key="index"
                     >
                         <th
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                            Apple MacBook Pro 17"
+                            {{ user.name }}
                         </th>
-                        <td class="px-6 py-4">teste@email.com</td>
-                        <td class="px-6 py-4">true</td>
-                        <td class="px-6 py-4">$true</td>
-                        <td class="px-6 py-4">$true</td>
+                        <td class="px-6 py-4">{{ user.email }}</td>
+                        <td class="px-6 py-4">
+                            <span
+                                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset"
+                                v-if="user.email_verified_at"
+                                >VERIFICADO</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset"
+                                v-else
+                                >NÃO</span
+                            >
+                        </td>
+                        <td class="px-6 py-4">
+                            <span
+                                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset"
+                                v-if="user.two_factor_confirmed_at"
+                                >ATIVO</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset"
+                                v-else
+                                >INATIVO</span
+                            >
+                        </td>
+                        <td class="px-6 py-4">
+                            <span
+                                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset"
+                                v-if="user.activated"
+                                >ATIVO</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset"
+                                v-else
+                                >INATIVO</span
+                            >
+                        </td>
                         <td class="px-6 py-4">
                             <button
                                 id="dropdownMenuIconButton"
@@ -128,7 +163,13 @@
                                 >
                                     <li>
                                         <Link
-                                            :href="route('user.saveView', {type: $page.props.type_user, operation:'update', id:9})"
+                                            :href="
+                                                route('user.saveView', {
+                                                    type: $page.props.type_user,
+                                                    operation: 'update',
+                                                    id: user.id,
+                                                })
+                                            "
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                         >
                                             Editar
@@ -171,10 +212,12 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { route } from "ziggy-js";
-import { router } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
+
+const page = usePage();
 
 defineOptions({
     layout: SidebarLayout,

@@ -25,10 +25,13 @@ class UserController extends Controller
             Toast::warning('Você não tem acesso a página requistada');
             return redirect()->back();
         }
+
         $type = $request->type ?: TypeUser::DEFAULT->value;
         //buscar usuario de acordo com type
+        $users = User::where('type', $type)->paginate();
         return Inertia::render('User/Index', [
-            'type_user' => $request->type
+            'type_user' => $request->type,
+            'users' => $users,
         ]);
     }
     public function saveView(Request $request): InertiaResponse | RedirectResponse
