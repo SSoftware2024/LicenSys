@@ -205,6 +205,7 @@
         </div>
         <!-- END TABLE -->
         <!-- ACTIONS -->
+        <Paginate :pagination="$page.props.users" :onEachSize="3" @paginate="paginate"></Paginate>
         <!-- END ACTIONS -->
     </div>
 </template>
@@ -216,8 +217,17 @@ import { router, usePage } from "@inertiajs/vue3";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
+import Paginate from "../../components/Paginate.vue";
 
 const page = usePage();
+
+function paginate(page_link) {
+    router.get(page.url, {
+        page: page_link
+    }, {
+        preserveState: true
+    });
+}
 
 defineOptions({
     layout: SidebarLayout,
