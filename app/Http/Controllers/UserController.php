@@ -9,6 +9,7 @@ use App\Facades\Toast;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
@@ -28,7 +29,7 @@ class UserController extends Controller
 
         $type = $request->type ?: TypeUser::DEFAULT->value;
         //buscar usuario de acordo com type
-        $users = User::where('type', $type)->paginate();
+        $users = User::where('type', $type)->where('id', "!=", Auth::id())->paginate();
         return Inertia::render('User/Index', [
             'type_user' => $request->type,
             'users' => $users,
@@ -48,6 +49,18 @@ class UserController extends Controller
             $user = User::select('id', 'name', 'email', 'activated')->find($id);
 
             //verficar se posso editar esse usuário, não pode ser eu mesmo e user comum não pode editar admin
+            if(Auth::id() === $user->id){
+                Toast::warning('Você não pode editar a si mesmo na edição genérica de usuários.');
+                return redirect()->route('user', [
+                    'type' => $request->type
+                ]);
+
+            }else if(Auth::user()->type === TypeUser::DEFAULT->value && $user->type !== TypeUser::ADMIN->value){
+                Toast::warning('Você não tem permissão para editar este usuário.');
+                return redirect()->route('user', [
+                    'type' => TypeUser::DEFAULT->value
+                ]);
+            }
         }
 
         return Inertia::render('User/Save', [

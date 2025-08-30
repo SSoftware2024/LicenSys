@@ -1,6 +1,5 @@
 <template>
     <Head title="Save User" />
-    <!-- Save user {{ $page.props.type_user ? ` - ${$page.props.type_user}` : '' }} -->
     <h2 class="font-bold text-2xl underline mb-2">
         {{ $page.props.operation == "create" ? "Cadastrar" : "Editar" }}
         <span class="uppercase">
