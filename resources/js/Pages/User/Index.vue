@@ -180,11 +180,18 @@
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             v-if="user.activated"
+                                            @click="
+                                                _toggleActivete(user.id, true)
+                                            "
                                             >Desativar</a
                                         >
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            v-else
+                                            @click="
+                                                _toggleActivete(user.id, false)
+                                            "
                                             >Ativar</a
                                         >
                                     </li>
@@ -252,8 +259,17 @@ function _deleteAlert(id) {
         cancelButtonText: "NÃO",
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(route('user.delete', [id]));
+            router.delete(route("user.delete", [id]));
         }
+    });
+}
+
+function _toggleActivete(id, value) {
+    router.patch(route("user.toggleActivete"), {
+        id: id,
+        value: value,
+    }, {
+        preserveState:false
     });
 }
 

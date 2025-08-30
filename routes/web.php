@@ -28,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
             ->where('id', '[0-9]+')
             ->name('.saveView');
         Route::match(['post', 'patch'], '/save', [UserController::class, 'save'])->name('.save');
+        Route::patch('/toggleActivete', [UserController::class, 'toggleActivete'])
+            ->middleware('auth_admin')
+            ->name('.toggleActivete');
         Route::delete('/delete/{id}', [UserController::class, 'delete'])
             ->where('id', '[0-9]+')
             ->middleware('auth_admin')

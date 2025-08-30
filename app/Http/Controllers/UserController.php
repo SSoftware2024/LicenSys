@@ -30,8 +30,8 @@ class UserController extends Controller
         $type = $request->type ?: TypeUser::DEFAULT->value;
         //buscar usuario de acordo com type
         $users = User::where('type', $type)->where('id', "!=", Auth::id())
-            ->orderBy('created_at','desc')
-            ->orderBy('name','asc')
+            ->orderBy('created_at', 'desc')
+            ->orderBy('name', 'asc')
             ->paginate();
         return Inertia::render('User/Index', [
             'type_user' => $request->type,
@@ -87,7 +87,7 @@ class UserController extends Controller
                         'type' => $request->type,
                         'id' => $user->id
                     ]);
-                }else{
+                } else {
                     return redirect()->route('user', TypeUser::DEFAULT->value);
                 }
                 break;
@@ -105,6 +105,18 @@ class UserController extends Controller
     {
         User::find($id)->delete();
         Toast::success('Usuário deletado com sucesso');
+    }
+
+    public function toggleActivete(Request $request)
+    {
+        $value = $request->value;
+        $value = !$value;
+        $typeToast = $value ? 'success':'info';
+        $message = 'Usuário '.($value ? 'ativado':'desativado');
+        User::where('id', $request->id)->update([
+            'activated' => $value
+        ]);
+        Toast::{$typeToast}($message);
     }
     /* ----------------------------- PRIVATE METHODS ---------------------------- */
 
