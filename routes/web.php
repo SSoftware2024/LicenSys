@@ -23,10 +23,14 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('user')->name('user')->group(function () {
         Route::get('/{type}', [UserController::class, 'index'])->whereIn('type', TypeUser::cases());
         Route::get('save/{operation}/{type}/{id?}/', [UserController::class, 'saveView'])
-            ->whereIn('operation', ['create','update'])
+            ->whereIn('operation', ['create', 'update'])
             ->whereIn('type', TypeUser::cases())
             ->where('id', '[0-9]+')
             ->name('.saveView');
-        Route::match(['post', 'patch'],'/save', [UserController::class, 'save'])->name('.save');
+        Route::match(['post', 'patch'], '/save', [UserController::class, 'save'])->name('.save');
+        Route::delete('/delete/{id}', [UserController::class, 'delete'])
+            ->where('id', '[0-9]+')
+            ->middleware('auth_admin')
+            ->name('.delete');
     });
 });

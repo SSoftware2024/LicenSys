@@ -23,13 +23,19 @@ function _showToast(event) {
 }
 
 // initialize components based on data attribute selectors - FLOWBITE
+let router_success;
+let router_finish;
 onMounted(() => {
-    router.on("success", (event) => {
+    router_success = router.on("success", (event) => {
         _showToast(event);
     });
 
-    router.on("finish", (event) => {
+    router_finish = router.on("finish", (event) => {
         initFlowbite();
     });
+});
+onUnmounted(() => {
+    if(router_success) router_success();
+    if(router_finish) router_finish();
 });
 </script>

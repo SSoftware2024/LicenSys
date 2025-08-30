@@ -179,7 +179,7 @@
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                             v-if="user.activated"
+                                            v-if="user.activated"
                                             >Desativar</a
                                         >
                                         <a
@@ -199,6 +199,7 @@
                                 <div class="py-2">
                                     <a
                                         href="#"
+                                        @click="_deleteAlert(user.id)"
                                         class="block px-4 py-2 text-sm text-red-600 font-bold hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                         >Deletar</a
                                     >
@@ -211,27 +212,48 @@
         </div>
         <!-- END TABLE -->
         <!-- ACTIONS -->
-        <Paginate :pagination="$page.props.users" :onEachSize="3" @paginate="paginate"></Paginate>
+        <Paginate
+            :pagination="$page.props.users"
+            :onEachSize="3"
+            @paginate="paginate"
+        ></Paginate>
         <!-- END ACTIONS -->
     </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from "vue";
+import Swal from "sweetalert2";
 import { route } from "ziggy-js";
-import { router, usePage } from "@inertiajs/vue3";
+import { router, usePage, useForm } from "@inertiajs/vue3";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 import Paginate from "../../components/Paginate.vue";
 
 const page = usePage();
-
 function paginate(page_link) {
-    router.get(page.url, {
-        page: page_link
-    }, {
-        preserveState: true
+    router.get(
+        page.url,
+        {
+            page: page_link,
+        },
+        {
+            preserveState: true,
+        }
+    );
+}
+
+function _deleteAlert(id) {
+    Swal.fire({
+        title: "Deseja prosseguir com deleção de usuário?",
+        showCancelButton: true,
+        confirmButtonText: "SIM",
+        cancelButtonText: "NÃO",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.delete(route('user.delete', [id]));
+        }
     });
 }
 

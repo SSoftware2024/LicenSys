@@ -29,7 +29,10 @@ class UserController extends Controller
 
         $type = $request->type ?: TypeUser::DEFAULT->value;
         //buscar usuario de acordo com type
-        $users = User::where('type', $type)->where('id', "!=", Auth::id())->paginate();
+        $users = User::where('type', $type)->where('id', "!=", Auth::id())
+            ->orderBy('created_at','desc')
+            ->orderBy('name','asc')
+            ->paginate();
         return Inertia::render('User/Index', [
             'type_user' => $request->type,
             'users' => $users,
@@ -49,13 +52,12 @@ class UserController extends Controller
             $user = User::select('id', 'name', 'email', 'activated')->find($id);
 
             //verficar se posso editar esse usuário, não pode ser eu mesmo e user comum não pode editar admin
-            if(Auth::id() === $user->id){
+            if (Auth::id() === $user->id) {
                 Toast::warning('Você não pode editar a si mesmo na edição genérica de usuários.');
                 return redirect()->route('user', [
                     'type' => $request->type
                 ]);
-
-            }else if(Auth::user()->type === TypeUser::DEFAULT->value && $user->type !== TypeUser::ADMIN->value){
+            } else if (Auth::user()->type === TypeUser::DEFAULT->value && $user->type !== TypeUser::ADMIN->value) {
                 Toast::warning('Você não tem permissão para editar este usuário.');
                 return redirect()->route('user', [
                     'type' => TypeUser::DEFAULT->value
@@ -79,11 +81,15 @@ class UserController extends Controller
                 $user = $this->create($data, $request->type);
                 Toast::success('Usuário cadastrado com sucesso');
                 $user->fresh();
-                return redirect()->route('user.saveView', [
-                    'operation' => 'update',
-                    'type' => $request->type,
-                    'id' => $user->id
-                ]);
+                if (Gate::allows('admin-access')) {
+                    return redirect()->route('user.saveView', [
+                        'operation' => 'update',
+                        'type' => $request->type,
+                        'id' => $user->id
+                    ]);
+                }else{
+                    return redirect()->route('user', TypeUser::DEFAULT->value);
+                }
                 break;
             case 'update':
                 $this->update($data, $request->type);
@@ -94,6 +100,11 @@ class UserController extends Controller
                 # code...
                 break;
         }
+    }
+    public function delete($id)
+    {
+        User::find($id)->delete();
+        Toast::success('Usuário deletado com sucesso');
     }
     /* ----------------------------- PRIVATE METHODS ---------------------------- */
 
@@ -136,13 +147,13 @@ class UserController extends Controller
                 }
 
                 //verficação de mudança de email
-                if($data['email'] !== $user->email && $user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail){
+                if ($data['email'] !== $user->email && $user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail) {
                     //não testada
                     $user->email = $data['email'];
                     $user->email_verified_at = null;
                     $user->save();
                     $user->sendEmailVerificationNotification();
-                }else{
+                } else {
                     $user->email = $data['email'];
                     $user->save();
                 }
@@ -163,6 +174,7 @@ class UserController extends Controller
                 break;
         }
     }
+
 
     private function validateSaveData(array $data, string $operation): void
     {
