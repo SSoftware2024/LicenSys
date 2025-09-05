@@ -30,7 +30,9 @@
     <!-- mude sidebar hide aqui: md:translate-x-0, onde tem a classe de screen  -->
     <aside
         id="sidebar-multi-level-sidebar"
+        data-drawer-backdrop="true"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full md:translate-x-0"
+        aria-label="Sidebar"
     >
         <div
             class="h-full px-3 py-4 overflow-y-auto bg-gradient-to-r from-gray-100 to-zinc-100 dark:bg-gray-800 dark:bg-none"
@@ -147,7 +149,7 @@
                     <ul id="dropdown-example" class="hidden py-2 space-y-2">
                         <li>
                             <Link
-                                :href="route('user', {type: 'default'})"
+                                :href="route('user', { type: 'default' })"
                                 :class="{
                                     'flex pl-11 items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                                     'text-lime-700': route().current('user', {
@@ -174,9 +176,12 @@
                     </ul>
                 </li>
                 <li>
-                    <a
-                        href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    <Link
+                        :href="route('company')"
+                        :class="{
+                            'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                            'text-lime-700': route().current('compani'),
+                        }"
                     >
                         <svg
                             class="w-6 h-6 text-gray-800 dark:text-white"
@@ -199,12 +204,15 @@
                         <span class="flex-1 ms-3 whitespace-nowrap"
                             >Empresas</span
                         >
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a
-                        href="#"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    <Link
+                        :href="route('company_group')"
+                        :class="{
+                            'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                            'text-lime-700': route().current('company_group'),
+                        }"
                     >
                         <svg
                             class="w-6 h-6 text-gray-800 dark:text-white"
@@ -225,7 +233,7 @@
                         <span class="flex-1 ms-3 whitespace-nowrap"
                             >Grupo Empresa</span
                         >
-                    </a>
+                    </Link>
                 </li>
                 <li>
                     <button
@@ -368,5 +376,4 @@ function logout() {
         onSuccess: () => router.get(page.props.routes_fortify.login_get),
     });
 }
-
 </script>

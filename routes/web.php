@@ -1,10 +1,12 @@
 <?php
 
-use App\Enum\TypeUser;
-use App\Http\Controllers\SystemController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Enum\TypeUser;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SystemController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CompanyGroupController;
 
 Route::get('/', function () {
     return Inertia::render('Index');
@@ -35,5 +37,12 @@ Route::middleware(['auth'])->group(function () {
             ->where('id', '[0-9]+')
             ->middleware('auth_admin')
             ->name('.delete');
+    });
+    Route::prefix('company')->name('company')->group(function () {
+        Route::get('/', [CompanyController::class, 'index']);
+    });
+    Route::prefix('company_group')->name('company_group')->group(function () {
+        Route::get('/', [CompanyGroupController::class, 'index']);
+        Route::post('/create', [CompanyGroupController::class, 'create'])->name('.create');
     });
 });

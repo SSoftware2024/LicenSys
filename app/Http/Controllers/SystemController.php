@@ -35,7 +35,7 @@ class SystemController extends Controller
         try {
             try {
                 $system = System::findOrFail(1);
-                if ($system->code_access_api != $request->code_access_api || $system->code_access_api_generics_systems != $request->code_access_api_generics_systems) { //verficar se alguma chave mudou
+                if ($system->code_access_api != $request->code_access_api || $system->code_access_api_generics_systems != $request->code_access_api_generics_systems) { //verfica se alguma chave mudou
                     $system->code_access_api = $request->code_access_api;
                     $system->code_access_api_cripty = Crypt::encryptString($request->code_access_api);
                     $system->code_access_api_generics_systems = $request->code_access_api_generics_systems;
