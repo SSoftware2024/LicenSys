@@ -100,7 +100,10 @@
                                 :isInvalid="!!form_update.errors.name"
                                 v-model="form_update.name"
                             ></Input>
-                            <div v-if="form_update.errors.name" class="text-red-500">
+                            <div
+                                v-if="form_update.errors.name"
+                                class="text-red-500"
+                            >
                                 {{ form_update.errors.name }}
                             </div>
                         </th>
@@ -218,7 +221,9 @@ function _deleteAlert(id, company_count) {
         cancelButtonText: "NÃO",
     }).then((result) => {
         if (result.isConfirmed) {
-            // router.delete(route("user.delete", [id]));
+            console.log(route("company_group.delete", [id]));
+            // router.delete(route("company_group.delete", {id: id}));
+            router.delete(route("company_group.delete", [id]));
         }
     });
 }

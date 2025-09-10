@@ -45,5 +45,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [CompanyGroupController::class, 'index']);
         Route::post('/create', [CompanyGroupController::class, 'create'])->name('.create');
         Route::patch('/update', [CompanyGroupController::class, 'update'])->name('.update');
+        Route::delete('/delete/{id}', [CompanyGroupController::class, 'delete'])->name('.delete');
     });
 });
