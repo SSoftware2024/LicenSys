@@ -38,6 +38,33 @@
             class="h-full px-3 py-4 overflow-y-auto bg-gradient-to-r from-gray-100 to-zinc-100 dark:bg-gray-800 dark:bg-none"
         >
             <ul class="space-y-2 font-medium">
+                <li class="lg:hidden">
+                    <a
+                        href="#"
+                        class="flex items-center p-2 text-yellow-900 rounded-lg dark:yellow-white hover:bg-yellow-100 dark:hover:bg-yellow-700 group"
+                        @click="_closeSidebar"
+                    >
+                        <svg
+                            class="w-6 h-6 text-yellow-800 dark:yellow-white"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m17 16-4-4 4-4m-6 8-4-4 4-4"
+                            />
+                        </svg>
+
+                        <span class="ms-3"> Fechar Sidebar </span>
+                    </a>
+                </li>
                 <li>
                     <Link
                         :href="route('index')"
@@ -376,4 +403,9 @@ function logout() {
         onSuccess: () => router.get(page.props.routes_fortify.login_get),
     });
 }
+
+function _closeSidebar() {
+    const escEvent = new KeyboardEvent("keydown", { key: "Escape" });
+    document.dispatchEvent(escEvent);
+ }
 </script>

@@ -16,6 +16,7 @@
         <input
             v-bind="$attrs"
             :id="id"
+            ref="inputRef"
             :class="{
                 'pl-7.5': !!$slots.icon,
                 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500':
@@ -28,6 +29,10 @@
     </div>
 </template>
 <script setup>
+import { ref } from 'vue';
+
+const model = defineModel();
+const inputRef = ref(null);
 defineProps({
     label: {
         type: String,
@@ -44,5 +49,14 @@ defineProps({
     },
 });
 
-const model = defineModel();
+function focus(){
+    inputRef.value.focus();
+}
+
+defineExpose({
+    focus
+});
+
+
+
 </script>
