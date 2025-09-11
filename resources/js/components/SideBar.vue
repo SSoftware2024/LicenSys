@@ -207,11 +207,15 @@
                         :href="route('company')"
                         :class="{
                             'flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
-                            'text-lime-700': route().current('compani'),
+                            'text-lime-700': route().current('company'),
                         }"
                     >
                         <svg
-                            class="w-6 h-6 text-gray-800 dark:text-white"
+                            :class="{
+                                'w-6 h-6 text-gray-800 dark:text-white': true,
+                                'text-lime-700 group-hover:text-lime-900':
+                                    route().current('company'),
+                            }"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -242,7 +246,11 @@
                         }"
                     >
                         <svg
-                            class="w-6 h-6 text-gray-800 dark:text-white"
+                            :class="{
+                                'w-6 h-6 text-gray-800 dark:text-white': true,
+                                'text-lime-700 group-hover:text-lime-900':
+                                    route().current('company_group'),
+                            }"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -407,5 +415,5 @@ function logout() {
 function _closeSidebar() {
     const escEvent = new KeyboardEvent("keydown", { key: "Escape" });
     document.dispatchEvent(escEvent);
- }
+}
 </script>

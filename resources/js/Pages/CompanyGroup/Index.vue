@@ -221,8 +221,6 @@ function _deleteAlert(id, company_count) {
         cancelButtonText: "NÃO",
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log(route("company_group.delete", [id]));
-            // router.delete(route("company_group.delete", {id: id}));
             router.delete(route("company_group.delete", [id]));
         }
     });
