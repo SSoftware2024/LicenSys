@@ -3,6 +3,7 @@ import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { Link, Head } from "@inertiajs/vue3";
 import ToastPlugin from 'vue-toast-notification';
+import VueMask from '@devindex/vue-mask';
 import "flowbite";
 
 
@@ -17,6 +18,7 @@ createInertiaApp({
         const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ToastPlugin)
+            .use(VueMask)
             .component("Link", Link)
             .component("Head", Head)
             .mount(el);

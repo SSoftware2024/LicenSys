@@ -21,5 +21,9 @@
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
 
+.cs_readonly {
+    background-color: #e5e7eb;
+    cursor: not-allowed;
+}
 
 @plugin "flowbite/plugin.js";

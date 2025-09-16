@@ -79,6 +79,7 @@
                         type="button"
                         typeButton="green"
                         class="relative top-1.5"
+                        @click="() => router.get(route('company.createView'))"
                     ></Button>
                 </div>
             </form>
