@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('company')->name('company')->group(function () {
         Route::get('/', [CompanyController::class, 'index']);
         Route::get('/create_view', [CompanyController::class, 'createView'])->name('.createView');
+        Route::post('/create', [CompanyController::class, 'create'])->name('.create');
     });
     Route::prefix('company_group')->name('company_group')->group(function () {
         Route::get('/', [CompanyGroupController::class, 'index']);

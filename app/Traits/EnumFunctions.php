@@ -27,9 +27,10 @@ trait EnumFunctions
     }
 
     /**
+     * toArrayPortuguese
+     *
      * Pega valores do enum e traduz para o português para visualização do cliente,
      * caso não tenha tradução, retorna array vazio
-     * @method toArrayPortuguese
      * @return array
      */
     public static function toArrayPortuguese(): array

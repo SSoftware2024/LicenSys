@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('vinculation_code');
+            $table->uuid('uuid')->unique();
             $table->enum('monthly_fee_status', MonthlyFee::toArray())->default(MonthlyFee::PAY->value);
             $table->date('payment_day');
             $table->decimal('value_monthly_fee',6,2);

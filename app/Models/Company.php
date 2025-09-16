@@ -22,17 +22,17 @@ class Company extends Model
 
     /********************************************CUSTOM METHODS************************************************/
     /**
-     * vinculationCodeExists
-     * Verfica se o código de vinculação já existe no banco de dados e já atribui os valores às variáveis passadas por referência
-     * @param  string $key
-     * @param  string $hash
+     * uuidExists
+     *
+     * Verfica se o uuid já existe no banco de dados e já atribui os valores às variáveis passadas por referência
+     * @param string $key
+     * @param string $hash
      * @return void
      */
-    public static function vinculationCodeExists(string &$key, string &$hash):void
+    public static function uuidExists(string &$uuid):void
     {
         do {
-            $key = Str::random(rand(10, 40));
-            $hash = hash_hmac('sha256', $key, config('app.key'));
-        } while(self::where('vinculation_code',$hash)->exists());
+            $uuid = (string) Str::uuid();
+        } while(self::where('uuid',$uuid)->exists());
     }
 }
