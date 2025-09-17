@@ -16,8 +16,14 @@
                     :isInputRequired="true"
                     v-model="form.uuid"
                 />
-                <div class="absolute flex gap-3 top-0 right-2.5 uppercase underline text-[12px] font-bold cursor-pointer">
-                    <span class="text-green-600 hover:text-green-800" @click="_copyText($page.props.uuid)">Cópiar</span>
+                <div
+                    class="absolute flex gap-3 top-0 right-2.5 uppercase underline text-[12px] font-bold cursor-pointer"
+                >
+                    <span
+                        class="text-green-600 hover:text-green-800"
+                        @click="_copyText($page.props.uuid)"
+                        >Cópiar</span
+                    >
                 </div>
             </div>
             <div class="flex">
@@ -46,7 +52,10 @@
                         :maskDecimalBr="2"
                         v-model="form.value_monthly_fee"
                     />
-                    <div v-if="form.errors.value_monthly_fee" class="text-red-500">
+                    <div
+                        v-if="form.errors.value_monthly_fee"
+                        class="text-red-500"
+                    >
                         {{ form.errors.value_monthly_fee }}
                     </div>
                 </div>
@@ -66,24 +75,25 @@
                     v-model="form.systems_useds"
                 >
                     <option value="" selected>-----------------</option>
-                    <option style="text-transform: uppercase"  v-for="(value, index) in $page.props.systems_for_sale" :value="value" :key="index">{{ value }}</option>
+                    <option
+                        style="text-transform: uppercase"
+                        v-for="(value, index) in $page.props.systems_for_sale"
+                        :value="value"
+                        :key="index"
+                    >
+                        {{ value }}
+                    </option>
                 </select>
-            </div>
-            <div class="mt-2">
-                <label
-                    for="monthly_fee_status"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >STATUS
-                    <span class="text-red-600 font-bold tex-lg">*</span>
-                </label>
-                <select
-                    id="monthly_fee_status"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 uppercase"
-                    v-model="form.monthly_fee_status"
+                <div v-if="form.errors.systems_useds" class="text-red-500">
+                    {{ form.errors.systems_useds }}
+                </div>
+                <div
+                    v-if="errors_laravel_array.systems_useds.length > 0"
+                    v-for="value in errors_laravel_array.systems_useds"
+                    class="text-red-500 flex-col"
                 >
-                    <option value="" selected>❌</option>
-                    <option style="text-transform: uppercase" v-for="(value, key, index) in $page.props.monthly_fee_status" :value="key" :key="index"> {{ value }}</option>
-                </select>
+                    {{ value }}
+                </div>
             </div>
             <div class="mt-2">
                 <label
@@ -98,8 +108,18 @@
                     v-model="form.group_company_id"
                 >
                     <option value="" selected>❌</option>
-                   <option style="text-transform: uppercase"  v-for="value in $page.props.groups_company" :value="value.id" :key="value.id">{{ value.name }}</option>
+                    <option
+                        style="text-transform: uppercase"
+                        v-for="value in $page.props.groups_company"
+                        :value="value.id"
+                        :key="value.id"
+                    >
+                        {{ value.name }}
+                    </option>
                 </select>
+                <div v-if="form.errors.group_company_id" class="text-red-500">
+                    {{ form.errors.group_company_id }}
+                </div>
             </div>
             <div class="mt-2">
                 <div class="flex items-center">
@@ -125,7 +145,7 @@
                         type="checkbox"
                         value=""
                         disabled
-                        class="w-4.5 h-4.5 cursor-pointer  text-red-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        class="w-4.5 h-4.5 cursor-pointer text-red-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                         v-model="form.isFiscal"
                     />
                     <label
@@ -149,10 +169,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { useForm, usePage } from "@inertiajs/vue3";
+import { ref, onMounted, reactive } from "vue";
+import { useForm, usePage, router } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
-import { _copyText } from "@utils/functions";
+import { _copyText, _errorLaravelArrayElements } from "@utils/functions";
 //COMPONENTS
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
@@ -162,19 +182,32 @@ import Button from "@/components/Button.vue";
 const page = usePage();
 const form = useForm({
     uuid: page.props.uuid,
-    monthly_fee_status: '',
-    payment_day: '',
-    value_monthly_fee: '',
+    payment_day: "",
+    value_monthly_fee: null,
     isFiscal: false,
     activated: true,
     systems_useds: [],
-    group_company_id: null,
+    group_company_id: "",
+});
 
+const errors_laravel_array = reactive({
+    systems_useds: [],
 });
 
 function _submit() {
     console.log(form.data());
-    // form.post(route("company.create"));
+    form.post(route("company.create"), {
+        onSuccess: () => {
+            form.reset();
+            form.uuid = page.props.uuid;
+        },
+        onFinish: () => {
+            errors_laravel_array.systems_useds = _errorLaravelArrayElements(
+                "systems_useds",
+                form.errors
+            );
+        },
+    });
 }
 
 

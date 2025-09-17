@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->enum('monthly_fee_status', MonthlyFee::toArray())->default(MonthlyFee::PAY->value);
-            $table->date('payment_day');
+            $table->string('payment_day', 2);
             $table->decimal('value_monthly_fee',6,2);
             $table->boolean('isFiscal')->default(false);
             $table->boolean('activated')->default(true);

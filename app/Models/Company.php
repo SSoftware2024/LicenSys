@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Company extends Model
 {
     use SoftDeletes;
-
+    protected $guarded = [];
 
     public function groupCompany(): BelongsTo
     {
@@ -24,15 +24,14 @@ class Company extends Model
     /**
      * uuidExists
      *
-     * Verfica se o uuid já existe no banco de dados e já atribui os valores às variáveis passadas por referência
-     * @param string $key
-     * @param string $hash
-     * @return void
+     * Verfica se o UUID existe na base de dados, caso exista gera um novo UUID até encontrar um que não exista.
+     * @return string
      */
-    public static function uuidExists(string &$uuid):void
+    public static function uuidExists():string
     {
         do {
             $uuid = (string) Str::uuid();
         } while(self::where('uuid',$uuid)->exists());
+        return $uuid;
     }
 }
