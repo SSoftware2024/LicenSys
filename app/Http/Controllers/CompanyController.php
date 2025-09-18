@@ -12,7 +12,6 @@ use App\Models\HistoricCompany;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\SystemForSaleService;
-use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
@@ -47,8 +46,7 @@ class CompanyController extends Controller
     {
 
         $now_day = now()->day;
-        $max_day_month = cal_days_in_month(CAL_GREGORIAN, now()->month, now()->year);
-        $max_day_month = $max_day_month === 31 ? 30 : $max_day_month;
+        $max_day_month = now()->month == 2 ? cal_days_in_month(CAL_GREGORIAN, 2, now()->year) : 30;
         $request->validate([
             'uuid' => ['required', 'size:36', 'unique:companies,uuid'],
             'payment_day' => [

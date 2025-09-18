@@ -36,9 +36,8 @@ class HistoricCompany extends Model
         $max_day_february = cal_days_in_month(CAL_GREGORIAN, 2, now()->year);
         for ($i = 0; $i < $months_until_end_of_year; $i++) {
             $dateString = "$current_month/$payment_day/$current_year";
-
             //verficando se o dia de pagamento é maior que o maximo dia de fevereiro
-            if($current_month == 2 && $max_day_february < $payment_day){
+            if ($current_month == 2 && $max_day_february < $payment_day) {
                 $dateString = "$current_month/$max_day_february/$current_year";
             }
             $date = date('Y-m-d', strtotime($dateString)); //gerar data pegando dia selecioando, mes atual e ano atual
@@ -50,6 +49,5 @@ class HistoricCompany extends Model
             //icrementando mês até final do ano
             $current_month < 12 ? $current_month++ : null;
         }
-
     }
 }
