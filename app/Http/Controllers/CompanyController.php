@@ -48,13 +48,14 @@ class CompanyController extends Controller
 
         $now_day = now()->day;
         $max_day_month = cal_days_in_month(CAL_GREGORIAN, now()->month, now()->year);
+        $max_day_month = $max_day_month === 31 ? 30 : $max_day_month;
         $request->validate([
             'uuid' => ['required', 'size:36', 'unique:companies,uuid'],
             'payment_day' => [
                 'required',
                 'integer',
                 "between:1,$max_day_month",
-                function ($attribute, $value, $fail) use ($now_day, $max_day_month) {
+                function ($attribute, $value, $fail) use ($now_day) {
                     if ($value < $now_day) {
                         $fail("O {$attribute} deve ser maior ou igual ao dia atual → " . $now_day);
                     }
@@ -80,12 +81,12 @@ class CompanyController extends Controller
             'systems_useds' => json_encode($request->systems_useds),
             'value_monthly_fee' => convertToMoney($request->value_monthly_fee),
             'group_company_id' => $request->group_company_id,
+            'activated' => $request->activated,
             'isFiscal' => false,
             'created_by_user_id' => Auth::id()
         ]);
-        ds($company);
-
-        // HistoricCompany::generate($company);
-
+        //gerar historico mensalidade
+        HistoricCompany::generate($company);
+        Toast::success('Empresa criada com sucesso!');
     }
 }
