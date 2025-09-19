@@ -3,15 +3,15 @@
     <h2 class="font-bold text-2xl underline mb-2">Empresas</h2>
     <div>
         <!-- FILTERS -->
-        <div class="xl:w-300">
+        <div class="xl:w-250">
             <form class="flex flex-row mb-2 items-end">
                 <div class="relative grow mr-2">
                     <Input
                         type="text"
-                        label="Nome / Código"
-                        id="name"
-                        name="name"
-                        placeholder="Nome ou código"
+                        label="Código"
+                        id="code"
+                        name="code"
+                        placeholder="Código"
                     >
                         <template #icon>
                             <svg
@@ -32,18 +32,36 @@
                         </template>
                     </Input>
                 </div>
+                <div class="relative grow mr-2">
+                    <Input
+                        type="text"
+                        label="Nome"
+                        id="name"
+                        name="name"
+                        placeholder="Nome"
+                    >
+                    </Input>
+                </div>
                 <div class="grow-1 mr-2">
                     <label
                         for="countries"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >STATUS</label
+                        >STATUS <i>(mês atual)</i></label
                     >
                     <select
                         id="countries"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                         <option value="" selected>❌</option>
-                        <option :value="key" v-for="(value, key, index)  in $page.props.monthly_fee_status" :key="index" style="text-transform: uppercase;">{{ value }}</option>
+                        <option
+                            :value="key"
+                            v-for="(value, key, index) in $page.props
+                                .monthly_fee_status"
+                            :key="index"
+                            style="text-transform: uppercase"
+                        >
+                            {{ value }}
+                        </option>
                     </select>
                 </div>
                 <div class="grow-1 mr-2">
@@ -61,7 +79,7 @@
                             v-if="$page.props.groups_company.length > 0"
                             v-for="value in $page.props.groups_company"
                             :value="value.id"
-                            style="text-transform: uppercase;"
+                            style="text-transform: uppercase"
                         >
                             {{ value.name }}
                         </option>

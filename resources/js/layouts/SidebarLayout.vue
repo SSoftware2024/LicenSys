@@ -30,7 +30,9 @@ onMounted(() => {
     router_success = router.on("success", (event) => {
         _showToast(event);
     });
-    router_finish = initFlowbite();
+    router_finish = router.on("finish", (event) => {
+        initFlowbite();
+    });
 });
 onUnmounted(() => {
     if (router_success) router_success();

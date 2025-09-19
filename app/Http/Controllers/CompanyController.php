@@ -68,7 +68,7 @@ class CompanyController extends Controller
         ], [
             'payment_day' => 'pagamento dia',
             'value_monthly_fee' => 'pagamento valor',
-            'systems_useds' => 'Escolha de sistema',
+            'systems_useds' => 'escolha de sistema',
             'group_company_id' => 'associar grupo',
             'systems_useds.0' => '-----------',
         ]);

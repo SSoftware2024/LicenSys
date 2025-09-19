@@ -34,6 +34,7 @@ class HistoricCompany extends Model
         $current_year = now()->year;
         $months_until_end_of_year = 12 - $current_month + 1; //+1 para incluir o mes atual e gerar mês atual
         $max_day_february = cal_days_in_month(CAL_GREGORIAN, 2, now()->year);
+        $historicData = [];
         for ($i = 0; $i < $months_until_end_of_year; $i++) {
             $dateString = "$current_month/$payment_day/$current_year";
             //verficando se o dia de pagamento é maior que o maximo dia de fevereiro
@@ -41,13 +42,14 @@ class HistoricCompany extends Model
                 $dateString = "$current_month/$max_day_february/$current_year";
             }
             $date = date('Y-m-d', strtotime($dateString)); //gerar data pegando dia selecioando, mes atual e ano atual
-            self::create([
+            $historicData[] = [
                 'amount_paid' => $company->value_monthly_fee,
                 'pay_date' => $date,
                 'company_id' => $company->id
-            ]);
+            ];
             //icrementando mês até final do ano
             $current_month < 12 ? $current_month++ : null;
         }
+        self::insert($historicData);
     }
 }

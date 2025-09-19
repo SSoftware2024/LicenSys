@@ -195,7 +195,6 @@ const errors_laravel_array = reactive({
 });
 
 function _submit() {
-    console.log(form.data());
     form.post(route("company.create"), {
         onSuccess: () => {
             form.reset();
