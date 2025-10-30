@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use App\Models\GroupCompany;
-use Illuminate\Support\Facades\Crypt;
+use App\Models\HistoricCompany;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Company extends Model
@@ -17,6 +18,12 @@ class Company extends Model
     public function groupCompany(): BelongsTo
     {
         return $this->belongsTo(GroupCompany::class);
+    }
+
+    public function historicCompany() : HasMany
+    {
+        return $this->hasMany(HistoricCompany::class);
+
     }
 
 

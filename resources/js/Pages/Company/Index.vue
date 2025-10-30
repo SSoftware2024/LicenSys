@@ -107,7 +107,7 @@
         <!-- TABLE -->
         <div class="relative overflow-x-auto">
             <table
-                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-[500px]"
+                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
             >
                 <thead
                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -118,7 +118,7 @@
                         <th scope="col" class="px-6 py-3">Dono</th>
                         <th scope="col" class="px-6 py-3">Grupo</th>
                         <th scope="col" class="px-6 py-3">Pagamento</th>
-                        <th scope="col" class="px-6 py-3">Status</th>
+                        <th scope="col" class="px-6 py-3">Status(mês atual)</th>
                         <th scope="col" class="px-6 py-3">Ativado</th>
                         <th scope="col" class="px-6 py-3">Ações</th>
                     </tr>
@@ -126,33 +126,53 @@
                 <tbody>
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                        v-for="(data, index) in $page.props.companies.data"
+                        :key="index"
                     >
                         <th
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                            NXpk3@comC#
+                            {{ data.uuid }}
                         </th>
-                        <td class="px-6 py-4">NOME</td>
-                        <td class="px-6 py-4">DONO</td>
-                        <td class="px-6 py-4">GRUPO</td>
-                        <td class="px-6 py-4">12/12/2024</td>
+                        <td class="px-6 py-4">-</td>
+                        <td class="px-6 py-4">-</td>
+                        <td class="px-6 py-4 uppercase">
+                            {{ data.group_company.name }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span>
+                                {{ _getPaymentDayDate(data.payment_day) }}
+                            </span>
+                        </td>
                         <td class="px-6 py-4">
                             <span
-                                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset"
-                                v-if="true"
-                                >ATIVO</span
+                                class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset"
+                                v-if="data.current_month_status == 'pay'"
+                                >PAGAR</span
                             >
                             <span
-                                class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset"
-                                v-else
-                                >INATIVO</span
+                                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/10 ring-inset"
+                                v-else-if="data.current_month_status == 'paid'"
+                                >PAGO</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-yellow-600/10 ring-inset"
+                                v-else-if="data.current_month_status == 'late'"
+                                >ATRASADO</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-600/10 ring-inset"
+                                v-else-if="
+                                    data.current_month_status == 'overdue'
+                                "
+                                >VENCIDA</span
                             >
                         </td>
                         <td class="px-6 py-4">
                             <span
                                 class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset"
-                                v-if="true"
+                                v-if="data.activated"
                                 >ATIVO</span
                             >
                             <span
@@ -164,7 +184,7 @@
                         <td class="px-6 py-4">
                             <button
                                 id="dropdownMenuIconButton"
-                                data-dropdown-toggle="`dropdownDots${index}`"
+                                :data-dropdown-toggle="`dropdownDots${index}`"
                                 class="cursor-pointer inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                 type="button"
                             >
@@ -183,8 +203,8 @@
 
                             <!-- Dropdown menu -->
                             <div
-                                id="`dropdownDots${index}`"
-                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 uppercase"
+                                :id="`dropdownDots${index}`"
+                                class="z-10 hidden fixed bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 uppercase"
                             >
                                 <ul
                                     class="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -200,10 +220,10 @@
                                     </li>
                                     <li>
                                         <a
-                                            href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
                                             data-modal-target="look-more-company"
                                             data-modal-toggle="look-more-company"
+                                            @click.prevent="_loadModal(data)"
                                         >
                                             Ver tudo
                                         </a>
@@ -246,28 +266,74 @@
         </div>
         <!-- END TABLE -->
         <!-- ACTIONS -->
-        <!-- <Paginate
-            :pagination="$page.props.users"
+        <Paginate
+            :pagination="$page.props.companies"
             :onEachSize="3"
             @paginate="paginate"
-        ></Paginate> -->
+        ></Paginate>
         <!-- END ACTIONS -->
     </div>
 
     <Modal title="Detalhes empresa" id="look-more-company">
         <ul>
-            <li>Nome</li>
-            <li>Dono</li>
-            <li>Grupo</li>
-            <li>Dia pagamento</li>
-            <li>isFiscal</li>
-            <li>status</li>
-            <li>ativado</li>
-            <li>criado data</li>
-            <li>criado por</li>
-            <li>ultima atualização por</li>
-            <li>valor mensalidade R$100,00</li>
-            <li>Sistemas usados</li>
+            <li>
+                <span class="font-semibold">Nome: </span>
+                {{ data_modal?.name }}
+            </li>
+            <li>
+                <span class="font-semibold">Dono: </span>
+                {{ data_modal?.owner }}
+            </li>
+            <li>
+                <span class="font-semibold">Grupo: </span>
+                {{ data_modal?.group_company?.name }}
+            </li>
+            <li>
+                <span class="font-semibold">Dia pagamento: </span>
+                {{
+                    data_modal?.payment_day
+                        ? _getPaymentDayDate(data_modal?.payment_day)
+                        : null
+                }}
+            </li>
+            <li>
+                <span class="font-semibold">Fiscal: </span>
+                {{ data_modal?.isFiscal }}
+            </li>
+            <li>
+                <span class="font-semibold">Mês atual status: </span>
+                {{ data_modal?.current_month_status }}
+            </li>
+            <li>
+                <span class="font-semibold">Ativado: </span>
+                {{ data_modal?.activated }}
+            </li>
+            <li>
+                <span class="font-semibold">Cadastro data: </span>
+                {{ _dateISOBr(data_modal?.created_at) }}
+            </li>
+            <li>
+                <span class="font-semibold">Criado por: </span>
+                {{ data_modal?.created_by_user_id }}
+            </li>
+            <li>
+                <span class="font-semibold">Atualizada por e data: </span>
+                <br />
+                Anonimo <br />
+                {{ _dateISOBr(data_modal?.updated_at) }}
+            </li>
+            <li>
+                <span class="font-semibold">Mensalidade, valor atual:</span>
+                {{ data_modal?.value_monthly_fee }}
+            </li>
+            <li>
+                <span class="font-semibold">Sistemas usados:</span>
+                <ul class="list-disc ml-10">
+                    <li v-for="value in data_modal?.systems_useds">
+                        {{ value }}
+                    </li>
+                </ul>
+            </li>
         </ul>
         <template #footer>
             <button
@@ -286,6 +352,7 @@ import { onMounted, ref } from "vue";
 import Swal from "sweetalert2";
 import { route } from "ziggy-js";
 import { router, usePage, useForm } from "@inertiajs/vue3";
+import { _dateISOBr } from "@utils/functions";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
@@ -293,6 +360,25 @@ import Modal from "@/components/Modal.vue";
 import Paginate from "../../components/Paginate.vue";
 
 const page = usePage();
+
+const data_modal = ref({});
+
+function _getPaymentDayDate(day) {
+    let date = new Date();
+    date.setDate(day);
+    return date.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+    });
+}
+
+function _loadModal(company) {
+    data_modal.value = company;
+    data_modal.value.name = "";
+    data_modal.value.owner = "";
+}
+
 function paginate(page_link) {
     router.get(
         page.url,

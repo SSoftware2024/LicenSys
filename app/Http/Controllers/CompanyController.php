@@ -19,9 +19,26 @@ class CompanyController extends Controller
     {
         $groups_company = GroupCompany::orderBy('name')->get();
         $monthly_fee_status = MonthlyFee::toArrayPortuguese();
+        $date = now();
+        /**
+         * filtrando logo 'current_month_status' para minimizar loops em querys no tranforms abaixo
+         */
+        $companies = Company::with(['groupCompany:id,name', 'historicCompany' => function ($query) use ($date) {
+            $query->select('id', 'company_id', 'pay_date', 'monthly_fee_status')
+                ->whereMonth('pay_date', $date->month)
+                ->whereYear('pay_date', $date->year);
+        }])->paginate();
+
+        $companies->getCollection()->transform(function ($company) use ($date) {
+            $company->systems_useds = json_decode($company->systems_useds);
+            //filtro relaizado acima, apenas cria atributo dinâmico
+            $company->current_month_status = $company->historicCompany->first()->monthly_fee_status;
+            return $company;
+        });
         return Inertia::render('Company/Index', [
             'groups_company' => $groups_company,
             'monthly_fee_status' => $monthly_fee_status,
+            'companies' => $companies
         ]);
     }
 
