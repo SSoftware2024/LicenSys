@@ -211,12 +211,13 @@
                                     aria-labelledby="dropdownMenuIconButton"
                                 >
                                     <li>
-                                        <Link
+                                        <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            @click.prevent="_copyText(data.uuid)"
                                         >
                                             Cópiar CÓD
-                                        </Link>
+                                        </a>
                                     </li>
                                     <li>
                                         <a
@@ -241,13 +242,8 @@
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             v-if="true"
-                                            >Desativar</a
-                                        >
-                                        <a
-                                            href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            v-else
-                                            >Ativar</a
+                                            @click.prevent="toggleActive(data.id)"
+                                            >{{ data.activated ? 'Desativar':'Ativar' }}</a
                                         >
                                     </li>
                                 </ul>
@@ -286,7 +282,9 @@
             </li>
             <li>
                 <span class="font-semibold">Grupo: </span>
-                {{ data_modal?.group_company?.name }}
+                <span class="uppercase">
+                    {{ data_modal?.group_company?.name }}</span
+                >
             </li>
             <li>
                 <span class="font-semibold">Dia pagamento: </span>
@@ -298,33 +296,71 @@
             </li>
             <li>
                 <span class="font-semibold">Fiscal: </span>
-                {{ data_modal?.isFiscal }}
+                <span
+                    v-if="!data_modal?.isFiscal"
+                    class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset"
+                    >NÃO</span
+                >
+                <span
+                    class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/10 ring-inset"
+                    v-else
+                    >SIM</span
+                >
             </li>
             <li>
                 <span class="font-semibold">Mês atual status: </span>
-                {{ data_modal?.current_month_status }}
+                <span
+                    class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset"
+                    v-if="data_modal?.current_month_status == 'pay'"
+                    >PAGAR</span
+                >
+                <span
+                    class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/10 ring-inset"
+                    v-else-if="data_modal?.current_month_status == 'paid'"
+                    >PAGO</span
+                >
+                <span
+                    class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-yellow-600/10 ring-inset"
+                    v-else-if="data_modal?.current_month_status == 'late'"
+                    >ATRASADO</span
+                >
+                <span
+                    class="inline-flex items-center rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-600/10 ring-inset"
+                    v-else-if="data_modal?.current_month_status == 'overdue'"
+                    >VENCIDA</span
+                >
             </li>
             <li>
                 <span class="font-semibold">Ativado: </span>
-                {{ data_modal?.activated }}
+                <span
+                    v-if="!data_modal?.activated"
+                    class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset"
+                    >NÃO</span
+                >
+                <span
+                    class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/10 ring-inset"
+                    v-else
+                    >SIM</span
+                >
             </li>
             <li>
-                <span class="font-semibold">Cadastro data: </span>
+                <span class="font-semibold">Cadastro por e data: </span>
+                <br />
+                {{ data_modal?.created_by_user_name ?? "ID Nulo" }} <br />
                 {{ _dateISOBr(data_modal?.created_at) }}
             </li>
-            <li>
-                <span class="font-semibold">Criado por: </span>
-                {{ data_modal?.created_by_user_id }}
-            </li>
+
             <li>
                 <span class="font-semibold">Atualizada por e data: </span>
                 <br />
-                Anonimo <br />
+                {{ data_modal?.updated_by_user_name ?? "ID Nulo" }} <br />
                 {{ _dateISOBr(data_modal?.updated_at) }}
             </li>
             <li>
-                <span class="font-semibold">Mensalidade, valor atual:</span>
-                {{ data_modal?.value_monthly_fee }}
+                <span class="font-semibold"
+                    >Mensalidade, valor atual (R$):</span
+                >
+                {{ data_modal?.value_monthly_fee_formated }}
             </li>
             <li>
                 <span class="font-semibold">Sistemas usados:</span>
@@ -352,6 +388,7 @@ import { onMounted, ref } from "vue";
 import Swal from "sweetalert2";
 import { route } from "ziggy-js";
 import { router, usePage, useForm } from "@inertiajs/vue3";
+import { _copyText } from "@utils/functions";
 import { _dateISOBr } from "@utils/functions";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
@@ -377,6 +414,10 @@ function _loadModal(company) {
     data_modal.value = company;
     data_modal.value.name = "";
     data_modal.value.owner = "";
+}
+
+function toggleActive(id){
+    router.patch(route('company.toggleActive', id));
 }
 
 function paginate(page_link) {

@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [CompanyController::class, 'index']);
         Route::get('/create_view', [CompanyController::class, 'createView'])->name('.createView');
         Route::post('/create', [CompanyController::class, 'create'])->name('.create');
+        Route::patch('/toggleActive/{id}', [CompanyController::class, 'toggleActive'])->name('.toggleActive');
     });
     Route::prefix('company_group')->name('company_group')->group(function () {
         Route::get('/', [CompanyGroupController::class, 'index']);

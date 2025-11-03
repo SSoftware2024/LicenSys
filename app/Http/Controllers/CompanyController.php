@@ -29,10 +29,11 @@ class CompanyController extends Controller
                 ->whereYear('pay_date', $date->year);
         }])->paginate();
 
-        $companies->getCollection()->transform(function ($company) use ($date) {
+        $companies->getCollection()->transform(function ($company) {
             $company->systems_useds = json_decode($company->systems_useds);
             //filtro relaizado acima, apenas cria atributo dinâmico
             $company->current_month_status = $company->historicCompany->first()->monthly_fee_status;
+            $company->value_monthly_fee_formated = getMoneyToStringBr($company->value_monthly_fee);
             return $company;
         });
         return Inertia::render('Company/Index', [
@@ -103,5 +104,15 @@ class CompanyController extends Controller
         //gerar historico mensalidade
         HistoricCompany::generate($company);
         Toast::success('Empresa criada com sucesso!');
+    }
+
+    public function toggleActive(int $id)
+    {
+        $company = Company::findOrFail($id);
+        $company->activated = !$company->activated;
+        $company->updated_by_user_id = Auth::id();
+        $company->save();
+        $text = $company->activated ? 'ativada' : 'desativada';
+        Toast::info("Empresa $text com sucesso!");
     }
 }
