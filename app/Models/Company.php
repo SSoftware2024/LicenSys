@@ -20,6 +20,13 @@ class Company extends Model
         'updated_by_user_name',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'systems_useds' => 'array',
+        ];
+    }
+    /********************************************RELATIONSHIP************************************************/
     public function groupCompany(): BelongsTo
     {
         return $this->belongsTo(GroupCompany::class);

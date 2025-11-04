@@ -214,7 +214,9 @@
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            @click.prevent="_copyText(data.uuid)"
+                                            @click.prevent="
+                                                _copyText(data.uuid)
+                                            "
                                         >
                                             Cópiar CÓD
                                         </a>
@@ -231,7 +233,12 @@
                                     </li>
                                     <li>
                                         <Link
-                                            href="#"
+                                            :href="
+                                                route(
+                                                    'company.updateView',
+                                                    data.id
+                                                )
+                                            "
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                         >
                                             Editar
@@ -242,8 +249,14 @@
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             v-if="true"
-                                            @click.prevent="toggleActive(data.id)"
-                                            >{{ data.activated ? 'Desativar':'Ativar' }}</a
+                                            @click.prevent="
+                                                toggleActive(data.id)
+                                            "
+                                            >{{
+                                                data.activated
+                                                    ? "Desativar"
+                                                    : "Ativar"
+                                            }}</a
                                         >
                                     </li>
                                 </ul>
@@ -416,8 +429,8 @@ function _loadModal(company) {
     data_modal.value.owner = "";
 }
 
-function toggleActive(id){
-    router.patch(route('company.toggleActive', id));
+function toggleActive(id) {
+    router.patch(route("company.toggleActive", id));
 }
 
 function paginate(page_link) {

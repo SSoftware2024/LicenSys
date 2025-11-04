@@ -41,7 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('company')->name('company')->group(function () {
         Route::get('/', [CompanyController::class, 'index']);
         Route::get('/create_view', [CompanyController::class, 'createView'])->name('.createView');
+        Route::get('/update_view/{id}', [CompanyController::class, 'updateView'])->name('.updateView');
         Route::post('/create', [CompanyController::class, 'create'])->name('.create');
+        Route::put('/update', [CompanyController::class, 'update'])->name('.update');
         Route::patch('/toggleActive/{id}', [CompanyController::class, 'toggleActive'])->name('.toggleActive');
     });
     Route::prefix('company_group')->name('company_group')->group(function () {
