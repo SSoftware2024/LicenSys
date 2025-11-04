@@ -61,9 +61,18 @@ class HistoricCompany extends Model
         self::insert($historicData);
     }
 
+
     /**
      * generateUpdate
-     * Atualiza os registros historicos de pagamentos já existentes para uma empresa quando há uma alteração no dia de pagamento.
+     *
+     * Atualiza os registros historicos de pagamentos já existentes para uma empresa quando há uma alteração no dia de pagamento ou no valor mensal.
+     *
+     * Atualiza mês atual se dia do pagamento for maior que dia atual e mês esteja com status de 'pagar'
+     *
+     * @param  Company $company
+     * @param  int $old_payment_day
+     * @param  float $old_value_monthly_fee
+     * @return void
      */
     public static function generateUpdate(Company $company, int $old_payment_day, float $old_value_monthly_fee): void
     {
