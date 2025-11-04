@@ -138,7 +138,7 @@
                         <td class="px-6 py-4">-</td>
                         <td class="px-6 py-4">-</td>
                         <td class="px-6 py-4 uppercase">
-                            {{ data.group_company.name }}
+                            {{ data.group_company?.name }}
                         </td>
                         <td class="px-6 py-4">
                             <span>
