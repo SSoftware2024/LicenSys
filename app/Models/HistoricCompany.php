@@ -69,8 +69,8 @@ class HistoricCompany extends Model
     {
         // Só processa se algo realmente mudou
         if (
-            $company->payment_day === $old_payment_day &&
-            $company->value_monthly_fee === $old_value_monthly_fee
+            $company->payment_day == $old_payment_day &&
+            $company->value_monthly_fee == $old_value_monthly_fee
         ) {
             return;
         }
@@ -83,7 +83,9 @@ class HistoricCompany extends Model
 
         // Se o novo dia de pagamento já passou neste mês, começa no próximo
         $startMonth = $paymentDay > $currentDay ? $currentMonth : $currentMonth + 1;
-        if ($startMonth > 12) return; // já acabou o ano
+        if ($startMonth > 12) {
+            return;
+        } // já acabou o ano
 
         // Busca todos os históricos da empresa a partir do mês inicial
         $historics = self::where('company_id', $company->id)
@@ -92,6 +94,7 @@ class HistoricCompany extends Model
             ->get();
 
         foreach ($historics as $historic) {
+            ds('loop');
             // Só muda status a pagar
             if ($historic->monthly_fee_status === MonthlyFee::PAY->value) {
                 $month = date('m', strtotime($historic->pay_date));
