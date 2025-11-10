@@ -250,7 +250,7 @@
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             v-if="true"
                                             @click.prevent="
-                                                toggleActive(data.id)
+                                                _toggleActive(data.id)
                                             "
                                             >{{
                                                 data.activated
@@ -262,8 +262,8 @@
                                 </ul>
                                 <div class="py-2">
                                     <a
-                                        href="#"
                                         class="block px-4 py-2 text-sm text-red-600 font-bold hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        @click.prevent="_delete(data.id)"
                                         >Deletar</a
                                     >
                                 </div>
@@ -401,8 +401,7 @@ import { onMounted, ref } from "vue";
 import Swal from "sweetalert2";
 import { route } from "ziggy-js";
 import { router, usePage, useForm } from "@inertiajs/vue3";
-import { _copyText } from "@utils/functions";
-import { _dateISOBr } from "@utils/functions";
+import { _copyText, _dateISOBr, _confirmPassword } from "@utils/functions";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
@@ -429,8 +428,14 @@ function _loadModal(company) {
     data_modal.value.owner = "";
 }
 
-function toggleActive(id) {
+function _toggleActive(id) {
     router.patch(route("company.toggleActive", id));
+}
+
+function _delete(id) {
+    _confirmPassword(() => {
+        router.delete(route("company.delete", [id]));
+    });
 }
 
 function paginate(page_link) {

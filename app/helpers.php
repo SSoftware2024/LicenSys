@@ -17,16 +17,16 @@ if (!function_exists('routesFortify')) {
             // 'register_post' => route('register.store'),//POST
             // 'register_get' => route('register'),//POST
 
-            //RESET PASSWORDS - LOGIN INCLUÍDO
+            //RESET(UPDATE) PASSWORDS - LOGIN INCLUÍDO
             'reset_password_post' => route('password.update'), //POST
             'reset_password_get' => 'password.reset', //GET, precisa de parametro na hora execução
             'forgot_password_get' => route('password.request'), //GET
             'forgot_password_post' => route('password.email'), //POST
 
-            //UPDATE PASSWORDS
-            'confirm_password_get' => route('password.confirm'), //GET
+            //CONFIRM PASSWORDS
+            'confirm_password_get' => route('password.confirm'), //GET (VIEW - OPCIONAL)
             'confirm_password_post' => route('password.confirm.store'), //POST
-            'confirmed_password_status_get' => route('password.confirmation'), //GET
+            'confirmed_password_status_get' => route('password.confirmation'), //GET (STATUS)
 
             //EMAIL VERIFICANTION
             'verificationSend_post' => route('verification.send'), // POST

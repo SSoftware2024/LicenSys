@@ -103,7 +103,6 @@ class HistoricCompany extends Model
             ->get();
 
         foreach ($historics as $historic) {
-            ds('loop');
             // Só muda status a pagar
             if ($historic->monthly_fee_status === MonthlyFee::PAY->value) {
                 $month = date('m', strtotime($historic->pay_date));

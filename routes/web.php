@@ -2,6 +2,8 @@
 
 use Inertia\Inertia;
 use App\Enum\TypeUser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
@@ -12,6 +14,14 @@ Route::get('/', function () {
     return Inertia::render('Index');
 })->middleware(['auth'])->name('index');
 
+Route::post('/confirm-password', function (Request $request) {
+    if (! Hash::check($request->password, $request->user()->password)) {
+        return back()->withErrors([
+            'password' => [__('The provided password does not match our records.')]
+        ]);
+    }
+    $request->session()->passwordConfirmed();
+})->middleware(['auth', 'throttle:6,1'])->name('password_confirm_custom');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -45,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/create', [CompanyController::class, 'create'])->name('.create');
         Route::put('/update', [CompanyController::class, 'update'])->name('.update');
         Route::patch('/toggleActive/{id}', [CompanyController::class, 'toggleActive'])->name('.toggleActive');
+        Route::delete('/delete/{id}', [CompanyController::class, 'delete'])->name('.delete');
     });
     Route::prefix('company_group')->name('company_group')->group(function () {
         Route::get('/', [CompanyGroupController::class, 'index']);

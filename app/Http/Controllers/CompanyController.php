@@ -178,4 +178,11 @@ class CompanyController extends Controller
         $text = $company->activated ? 'ativada' : 'desativada';
         Toast::info("Empresa $text com sucesso!");
     }
+    public function delete(int $id)
+    {
+        $company = Company::findOrFail($id);
+        $company->historicCompany()->forceDelete();
+        $company->forceDelete();
+        Toast::warning("Empresa $id deletada com sucesso!");
+    }
 }
