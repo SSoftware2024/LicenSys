@@ -125,7 +125,7 @@ class CompanyController extends Controller
         $id = $request->id;
         $company = Company::findOrFail($id);
         $old_payment_day = $company->payment_day;
-        $old_value_monthly_fee= $company->value_monthly_fee;
+        $old_value_monthly_fee = $company->value_monthly_fee;
         $now_day = now()->day;
         $max_day_month = now()->month == 2 ? cal_days_in_month(CAL_GREGORIAN, 2, now()->year) : 30;
         $request->validate([
@@ -184,5 +184,17 @@ class CompanyController extends Controller
         $company->historicCompany()->forceDelete();
         $company->forceDelete();
         Toast::warning("Empresa $id deletada com sucesso!");
+    }
+
+
+    public function loadData(Request $request)
+    {
+        //fazer requisição ajax para carregar dados adicionais nome e dono
+        Toast::info("Vinculando dados {$request->id}");
+    }
+    public function loadAllData(Request $request)
+    {
+        //fazer metodo acima para todas as empresas listadas
+        Toast::info("Vinculando todos os dados");
     }
 }

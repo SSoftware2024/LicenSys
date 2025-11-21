@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->string('payment_day', 2);
+            $table->string('company_name', 255)->nullable();
             $table->decimal('value_monthly_fee',6,2);
             $table->boolean('isFiscal')->default(false);
             $table->boolean('activated')->default(true);

@@ -99,6 +99,13 @@
                         class="relative top-1.5"
                         @click="() => router.get(route('company.createView'))"
                     ></Button>
+                    <Button
+                        text="Vincular dados"
+                        type="button"
+                        typeButton="primary"
+                        class="relative top-1.5"
+                        @click="_linkAllCompanies"
+                    ></Button>
                 </div>
             </form>
         </div>
@@ -107,7 +114,10 @@
         <!-- TABLE -->
         <div class="relative overflow-x-auto">
             <table
-                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                :class="{
+                    'w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400': true,
+                    'mb-80':isShowDropDown,
+                }"
             >
                 <thead
                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -187,6 +197,7 @@
                                 :data-dropdown-toggle="`dropdownDots${index}`"
                                 class="cursor-pointer inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                 type="button"
+                                @click="_showDropDown"
                             >
                                 <svg
                                     class="w-5 h-5"
@@ -223,12 +234,34 @@
                                     </li>
                                     <li>
                                         <a
+                                            href="#"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            @click.prevent="_loadData(data.id)"
+                                        >
+                                            Vincular dados
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            :href="
+                                                route(
+                                                    'historic_company',
+                                                    data.uuid
+                                                )
+                                            "
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        >
+                                            Mensalidades
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <a
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
                                             data-modal-target="look-more-company"
                                             data-modal-toggle="look-more-company"
                                             @click.prevent="_loadModal(data)"
                                         >
-                                            Ver tudo
+                                            Visualizar empresa
                                         </a>
                                     </li>
                                     <li>
@@ -397,7 +430,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import Swal from "sweetalert2";
 import { route } from "ziggy-js";
 import { router, usePage, useForm } from "@inertiajs/vue3";
@@ -411,6 +444,8 @@ import Paginate from "../../components/Paginate.vue";
 const page = usePage();
 
 const data_modal = ref({});
+
+const isShowDropDown = ref(false);
 
 function _getPaymentDayDate(day) {
     let date = new Date();
@@ -437,6 +472,12 @@ function _delete(id) {
         router.delete(route("company.delete", [id]));
     });
 }
+function _loadData(id) {
+    router.post(route("company.loadData"), { id: id });
+}
+function _loadAllData() {
+    router.post(route("company.loadAllData"));
+}
 
 function paginate(page_link) {
     router.get(
@@ -449,6 +490,29 @@ function paginate(page_link) {
         }
     );
 }
+
+function _showDropDown(){
+    isShowDropDown.value = true;
+}
+
+function handleClickOutside(event) {
+    // Fecha o dropdown se clicar fora de qualquer elemento com ID dropdownDots e dropdownMenuIconButton...
+    if (!event.target.closest("[id^='dropdownDots']") && !event.target.closest("#dropdownMenuIconButton")) {
+        isShowDropDown.value = false;
+    }
+}
+
+function _linkAllCompanies() {
+    alert("Vincular todas empresas: nome");
+}
+
+onMounted(() => {
+    document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+    document.removeEventListener("click", handleClickOutside);
+});
 
 defineOptions({
     layout: SidebarLayout,

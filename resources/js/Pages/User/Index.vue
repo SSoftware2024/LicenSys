@@ -62,7 +62,6 @@
                 </div>
             </form>
         </div>
-
         <!-- END FILTERS -->
         <!-- TABLE -->
         <div class="relative overflow-x-auto">

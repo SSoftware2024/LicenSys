@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyGroupController;
+use App\Http\Controllers\HistoricCompanyController;
 
 Route::get('/', function () {
     return Inertia::render('Index');
@@ -56,11 +57,17 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update', [CompanyController::class, 'update'])->name('.update');
         Route::patch('/toggleActive/{id}', [CompanyController::class, 'toggleActive'])->name('.toggleActive');
         Route::delete('/delete/{id}', [CompanyController::class, 'delete'])->name('.delete');
+        Route::post('/loadData', [CompanyController::class, 'loadData'])->name('.loadData');
+        Route::post('/loadAllData', [CompanyController::class, 'loadAllData'])->name('.loadAllData');
     });
     Route::prefix('company_group')->name('company_group')->group(function () {
         Route::get('/', [CompanyGroupController::class, 'index']);
         Route::post('/create', [CompanyGroupController::class, 'create'])->name('.create');
         Route::patch('/update', [CompanyGroupController::class, 'update'])->name('.update');
         Route::delete('/delete/{id}', [CompanyGroupController::class, 'delete'])->name('.delete');
+    });
+    Route::prefix('historic_company')->name('historic_company')->group(function () {
+        Route::get('/{uuid?}', [HistoricCompanyController::class, 'index']);
+        Route::post('/loadHistoric', [HistoricCompanyController::class, 'loadHistoric'])->name('.loadHistoric');
     });
 });

@@ -315,11 +315,15 @@
                     </button>
                     <ul id="dropdown-examples" class="hidden py-2 space-y-2">
                         <li>
-                            <a
-                                href="#"
-                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                >Histórico</a
+                            <Link
+                                :href="route('historic_company')"
+                                :class="{
+                                    'flex pl-11 items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                                    'text-lime-700': route().current('historic_company'),
+                                }"
                             >
+                                Mensalidade
+                            </Link>
                         </li>
                         <li>
                             <a
