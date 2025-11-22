@@ -1,5 +1,9 @@
 <?php
 
+//Flash message inertia
+const RESPONSE_DATA_KEY_INERTIA = 'response_data';
+
+
 if (!function_exists('routesFortify')) {
     /**
      * Retorna um array com as rotas do fortify, para saber o tipo use 'route:list'

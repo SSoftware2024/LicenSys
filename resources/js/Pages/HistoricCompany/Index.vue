@@ -19,7 +19,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         v-model="form.company_id"
                     >
-                        <option value="" selected>❌</option>
+                        <option value="">❌</option>
                         <option
                             :value="value.id"
                             v-for="(value, key, index) in $page.props.companies"
@@ -29,6 +29,12 @@
                             {{ `${value.uuid} - ${value.name}` }}
                         </option>
                     </select>
+                    <div
+                        v-if="form.errors.company_id"
+                        class="text-red-500"
+                    >
+                        {{ form.errors.company_id }}
+                    </div>
                 </div>
                 <div class="grow mr-2">
                     <label
@@ -43,7 +49,7 @@
                     >
                         <option value="0" selected>TODOS</option>
                         <option
-                            :value="key"
+                            :value="value"
                             v-for="(value, key, index) in $page.props.allYears"
                             :key="index"
                             style="text-transform: uppercase"
@@ -91,7 +97,122 @@
         </div>
         <!-- END FILTERS -->
         <!-- TABLE -->
+        <div class="relative overflow-x-auto" v-if="isShowTable">
+            <table
+                :class="{
+                    'w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400': true,
+                    'mb-80':isShowDropDown,
+                }"
+            >
+                <thead
+                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                >
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Data pagamento</th>
+                        <th scope="col" class="px-6 py-3">Data pago</th>
+                        <th scope="col" class="px-6 py-3">Valor</th>
+                        <th scope="col" class="px-6 py-3">Status</th>
+                        <th scope="col" class="px-6 py-3">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
 
+                    <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
+                        v-for="(value, index) in $page.props.response_data?.data"
+                    >
+                        <th
+                            scope="row"
+                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                            {{ _dateISOBrOnlyData(value.pay_date) }}
+
+                        </th>
+                        <td class="px-6 py-4">{{ _dateISOBrOnlyData(value.date_paid) }}</td>
+
+                        <td class="px-6 py-4">{{ value.amount_paid }}</td>
+                        <td class="px-6 py-4">
+                            <span
+                                class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset"
+                                v-if="value.monthly_fee_status == 'pay'"
+                                >PAGAR</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/10 ring-inset"
+                                v-else-if="value.monthly_fee_status == 'paid'"
+                                >PAGO</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-yellow-600/10 ring-inset"
+                                v-else-if="value.monthly_fee_status == 'late'"
+                                >ATRASADO</span
+                            >
+                            <span
+                                class="inline-flex items-center rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-600/10 ring-inset"
+                                v-else-if="
+                                    value.monthly_fee_status == 'overdue'
+                                "
+                                >VENCIDA</span
+                            >
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <button
+                                id="dropdownMenuIconButton"
+                                :data-dropdown-toggle="`dropdownDots${index}`"
+                                class="cursor-pointer inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                type="button"
+                                @click="_showDropDown"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 4 15"
+                                >
+                                    <path
+                                        d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                                    />
+                                </svg>
+                            </button>
+
+                            <!-- Dropdown menu -->
+                            <div
+                                :id="`dropdownDots${index}`"
+                                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 uppercase"
+                            >
+                                <ul
+                                    class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                    aria-labelledby="dropdownMenuIconButton"
+                                >
+                                    <li>
+                                        <Link
+                                            href="
+
+                                            "
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        >
+                                            Pagar
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            href="
+
+                                            "
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        >
+                                            Remover pagamento
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <!-- END TABLE -->
         <!-- ACTIONS -->
         <!-- <Paginate
@@ -104,12 +225,20 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from "vue";
 import { router, usePage, useForm } from "@inertiajs/vue3";
-import SidebarLayout from "@/layouts/SidebarLayout.vue";
+import { _copyText, _dateISOBrOnlyData, _confirmPassword } from "@utils/functions";
 import { route } from "ziggy-js";
+import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Button from "@/components/Button.vue";
 import Modal from "@/components/Modal.vue";
 import Paginate from "../../components/Paginate.vue";
+
+
+const isShowTable = ref(false);
+const isShowDropDown = ref(false);
+
+const page = usePage();
 
 const form = useForm({
     company_id: 0,
@@ -117,9 +246,34 @@ const form = useForm({
     month_status: null,
 });
 
-function _showTableHistoricCompany() {
-    form.post(route("historic_company.loadHistoric"));
+function _showDropDown(){
+    isShowDropDown.value = true;
 }
+function handleClickOutside(event) {
+    // Fecha o dropdown se clicar fora de qualquer elemento com ID dropdownDots e dropdownMenuIconButton...
+    if (!event.target.closest("[id^='dropdownDots']") && !event.target.closest("#dropdownMenuIconButton")) {
+        isShowDropDown.value = false;
+    }
+}
+
+function _showTableHistoricCompany() {
+    form.post(route("historic_company.loadHistoric"), {
+        onSuccess: () => {
+            isShowTable.value = true;
+        },
+        onError: () => {
+            isShowTable.value = false;
+        },
+    });
+}
+
+onMounted(() => {
+    document.addEventListener("click", handleClickOutside);
+});
+
+onUnmounted(() => {
+    document.removeEventListener("click", handleClickOutside);
+});
 
 defineOptions({
     layout: SidebarLayout,

@@ -14,7 +14,7 @@ final class ToastFacade {
         ];
     }
     private static function createSession(array $dataToast){
-        session()->flash('response_data', [
+        session()->flash(RESPONSE_DATA_KEY_INERTIA, [
             'toast' => $dataToast
         ]);
     }

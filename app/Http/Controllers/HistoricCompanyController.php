@@ -31,9 +31,29 @@ class HistoricCompanyController extends Controller
 
     public function loadHistoric(Request $request)
     {
-        $year = 0;
-        $company_id = 0;
-        $status = [];
-        ds('load here');
+        $request->validate([
+            'company_id' => ['required', 'exists:companies,id'],
+        ],[], [
+            'company_id' => 'empresa'
+        ]);
+        $year = $request->year;
+        $company_id = $request->company_id;
+        $month_status = $request->month_status;
+        $historicCompany = HistoricCompany::query();
+
+        if ($year != 0) {
+            $historicCompany->whereYear('pay_date', $year);
+        }
+        //verficar se existe variavel receber, caso exista buscar todas as contas a receber
+        if (!empty($request?->receber)) {
+            $historicCompany->where('monthly_fee_status', MonthlyFee::PAY->value);
+        } else {
+            $historicCompany->where('company_id', $company_id);
+            //caso não seja vazio e caso array não contenha null == todos status
+            if (!empty($month_status) && !in_array(null, $month_status)) {
+                $historicCompany->whereIn('monthly_fee_status', $month_status);
+            }
+        }
+        session()->flash(RESPONSE_DATA_KEY_INERTIA, $historicCompany->paginate());
     }
 }
