@@ -17,23 +17,24 @@
                     <select
                         id="countries"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        v-model="form.company_id"
+                        v-model="form.company_uuid"
                     >
                         <option value="">❌</option>
                         <option
-                            :value="value.id"
+                            :value="value.uuid"
                             v-for="(value, key, index) in $page.props.companies"
                             :key="index"
                             style="text-transform: uppercase"
+                            :selected="form.company_uuid == value.uuid"
                         >
                             {{ `${value.uuid} - ${value.name}` }}
                         </option>
                     </select>
                     <div
-                        v-if="form.errors.company_id"
+                        v-if="form.errors.company_uuid"
                         class="text-red-500"
                     >
-                        {{ form.errors.company_id }}
+                        {{ form.errors.company_uuid }}
                     </div>
                 </div>
                 <div class="grow mr-2">
@@ -214,25 +215,16 @@
             </table>
         </div>
         <!-- END TABLE -->
-        <!-- ACTIONS -->
-        <!-- <Paginate
-            :pagination="$page.props.users"
-            :onEachSize="3"
-            @paginate="paginate"
-        ></Paginate> -->
-        <!-- END ACTIONS -->
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { router, usePage, useForm } from "@inertiajs/vue3";
-import { _copyText, _dateISOBrOnlyData, _confirmPassword } from "@utils/functions";
+import { _copyText, _dateISOBrOnlyData, _confirmPassword} from "@utils/functions";
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Button from "@/components/Button.vue";
-import Modal from "@/components/Modal.vue";
-import Paginate from "../../components/Paginate.vue";
 
 
 const isShowTable = ref(false);
@@ -241,7 +233,7 @@ const isShowDropDown = ref(false);
 const page = usePage();
 
 const form = useForm({
-    company_id: 0,
+    company_uuid: 0,
     year: 0,
     month_status: null,
 });
@@ -257,7 +249,10 @@ function handleClickOutside(event) {
 }
 
 function _showTableHistoricCompany() {
-    form.post(route("historic_company.loadHistoric"), {
+    form.transform((data) => ({
+        ...data,
+        company_uuid: form.company_uuid ? form.company_uuid : route().params.uuid,
+    })).post(route("historic_company.loadHistoric"), {
         onSuccess: () => {
             isShowTable.value = true;
         },
@@ -266,9 +261,17 @@ function _showTableHistoricCompany() {
         },
     });
 }
+function _filterCompanyByUrlUUID(){
+    if(route().params.uuid){
+        form.company_uuid = route().params.uuid;
+        _showTableHistoricCompany();
+    }
+}
+
 
 onMounted(() => {
     document.addEventListener("click", handleClickOutside);
+    _filterCompanyByUrlUUID();
 });
 
 onUnmounted(() => {

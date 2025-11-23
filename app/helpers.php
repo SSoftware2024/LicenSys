@@ -1,6 +1,6 @@
 <?php
 
-//Flash message inertia
+//Flash message inertia, colocar em config
 const RESPONSE_DATA_KEY_INERTIA = 'response_data';
 
 

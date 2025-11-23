@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enum\MonthlyFee;
 use App\Models\Company;
+use App\Enum\MonthlyFee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -53,7 +53,9 @@ class HistoricCompany extends Model
             $historicData[] = [
                 'amount_paid' => $company->value_monthly_fee,
                 'pay_date' => $date,
-                'company_id' => $company->id
+                'company_id' => $company->id,
+                'created_at' => now(),
+                'updated_at' => now()
             ];
             //icrementando mês até final do ano
             $current_month < 12 ? $current_month++ : null;
