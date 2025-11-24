@@ -120,7 +120,7 @@
 
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-                        v-for="(value, index) in $page.props.response_data?.data"
+                        v-for="(value, index) in $page.props.historicCompany?.data"
                     >
                         <th
                             scope="row"
@@ -215,6 +215,14 @@
             </table>
         </div>
         <!-- END TABLE -->
+        <!-- ACTIONS -->
+        <Paginate
+            :pagination="$page.props.historicCompany"
+            :onEachSize="3"
+            @paginate="paginate"
+            v-if="$page.props.historicCompany"
+        ></Paginate>
+        <!-- END ACTIONS -->
     </div>
 </template>
 
@@ -225,6 +233,7 @@ import { _copyText, _dateISOBrOnlyData, _confirmPassword} from "@utils/functions
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Button from "@/components/Button.vue";
+import Paginate from "@/components/Paginate.vue";
 
 
 const isShowTable = ref(false);
@@ -251,14 +260,15 @@ function handleClickOutside(event) {
 function _showTableHistoricCompany() {
     form.transform((data) => ({
         ...data,
-        company_uuid: form.company_uuid ? form.company_uuid : route().params.uuid,
-    })).post(route("historic_company.loadHistoric"), {
+        company_uuid: form.company_uuid ? form.company_uuid : route().params.company_uuid,
+    })).get(route("historic_company"), {
         onSuccess: () => {
             isShowTable.value = true;
         },
         onError: () => {
             isShowTable.value = false;
         },
+        preserveState:true,
     });
 }
 function _filterCompanyByUrlUUID(){
@@ -266,6 +276,18 @@ function _filterCompanyByUrlUUID(){
         form.company_uuid = route().params.uuid;
         _showTableHistoricCompany();
     }
+}
+
+function paginate(page_link) {
+    router.get(
+        page.url,
+        {
+            page: page_link,
+        },
+        {
+            preserveState: true,
+        }
+    );
 }
 
 

@@ -243,7 +243,7 @@
                                     </li>
                                     <li>
                                         <Link
-                                            :href="
+                                            href="
                                                 route(
                                                     'historic_company',
                                                     data.uuid

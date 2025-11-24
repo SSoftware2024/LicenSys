@@ -67,7 +67,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [CompanyGroupController::class, 'delete'])->name('.delete');
     });
     Route::prefix('historic_company')->name('historic_company')->group(function () {
-        Route::get('/{uuid?}', [HistoricCompanyController::class, 'index']);
-        Route::post('/loadHistoric', [HistoricCompanyController::class, 'loadHistoric'])->name('.loadHistoric');
+        Route::any('/', [HistoricCompanyController::class, 'index']);
     });
 });

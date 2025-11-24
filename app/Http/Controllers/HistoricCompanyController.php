@@ -23,6 +23,9 @@ class HistoricCompanyController extends Controller
             $company->name = 'name_random_' . rand(1000, 9999);
             return $company;
         });
+        if(isset($request->company_uuid)){
+            $historicCompany = $this->loadHistoric($request);
+        }
 
         return Inertia::render('HistoricCompany/Index', [
             'companies' => $companies,
@@ -34,12 +37,7 @@ class HistoricCompanyController extends Controller
 
     public function loadHistoric(Request $request)
     {
-        $request->validate([
-            'company_uuid' => ['required_without:recieve', 'exists:companies,uuid'],
-            'recieve' => 'nullable'
-        ], [], [
-            'company_uuid' => 'empresa'
-        ]);
+
         $year = $request->year;
         $month_status = $request->month_status;
         $historicCompany = HistoricCompany::query();
@@ -54,6 +52,6 @@ class HistoricCompanyController extends Controller
             $historicCompany->whereIn('monthly_fee_status', $month_status);
         }
         $historicCompany->orderBy('pay_date', 'desc');
-        session()->flash(RESPONSE_DATA_KEY_INERTIA, $historicCompany->paginate()); //padrão 15, preciso de 12
+        return $historicCompany->paginate(4)->appends($request->all());
     }
 }
