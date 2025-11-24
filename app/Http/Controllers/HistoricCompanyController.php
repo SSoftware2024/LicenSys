@@ -37,9 +37,8 @@ class HistoricCompanyController extends Controller
 
     public function loadHistoric(Request $request)
     {
-
-        $year = $request->year;
-        $month_status = $request->month_status;
+        $year = $request->year ?: 0;
+        $month_status = $request->month_status ?: null;
         $historicCompany = HistoricCompany::query();
 
         if ($year != 0) {
@@ -52,6 +51,6 @@ class HistoricCompanyController extends Controller
             $historicCompany->whereIn('monthly_fee_status', $month_status);
         }
         $historicCompany->orderBy('pay_date', 'desc');
-        return $historicCompany->paginate(4)->appends($request->all());
+        return $historicCompany->paginate(12)->appends($request->all());
     }
 }

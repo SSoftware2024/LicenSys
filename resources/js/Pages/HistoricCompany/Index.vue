@@ -258,6 +258,10 @@ function handleClickOutside(event) {
 }
 
 function _showTableHistoricCompany() {
+
+
+
+
     form.transform((data) => ({
         ...data,
         company_uuid: form.company_uuid ? form.company_uuid : route().params.company_uuid,
@@ -271,9 +275,17 @@ function _showTableHistoricCompany() {
         preserveState:true,
     });
 }
+
+function _getUUIDURLParam(){
+    const url = new URL(window.location.href);
+    let uuid = url.searchParams.get("company_uuid")
+    return uuid;
+}
+
 function _filterCompanyByUrlUUID(){
-    if(route().params.uuid){
-        form.company_uuid = route().params.uuid;
+    let uuid = _getUUIDURLParam();
+    if(uuid){
+        form.company_uuid = uuid;
         _showTableHistoricCompany();
     }
 }
