@@ -54,6 +54,12 @@ function _dateISOBrOnlyData(date) { //apenas dia,mes,ano e correção timezone
     return dateReturn;
 }
 
+function getNormalUrlParamter(paramter){
+    const url = new URL(window.location.href);
+    let value = url.searchParams.get(paramter)
+    return value;
+}
+
 function _confirmPassword(confirmPasswordCallback) {
     Swal.fire({
         title: "Confirmar senha!",
@@ -98,4 +104,5 @@ export {
     _dateISOBr,
     _dateISOBrOnlyData,
     _confirmPassword,
+    getNormalUrlParamter
 };

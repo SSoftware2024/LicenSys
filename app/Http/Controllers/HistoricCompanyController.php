@@ -20,10 +20,10 @@ class HistoricCompanyController extends Controller
         $historicCompany = null;
         $companies->transform(function ($company) {
             //filtro relaizado acima, apenas cria atributo dinâmico
-            $company->name = 'name_random_' . rand(1000, 9999);
+            $company->name = 'name_random_' . rand(1000, 9999); //trocar por company_name futuramente
             return $company;
         });
-        if(isset($request->company_uuid)){
+        if (isset($request->month_status)) {
             $historicCompany = $this->loadHistoric($request);
         }
 
@@ -35,19 +35,22 @@ class HistoricCompanyController extends Controller
         ]);
     }
 
-    public function loadHistoric(Request $request)
+    private function loadHistoric(Request $request)
     {
         $year = $request->year ?: 0;
         $month_status = $request->month_status ?: null;
         $historicCompany = HistoricCompany::query();
+        $historicCompany->with('company:id,company_name,uuid');
 
-        if ($year != 0) {
+        if ($year != 'all') {
             $historicCompany->whereYear('pay_date', $year);
         }
-        $company_id = Company::where('uuid', $request->company_uuid)->first()->id;
-        $historicCompany->where('company_id', $company_id);
+        if ($request->company_uuid != 'empty') {
+            $company_id = Company::where('uuid', $request->company_uuid)->first()->id;
+            $historicCompany->where('company_id', $company_id);
+        }
         //caso não seja vazio e caso array não contenha null == todos status
-        if (!empty($month_status) && !in_array(null, $month_status)) {
+        if ($month_status != 'all' && !in_array('all', $month_status) && !in_array(null, $month_status)) {
             $historicCompany->whereIn('monthly_fee_status', $month_status);
         }
         $historicCompany->orderBy('pay_date', 'desc');

@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Facades\Toast;
 use App\Models\Company;
 use App\Enum\MonthlyFee;
+use Illuminate\Support\Arr;
 use App\Models\GroupCompany;
 use Illuminate\Http\Request;
 use App\Models\HistoricCompany;
@@ -15,26 +16,45 @@ use App\Services\SystemForSaleService;
 
 class CompanyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $groups_company = GroupCompany::orderBy('name')->get();
         $monthly_fee_status = MonthlyFee::toArrayPortuguese();
         $date = now();
-        /**
-         * filtrando logo 'current_month_status' para minimizar loops em querys no tranforms abaixo
-         */
-        $companies = Company::with(['groupCompany:id,name', 'historicCompany' => function ($query) use ($date) {
+        $array_request = $request->all();
+        # ======================== FILTRO  ======================== #
+        $companies = Company::query();
+        // filtrando logo 'current_month_status' para minimizar loops em querys no tranforms abaixo
+        $companies->with(['groupCompany:id,name', 'historicCompany' => function ($query) use ($date) {
             $query->select('id', 'company_id', 'pay_date', 'monthly_fee_status')
                 ->whereMonth('pay_date', $date->month)
                 ->whereYear('pay_date', $date->year);
-        }])->paginate();
+        }]);
+        //filtro de campos
+        $companies->when($array_request['uuid'] ?? false, function ($query, $value) {
+            $query->where('uuid', 'like', "%{$value}%");
+        })->when($array_request['company_name'] ?? false, function ($query, $value) {
+            $query->where('company_name', 'like', "%{$value}%");
+        })->when($array_request['group_company'] ?? false, function ($query, $value) {
+            $query->whereHas('groupCompany', function ($query) use ($value) {
+                $query->where('id', $value);
+            });
+        })->when($array_request['monthly_fee_status'] ?? false, function ($query, $value) {
+            $query->whereHas('historicCompany', function ($query) use ($value) {
+                $query->where('monthly_fee_status', $value)->whereMonth('pay_date', date('m'));
+            });
+        });
+        $companies = $companies->paginate();
+        #  ======================== FIM FILTRO  ========================  #
 
+        #  ======================== AJUSTE PARA API, VINCULAÇÃO  ========================  #
         $companies->getCollection()->transform(function ($company) {
             //filtro relaizado acima, apenas cria atributo dinâmico
             $company->current_month_status = $company->historicCompany->first()->monthly_fee_status;
             $company->value_monthly_fee_formated = getMoneyToStringBr($company->value_monthly_fee);
             return $company;
         });
+         #  ======================== FIM AJUSTE PARA API, VINCULAÇÃO  ========================  #
         return Inertia::render('Company/Index', [
             'groups_company' => $groups_company,
             'monthly_fee_status' => $monthly_fee_status,
@@ -197,4 +217,6 @@ class CompanyController extends Controller
         //fazer metodo acima para todas as empresas listadas
         Toast::info("Vinculando todos os dados");
     }
+
+    /*********************************************PRIVATE METHODS************************************************/
 }

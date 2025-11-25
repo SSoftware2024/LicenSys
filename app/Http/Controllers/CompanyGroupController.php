@@ -13,9 +13,13 @@ use Illuminate\Validation\ValidationException;
 
 class CompanyGroupController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
-        $company_groups = GroupCompany::withCount('company')->orderBy('name')->paginate();
+        $company_groups = GroupCompany::query();
+        if(isset($request->name)){
+            $company_groups->where('name','like',"%{$request->name}%");
+        }
+        $company_groups = $company_groups->withCount('company')->orderBy('name')->paginate();
         return Inertia::render('CompanyGroup/Index', compact('company_groups'));
     }
 

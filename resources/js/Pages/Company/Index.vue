@@ -4,14 +4,15 @@
     <div>
         <!-- FILTERS -->
         <div class="xl:w-250">
-            <form class="flex flex-row mb-2 items-end">
+            <form class="flex flex-row mb-2 items-end" @submit.prevent="_search">
                 <div class="relative grow mr-2">
                     <Input
                         type="text"
                         label="Código"
-                        id="code"
-                        name="code"
+                        id="uuid"
+                        name="uuid"
                         placeholder="Código"
+                        v-model="form.uuid"
                     >
                         <template #icon>
                             <svg
@@ -39,6 +40,7 @@
                         id="name"
                         name="name"
                         placeholder="Nome"
+                        v-model="form.company_name"
                     >
                     </Input>
                 </div>
@@ -50,7 +52,8 @@
                     >
                     <select
                         id="countries"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 uppercase"
+                        v-model="form.monthly_fee_status"
                     >
                         <option value="" selected>❌</option>
                         <option
@@ -73,6 +76,7 @@
                     <select
                         id="countries"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        v-model="form.group_company"
                     >
                         <option value="" selected>❌</option>
                         <option
@@ -125,7 +129,6 @@
                     <tr>
                         <th scope="col" class="px-6 py-3">CÓD</th>
                         <th scope="col" class="px-6 py-3">Nome</th>
-                        <th scope="col" class="px-6 py-3">Dono</th>
                         <th scope="col" class="px-6 py-3">Grupo</th>
                         <th scope="col" class="px-6 py-3">Pagamento</th>
                         <th scope="col" class="px-6 py-3">Status(mês atual)</th>
@@ -145,7 +148,6 @@
                         >
                             {{ data.uuid }}
                         </th>
-                        <td class="px-6 py-4">-</td>
                         <td class="px-6 py-4">-</td>
                         <td class="px-6 py-4 uppercase">
                             {{ data.group_company?.name }}
@@ -434,7 +436,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 import Swal from "sweetalert2";
 import { route } from "ziggy-js";
 import { router, usePage, useForm } from "@inertiajs/vue3";
-import { _copyText, _dateISOBr, _confirmPassword } from "@utils/functions";
+import { _copyText, _dateISOBr, _confirmPassword, getNormalUrlParamter } from "@utils/functions";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
@@ -442,7 +444,12 @@ import Modal from "@/components/Modal.vue";
 import Paginate from "../../components/Paginate.vue";
 
 const page = usePage();
-
+const form = useForm({
+    uuid: null,
+    company_name: null,
+    monthly_fee_status:"",
+    group_company:"",
+});
 const data_modal = ref({});
 
 const isShowDropDown = ref(false);
@@ -479,6 +486,12 @@ function _loadAllData() {
     router.post(route("company.loadAllData"));
 }
 
+function _search(){
+    form.get(route('company'), {}, {
+        preserveState: true
+    });
+}
+
 function paginate(page_link) {
     router.get(
         page.url,
@@ -506,8 +519,16 @@ function _linkAllCompanies() {
     alert("Vincular todas empresas: nome");
 }
 
+function _loadForm(){
+    form.company_name = getNormalUrlParamter('company_name') ?? null;
+    form.uuid = getNormalUrlParamter('uuid') ?? null;
+    form.monthly_fee_status = getNormalUrlParamter('monthly_fee_status') ?? "";
+    form.group_company = getNormalUrlParamter('group_company') ?? "";
+}
+
 onMounted(() => {
     document.addEventListener("click", handleClickOutside);
+    _loadForm();
 });
 
 onUnmounted(() => {

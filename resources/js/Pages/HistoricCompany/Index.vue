@@ -19,7 +19,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         v-model="form.company_uuid"
                     >
-                        <option value="">❌</option>
+                        <option value="empty">❌</option>
                         <option
                             :value="value.uuid"
                             v-for="(value, key, index) in $page.props.companies"
@@ -48,7 +48,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         v-model="form.year"
                     >
-                        <option value="0" selected>TODOS</option>
+                        <option value="all" selected>TODOS</option>
                         <option
                             :value="value"
                             v-for="(value, key, index) in $page.props.allYears"
@@ -72,7 +72,7 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         v-model="form.month_status"
                     >
-                        <option value="" selected>TODOS</option>
+                        <option value="all" selected>TODOS</option>
                         <option
                             :value="key"
                             v-for="(value, key, index) in $page.props
@@ -109,6 +109,7 @@
                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
                 >
                     <tr>
+                        <th scope="col" class="px-6 py-3">Empresa</th>
                         <th scope="col" class="px-6 py-3">Data pagamento</th>
                         <th scope="col" class="px-6 py-3">Data pago</th>
                         <th scope="col" class="px-6 py-3">Valor</th>
@@ -122,6 +123,8 @@
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
                         v-for="(value, index) in $page.props.historicCompany?.data"
                     >
+                        <td class="px-6 py-4">{{ value.company.company_name ?? 'NULO' }}</td>
+
                         <th
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -242,9 +245,9 @@ const isShowDropDown = ref(false);
 const page = usePage();
 
 const form = useForm({
-    company_uuid: 0,
-    year: 0,
-    month_status: null,
+    company_uuid: 'empty',
+    year: 'all',
+    month_status: 'all',
 });
 
 function _showDropDown(){
@@ -258,13 +261,9 @@ function handleClickOutside(event) {
 }
 
 function _showTableHistoricCompany() {
-
-
-
-
     form.transform((data) => ({
         ...data,
-        company_uuid: form.company_uuid ? form.company_uuid : route().params.company_uuid,
+        company_uuid: form.company_uuid ? form.company_uuid : _getUUIDURLParam(),
     })).get(route("historic_company"), {
         onSuccess: () => {
             isShowTable.value = true;

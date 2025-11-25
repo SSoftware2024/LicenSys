@@ -48,6 +48,7 @@
                         type="submit"
                         typeButton="dark"
                         class="relative top-1.5"
+                        @click.prevent="_search()"
                     ></Button>
                     <Button
                         text="Cadastrar"
@@ -231,6 +232,18 @@ function paginate(page_link) {
         page.url,
         {
             page: page_link,
+        },
+        {
+            preserveState: true,
+        }
+    );
+}
+
+function _search() {
+    router.get(
+        route("company_group"),
+        {
+            name: form.name,
         },
         {
             preserveState: true,

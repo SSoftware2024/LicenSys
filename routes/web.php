@@ -67,6 +67,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [CompanyGroupController::class, 'delete'])->name('.delete');
     });
     Route::prefix('historic_company')->name('historic_company')->group(function () {
-        Route::any('/', [HistoricCompanyController::class, 'index']);
+        Route::match(['get','post'],'/', [HistoricCompanyController::class, 'index']);
     });
 });
