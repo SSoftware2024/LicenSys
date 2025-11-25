@@ -30,6 +30,10 @@ class UserController extends Controller
         $type = $request->type ?: TypeUser::DEFAULT->value;
         //buscar usuario de acordo com type
         $users = User::where('type', $type)->where('id', "!=", Auth::id())
+            ->when($request->name_email, function ($query, $value) {
+                $query->where('name', 'like', "%{$value}%")
+                ->orWhere('email', 'like', "%{$value}%");
+            })
             ->orderBy('created_at', 'desc')
             ->orderBy('name', 'asc')
             ->paginate();

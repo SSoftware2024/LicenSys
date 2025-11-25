@@ -11,13 +11,17 @@
     <div>
         <!-- FILTERS -->
         <div class="xl:w-200">
-            <form class="flex flex-row mb-2 items-end">
+            <form
+                class="flex flex-row mb-2 items-end"
+                @submit.prevent="_search"
+            >
                 <div class="relative grow mr-2">
                     <Input
                         type="text"
                         label="Nome / E-mail"
                         id="name_email"
                         name="name_email"
+                        v-model="form.name_email"
                     >
                         <template #icon>
                             <svg
@@ -44,6 +48,8 @@
                         type="submit"
                         typeButton="dark"
                         class="relative top-1.5"
+                        :isDisable="loading"
+                        :isLoading="loading"
                     ></Button>
                     <Button
                         text="Novo"
@@ -238,6 +244,10 @@ import Button from "@/components/Button.vue";
 import Paginate from "../../components/Paginate.vue";
 
 const page = usePage();
+const loading = ref(false)
+const form = useForm({
+    name_email: "",
+});
 function paginate(page_link) {
     router.get(
         page.url,
@@ -264,12 +274,30 @@ function _deleteAlert(id) {
 }
 
 function _toggleActivete(id, value) {
-    router.patch(route("user.toggleActivete"), {
-        id: id,
-        value: value,
-    }, {
-        preserveState:false
-    });
+    router.patch(
+        route("user.toggleActivete"),
+        {
+            id: id,
+            value: value,
+        },
+        {
+            preserveState: false,
+        }
+    );
+}
+
+function _search() {
+    loading.value = true;
+    router.get(
+        route("user", [page.props.type_user]),
+        {
+            name_email: form.name_email,
+        },
+        {
+            preserveState: true,
+            onFinish: () => (loading.value = false),
+        }
+    );
 }
 
 defineOptions({
