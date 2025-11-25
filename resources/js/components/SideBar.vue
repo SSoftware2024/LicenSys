@@ -70,13 +70,13 @@
                         :href="route('index')"
                         :class="{
                             'text-lime-700!': route().current('index'),
-                            'flex items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                            'flex items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
 
                         }"
                     >
                         <svg
                             :class="{
-                                'w-5 h-5 text-neutral-50 transition duration-75 dark:text-gray-400 group-hover:text-neutral-50 dark:group-hover:text-white': true,
+                                'w-5 h-5 text-neutral-50 transition duration-75  dark:text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white': true,
                                 'text-lime-700! group-hover:text-lime-900':
                                     route().current('index'),
                             }"
@@ -99,13 +99,13 @@
                     <Link
                         :href="route('system')"
                         :class="{
-                            'flex items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                            'flex items-center p-2 text-neutral-50 hover:text-gray-500 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                             'text-lime-700!': route().current('system'),
                         }"
                     >
                         <svg
                             :class="{
-                                'w-6 h-6 text-neutral-50 dark:text-white': true,
+                                'w-6 h-6 text-neutral-50 group-hover:text-gray-500 dark:text-white': true,
                                 'text-lime-700! group-hover:text-lime-900':
                                     route().current('system'),
                             }"
@@ -134,12 +134,12 @@
                 <li>
                     <button
                         type="button"
-                        class="flex items-center w-full p-2 text-base text-neutral-50 transition duration-75 rounded-lg group cursor-pointer hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        class="flex items-center w-full p-2 text-base text-neutral-50 transition duration-75 rounded-lg group cursor-pointer hover:text-gray-500 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                         aria-controls="dropdown-example"
                         data-collapse-toggle="dropdown-example"
                     >
                         <svg
-                            class="w-6 h-6 text-neutral-50 dark:text-white"
+                            class="w-6 h-6 text-neutral-50 dark:text-white group-hover:text-gray-500"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -179,7 +179,7 @@
                             <Link
                                 :href="route('user', { type: 'default' })"
                                 :class="{
-                                    'flex pl-11 items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                                    'flex pl-11 items-center p-2  text-neutral-50 rounded-lg hover:text-gray-500 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                                     'text-lime-700!': route().current('user', {
                                         type: 'default',
                                     }),
@@ -192,7 +192,7 @@
                             <Link
                                 :href="route('user', { type: 'admin' })"
                                 :class="{
-                                    'flex pl-11 items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                                    'flex pl-11 items-center  p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                                     'text-lime-700!': route().current('user', {
                                         type: 'admin',
                                     }),
@@ -207,13 +207,13 @@
                     <Link
                         :href="route('company')"
                         :class="{
-                            'flex items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                            'flex items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                             'text-lime-700!': route().current('company'),
                         }"
                     >
                         <svg
                             :class="{
-                                'w-6 h-6 text-neutral-50 dark:text-white': true,
+                                'w-6 h-6 text-neutral-50 group-hover:text-gray-500 dark:text-white': true,
                                 'text-lime-700! group-hover:text-lime-900':
                                     route().current('company'),
                             }"
@@ -242,13 +242,13 @@
                     <Link
                         :href="route('company_group')"
                         :class="{
-                            'flex items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                            'flex items-center p-2 text-neutral-50 rounded-lg hover:text-gray-500 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                             'text-lime-700!': route().current('company_group'),
                         }"
                     >
                         <svg
                             :class="{
-                                'w-6 h-6 text-neutral-50 dark:text-white': true,
+                                'w-6 h-6 text-neutral-50 group-hover:text-gray-500 dark:text-white': true,
                                 'text-lime-700! group-hover:text-lime-900':
                                     route().current('company_group'),
                             }"
@@ -274,12 +274,12 @@
                 <li>
                     <button
                         type="button"
-                        class="flex items-center w-full p-2 text-base text-neutral-50 transition duration-75 rounded-lg group cursor-pointer hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        class="flex items-center w-full p-2 text-base text-neutral-50 transition duration-75 rounded-lg group cursor-pointer hover:text-gray-500 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                         aria-controls="dropdown-examples"
                         data-collapse-toggle="dropdown-examples"
                     >
                         <svg
-                            class="w-6 h-6 text-neutral-50 dark:text-white"
+                            class="w-6 h-6 text-neutral-50 group-hover:text-gray-500 dark:text-white"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -319,7 +319,7 @@
                             <Link
                                 :href="route('historic_company')"
                                 :class="{
-                                    'flex pl-11 items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                                    'flex pl-11 items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                                     'text-lime-700!':
                                         route().current('historic_company'),
                                 }"
@@ -334,10 +334,10 @@
                 <li>
                     <a
                         href="#"
-                        class="flex items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                        class="flex items-center p-2 text-neutral-50 rounded-lg hover:text-gray-500 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
-                            class="w-6 h-6 text-neutral-50 dark:text-white"
+                            class="w-6 h-6 text-neutral-50 group-hover:text-gray-500 dark:text-white"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
