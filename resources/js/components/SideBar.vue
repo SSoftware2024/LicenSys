@@ -192,7 +192,7 @@
                             <Link
                                 :href="route('user', { type: 'admin' })"
                                 :class="{
-                                    'flex pl-11 items-center  p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                                    'flex pl-11 items-center  p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
                                     'text-lime-700!': route().current('user', {
                                         type: 'admin',
                                     }),

@@ -9,11 +9,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyGroupController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoricCompanyController;
 
-Route::get('/', function () {
-    return Inertia::render('Index');
-})->middleware(['auth'])->name('index');
+Route::get('/', [DashboardController::class, 'index'])->middleware(['auth'])->name('index');
 
 Route::post('/confirm-password', function (Request $request) {
     if (! Hash::check($request->password, $request->user()->password)) {
