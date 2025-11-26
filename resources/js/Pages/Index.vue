@@ -89,23 +89,23 @@
                     <tbody>
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 cursor-pointer hover:bg-gray-100"
-                            v-for="(value) in $page.props.max_day"
+                            v-for="(value, index) in $page.props.array_days_max_values"
                             :key="value"
                         >
                             <th
                                 scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
-                               {{ value }}
+                               {{ index }}
                             </th>
-                            <td class="px-6 py-4">1.120,00</td>
+                            <td class="px-6 py-4">{{ value }}</td>
 
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div>
-            <h3 class="text-md"><span class="text-blue-600 font-medium">Recebido/Total:</span> <span class="font-bold">R$ 2.230,00/5.000,00</span></h3>
+            <h3 class="text-md"><span class="text-blue-600 font-medium">Recebido/Total:</span> <span class="font-bold">R$ {{ $page.props.total_recieve }} | {{ $page.props.total_value }}</span></h3>
             </div>
         </div>
         <!-- FIM TABELA DIAS RECEBER -->
