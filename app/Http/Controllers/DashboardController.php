@@ -79,7 +79,6 @@ class DashboardController extends Controller
         #---------------------------------FILTRO EMPRESAS QUE PAGAM NO DIA x ------------------------------------#
         if (isset($request->companies_the_day)) {
             $date_complete = date('Y-m-d', strtotime($date_string . "-" . $request->companies_the_day));
-            ds($date_complete);
             $companies = Company::with(['historicCompany' => function ($query) use ($date_complete) {
                 $query->whereDate('pay_date', $date_complete);
                 $query->select('company_id', 'amount_paid');

@@ -62,4 +62,25 @@ class HistoricCompanyController extends Controller
         $historicCompany->orderBy('pay_date', 'desc');
         return $historicCompany->paginate(12)->appends($request->all());
     }
+
+
+    public function pay(Request $request)
+    {
+        $request->validate([
+            'historic_company_id' => 'required|exists:historic_companies,id',
+        ]);
+
+        HistoricCompany::where('id',$request->historic_company_id)->update([
+            'monthly_fee_status' => MonthlyFee::PAID->value
+        ]);
+        Toast::success('Mensalidade paga com sucesso');
+    }
+    public function removePayment(Request $request)
+    {
+        $request->validate([
+            'historic_company_id' => 'required|exists:historic_companies,id',
+        ]);
+
+        //verficar qual status de mês colocar, verficar se está atrasa ou vencida, caso nem atrasa ou vencida muda para pagar
+    }
 }

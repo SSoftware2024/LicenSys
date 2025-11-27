@@ -196,30 +196,29 @@
                             <div
                                 :id="`dropdownDots${index}`"
                                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 uppercase"
+
                             >
                                 <ul
                                     class="py-2 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownMenuIconButton"
                                 >
                                     <li>
-                                        <Link
-                                            href="
-
-                                            "
+                                        <a
+                                            href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                           @click="_pay(value.id)"
                                         >
                                             Pagar
-                                        </Link>
+                                        </a>
                                     </li>
                                     <li>
-                                        <Link
-                                            href="
-
-                                            "
+                                        <a
+                                            href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                             @click="_removePayment(value.id)"
                                         >
                                             Remover pagamento
-                                        </Link>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -300,6 +299,27 @@ function _filterCompanyByUrlUUID(){
         form.company_uuid = uuid;
         _showTableHistoricCompany();
     }
+}
+
+function _pay(historic_company_id){
+    router.patch(route('historic_company.pay'), {
+        historic_company_id: historic_company_id,
+    },{
+        // onSuccess: () => {
+        //     _showTableHistoricCompany();
+        // },
+    });
+
+}
+function _removePayment(historic_company_id){
+    router.patch(route('historic_company.removePayment'), {
+        historic_company_id: historic_company_id,
+    },{
+        // onSuccess: () => {
+        //     _showTableHistoricCompany();
+        // },
+    });
+
 }
 
 function paginate(page_link) {
