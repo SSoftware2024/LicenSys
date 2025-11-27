@@ -31,13 +31,20 @@ class HistoricCompanyController extends Controller
             'companies' => $companies,
             'monthly_fee_status' => $monthly_fee_status,
             'allYears' => $allYears,
-            'historicCompany' => $historicCompany
+            'historicCompany' => $historicCompany,
+            //parametros url
+            'year' => $request->year ?? 'all',
+            'company_uuid' => $request->company_uuid ?? 'empty',
+            'month_status' => $request->month_status ?? 'all',
+            'month' => $request->month ?? 0,
+
         ]);
     }
-
+    //colocar filtro de mês
     private function loadHistoric(Request $request)
     {
         $year = $request->year ?: 0;
+        $month = $request->month ?? 0;
         $month_status = $request->month_status ?: null;
         $historicCompany = HistoricCompany::query();
         $historicCompany->with('company:id,company_name,uuid');
@@ -53,6 +60,10 @@ class HistoricCompanyController extends Controller
         if ($month_status != 'all' && !in_array('all', $month_status) && !in_array(null, $month_status)) {
             $historicCompany->whereIn('monthly_fee_status', $month_status);
         }
+        if($month > 0 && $month <=12){
+            $historicCompany->whereMonth('pay_date', $month);
+        }
+
         $historicCompany->orderBy('pay_date', 'desc');
         return $historicCompany->paginate(12)->appends($request->all());
     }

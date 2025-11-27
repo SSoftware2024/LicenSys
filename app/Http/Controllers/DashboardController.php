@@ -24,7 +24,7 @@ class DashboardController extends Controller
             ->whereYear('pay_date', $date->year);
 
         foreach (MonthlyFee::cases() as $status) {
-            $array_monthly_status[$status->value] =  $historic_companies
+            $array_monthly_status[$status->value] =  (clone $historic_companies)
                 ->where('monthly_fee_status', $status->value)
                 ->count();
         }
@@ -58,6 +58,8 @@ class DashboardController extends Controller
             'array_days_max_values' => $array_days_max_values,
             'total_value' => getMoneyToStringBr($total_value),
             'total_recieve' => getMoneyToStringBr($total_recieve),
+            'year' => $date->year,
+            'month' => $date->month,
         ]);
     }
 }

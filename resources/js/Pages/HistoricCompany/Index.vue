@@ -37,6 +37,17 @@
                         {{ form.errors.company_uuid }}
                     </div>
                 </div>
+                <div class="mr-2">
+                <Input
+                        type="number"
+                        min="0"
+                        max="12"
+                        label="Mês"
+                        id="month"
+                        name="month"
+                        v-model="form.month"
+                    />
+                </div>
                 <div class="grow mr-2">
                     <label
                         for="countries"
@@ -236,6 +247,7 @@ import { _copyText, _dateISOBrOnlyData, _confirmPassword} from "@utils/functions
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
 import Paginate from "@/components/Paginate.vue";
 
 
@@ -245,9 +257,10 @@ const isShowDropDown = ref(false);
 const page = usePage();
 
 const form = useForm({
-    company_uuid: 'empty',
-    year: 'all',
-    month_status: 'all',
+    company_uuid: page.props.company_uuid,
+    year: page.props.year,
+    month_status: page.props.month_status,
+    month: page.props.month
 });
 
 function _showDropDown(){
