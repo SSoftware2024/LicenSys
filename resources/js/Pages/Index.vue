@@ -103,6 +103,9 @@
                             v-for="(value, index) in $page.props
                                 .array_days_max_values"
                             :key="value"
+                            data-modal-target="modal-company-in-day"
+                            data-modal-toggle="modal-company-in-day"
+                            @click="_companiesTheDay(index)"
                         >
                             <th
                                 scope="row"
@@ -129,6 +132,59 @@
         </div>
         <!-- FIM TABELA DIAS RECEBER -->
     </div>
+
+    <Modal :title="`Empresas do dia: ${title_modal}`" id="modal-company-in-day">
+        <div class="flex justify-center" v-if="load_table_company_in_day">
+            <img :src="$page.props.images.load_gif" alt="" class="w-25" />
+        </div>
+        <div class="relative overflow-x-auto h-[500px]" v-else>
+            <table
+                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+            >
+                <thead
+                    class="sticky top-0 z-10 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                >
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Nome</th>
+                        <th scope="col" class="px-6 py-3">UUID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 cursor-pointer hover:bg-gray-100"
+                        v-for="(value, index) in companies_the_day"
+                        :key="index"
+                        data-modal-target="modal-company-in-day"
+                        data-modal-toggle="modal-company-in-day"
+                    >
+                        <th
+                            scope="row"
+                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                            {{ value?.company_name }}
+                        </th>
+                        <td class="px-6 py-4">
+                            <Button
+                                text="Copiar UUID"
+                                type="button"
+                                typeButton="primary"
+                                class="relative top-1.5"
+                            ></Button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <template #footer>
+            <button
+                data-modal-hide="modal-company-in-day"
+                type="button"
+                class="cursor-pointer py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+                Fechar
+            </button>
+        </template>
+    </Modal>
 </template>
 
 <script setup>
@@ -137,12 +193,17 @@ import { useForm, router, usePage } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import SidebarLayout from "../layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
+import Modal from "@/components/Modal.vue";
 import Button from "@/components/Button.vue";
 
 const page = usePage();
 const form = useForm({
     date_month: new Date().toISOString().slice(0, 7), //pega só até primeiro hífen YYYY-MM
 });
+
+const companies_the_day = ref({});
+const title_modal = ref("");
+const load_table_company_in_day = ref(true);
 
 function _filter() {
     // lógica para filtrar o dashboard com base na data selecionada
@@ -168,6 +229,23 @@ function _linkCards(month_status) {
         },
         {
             preserveScroll: true,
+        }
+    );
+}
+
+function _companiesTheDay(day) {
+    title_modal.value = day;
+    load_table_company_in_day.value = true;
+    router.post(
+        route("index"),
+        {
+            companies_the_day: day,
+        },
+        {
+            onSuccess: (page) => {
+                companies_the_day.value = page.props.companies;
+                load_table_company_in_day.value = false;
+            },
         }
     );
 }

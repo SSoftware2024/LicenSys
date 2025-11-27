@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\MonthlyFee;
+use App\Models\Company;
 use App\Models\HistoricCompany;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,10 +13,12 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $date = $request->input('date_month', now()->format('Y-m'));
-        $date = Carbon::createFromFormat('Y-m', $date);
+
+        $date_string = $request->input('date_month', now()->format('Y-m'));
+        $date = Carbon::createFromFormat('Y-m', $date_string);
         //resgatar dia máximo do mês
         $max_day = date("t", strtotime($date . '-01'));
+        $companies = null;
 
         # -------------- CONTAGEM DE STATUS MENSAL -------------- #
         $array_monthly_status = [];
@@ -51,15 +54,26 @@ class DashboardController extends Controller
 
         #------------------------- FIM FILTRO GANHOS POR DIA NO MÊS ----------------------------#
 
-
+        #---------------------------------FILTRO EMPRESAS QUE PAGAM NO DIA x ------------------------------------#
+        if(isset($request->companies_the_day)){
+            $date_complete = date('Y-m-d', strtotime($date_string."-".$request->companies_the_day));
+            $companies = Company::whereHas('historicCompany', function ($query) use($date_complete) {
+                $query->whereDate('pay_date', $date_complete);
+            })->select('company_name','uuid')->get();
+        }
+        #---------------------------------FIM FILTRO EMPRESAS QUE PAGAM NO DIA x ------------------------------------#
 
         return Inertia::render('Index', [
             'monthly_fee_status_count' => $array_monthly_status,
             'array_days_max_values' => $array_days_max_values,
             'total_value' => getMoneyToStringBr($total_value),
             'total_recieve' => getMoneyToStringBr($total_recieve),
+            'companies' => $companies,
             'year' => $date->year,
             'month' => $date->month,
+            'images' => [
+                'load_gif' => asset('img/load.gif')
+            ]
         ]);
     }
 }

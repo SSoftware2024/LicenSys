@@ -12,7 +12,7 @@ use App\Http\Controllers\CompanyGroupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoricCompanyController;
 
-Route::get('/', [DashboardController::class, 'index'])->middleware(['auth'])->name('index');
+Route::match(['get','post'],'/', [DashboardController::class, 'index'])->middleware(['auth'])->name('index');
 
 Route::post('/confirm-password', function (Request $request) {
     if (! Hash::check($request->password, $request->user()->password)) {
