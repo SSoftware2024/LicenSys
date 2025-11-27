@@ -101,6 +101,7 @@ class CompanyController extends Controller
         $max_day_month = now()->month == 2 ? cal_days_in_month(CAL_GREGORIAN, 2, now()->year) : 30;
         $request->validate([
             'uuid' => ['required', 'size:36', 'unique:companies,uuid'],
+            'company_name' => ['required','min:5'],
             'payment_day' => [
                 'required',
                 'integer',
@@ -127,6 +128,7 @@ class CompanyController extends Controller
 
         $company = Company::create([
             'uuid' => $request->uuid,
+            'company_name' => strtoupper($request->company_name),
             'payment_day' => $request->payment_day,
             'systems_useds' => $request->systems_useds,
             'value_monthly_fee' => convertToMoney($request->value_monthly_fee),
@@ -150,6 +152,7 @@ class CompanyController extends Controller
         $max_day_month = now()->month == 2 ? cal_days_in_month(CAL_GREGORIAN, 2, now()->year) : 30;
         $request->validate([
             'uuid' => ['required', 'size:36', "unique:companies,uuid, $id"],
+            'company_name' => ['required','min:5'],
             'payment_day' => [
                 'required',
                 'integer',
@@ -177,6 +180,7 @@ class CompanyController extends Controller
         // Atualiza via model para manter a instância e depois gerar atualizações nos históricos
         $company->update([
             'payment_day' => $request->payment_day,
+            'company_name' => strtoupper($request->company_name),
             'systems_useds' => $request->systems_useds,
             'value_monthly_fee' => convertToMoney($request->value_monthly_fee),
             'group_company_id' => $request->group_company_id,
@@ -204,18 +208,6 @@ class CompanyController extends Controller
         $company->historicCompany()->forceDelete();
         $company->forceDelete();
         Toast::warning("Empresa $id deletada com sucesso!");
-    }
-
-
-    public function loadData(Request $request)
-    {
-        //fazer requisição ajax para carregar dados adicionais nome e dono
-        Toast::info("Vinculando dados {$request->id}");
-    }
-    public function loadAllData(Request $request)
-    {
-        //fazer metodo acima para todas as empresas listadas
-        Toast::info("Vinculando todos os dados");
     }
 
     /*********************************************PRIVATE METHODS************************************************/

@@ -103,13 +103,7 @@
                         class="relative top-1.5"
                         @click="() => router.get(route('company.createView'))"
                     ></Button>
-                    <Button
-                        text="Vincular dados"
-                        type="button"
-                        typeButton="primary"
-                        class="relative top-1.5"
-                        @click="_linkAllCompanies"
-                    ></Button>
+
                 </div>
             </form>
         </div>
@@ -148,7 +142,7 @@
                         >
                             {{ data.uuid }}
                         </th>
-                        <td class="px-6 py-4">-</td>
+                        <td class="px-6 py-4">{{ data.company_name ?? '-' }}</td>
                         <td class="px-6 py-4 uppercase">
                             {{ data.group_company?.name }}
                         </td>
@@ -235,15 +229,6 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a
-                                            href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            @click.prevent="_loadData(data.id)"
-                                        >
-                                            Vincular dados
-                                        </a>
-                                    </li>
-                                    <li>
                                         <Link
                                             :href="
                                                 route(
@@ -322,11 +307,7 @@
         <ul>
             <li>
                 <span class="font-semibold">Nome: </span>
-                {{ data_modal?.name }}
-            </li>
-            <li>
-                <span class="font-semibold">Dono: </span>
-                {{ data_modal?.owner }}
+                {{ data_modal?.company_name }}
             </li>
             <li>
                 <span class="font-semibold">Grupo: </span>
@@ -479,12 +460,6 @@ function _delete(id) {
         router.delete(route("company.delete", [id]));
     });
 }
-function _loadData(id) {
-    router.post(route("company.loadData"), { id: id });
-}
-function _loadAllData() {
-    router.post(route("company.loadAllData"));
-}
 
 function _search(){
     form.get(route('company'), {}, {
@@ -515,9 +490,7 @@ function handleClickOutside(event) {
     }
 }
 
-function _linkAllCompanies() {
-    alert("Vincular todas empresas: nome");
-}
+
 
 function _loadForm(){
     form.company_name = getNormalUrlParamter('company_name') ?? null;

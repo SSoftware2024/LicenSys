@@ -26,6 +26,20 @@
                     >
                 </div>
             </div>
+            <div class="relative">
+                <Input
+                    type="text"
+                    label="Nome empresa"
+                    id="company_name"
+                    name="company_name"
+                    :isInputRequired="true"
+                    v-model="form.company_name"
+                />
+                <div v-if="form.errors.company_name" class="text-red-500">
+                        {{ form.errors.company_name }}
+                    </div>
+
+            </div>
             <div class="flex">
                 <div class="flex flex-col w-full mr-1">
                     <Input
@@ -188,14 +202,16 @@ const form = useForm({
     activated: true,
     systems_useds: [],
     group_company_id: "",
+    company_name: ""
 });
 
 const errors_laravel_array = reactive({
     systems_useds: [],
 });
 
-function _loadCompany(){
+function _loadCompany() {
     form.uuid = page.props.company.uuid;
+    form.company_name = page.props.company.company_name;
     form.payment_day = page.props.company.payment_day;
     form.value_monthly_fee = page.props.company.value_monthly_fee;
     form.isFiscal = Boolean(page.props.company.isFiscal);
@@ -205,18 +221,20 @@ function _loadCompany(){
 }
 
 function _submit() {
-    form.put(route("company.update", {
-        id: page.props.company.id
-    }), {
-        onFinish: () => {
-            errors_laravel_array.systems_useds = _errorLaravelArrayElements(
-                "systems_useds",
-                form.errors
-            );
-        },
-    });
+    form.put(
+        route("company.update", {
+            id: page.props.company.id,
+        }),
+        {
+            onFinish: () => {
+                errors_laravel_array.systems_useds = _errorLaravelArrayElements(
+                    "systems_useds",
+                    form.errors
+                );
+            },
+        }
+    );
 }
-
 
 onMounted(() => {
     _loadCompany();

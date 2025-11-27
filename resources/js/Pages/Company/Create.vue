@@ -26,6 +26,20 @@
                     >
                 </div>
             </div>
+            <div class="relative">
+                <Input
+                    type="text"
+                    label="Nome empresa"
+                    id="company_name"
+                    name="company_name"
+                    :isInputRequired="true"
+                    v-model="form.company_name"
+                />
+                <div v-if="form.errors.company_name" class="text-red-500">
+                        {{ form.errors.company_name }}
+                    </div>
+
+            </div>
             <div class="flex">
                 <div class="flex flex-col w-full mr-1">
                     <Input
@@ -188,6 +202,7 @@ const form = useForm({
     activated: true,
     systems_useds: [],
     group_company_id: "",
+    company_name: ""
 });
 
 const errors_laravel_array = reactive({
