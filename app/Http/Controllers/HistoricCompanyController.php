@@ -9,6 +9,7 @@ use App\Enum\MonthlyFee;
 use Illuminate\Http\Request;
 use App\Models\HistoricCompany;
 use App\Http\Controllers\Controller;
+use App\Services\MonthlyStatusService;
 
 class HistoricCompanyController extends Controller
 {
@@ -80,7 +81,10 @@ class HistoricCompanyController extends Controller
         $request->validate([
             'historic_company_id' => 'required|exists:historic_companies,id',
         ]);
+        $historicCompany = HistoricCompany::find($request->historic_company_id);
+        $historicCompany->monthly_fee_status = (new MonthlyStatusService())->getStatusMonthByDate($historicCompany, true);
+        $historicCompany->save();
+        Toast::success('Remoção de pagamento aplicada');
 
-        //verficar qual status de mês colocar, verficar se está atrasa ou vencida, caso nem atrasa ou vencida muda para pagar
     }
 }
