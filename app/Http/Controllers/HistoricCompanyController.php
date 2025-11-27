@@ -15,14 +15,9 @@ class HistoricCompanyController extends Controller
     public function index(Request $request)
     {
         $monthly_fee_status = MonthlyFee::toArrayPortuguese();
-        $companies = Company::select('id', 'uuid')->get();
+        $companies = Company::select('id', 'uuid','company_name')->get();
         $allYears = range(2025, date('Y'));
         $historicCompany = null;
-        $companies->transform(function ($company) {
-            //filtro relaizado acima, apenas cria atributo dinâmico
-            $company->name = 'name_random_' . rand(1000, 9999); //trocar por company_name futuramente
-            return $company;
-        });
         if (isset($request->month_status)) {
             $historicCompany = $this->loadHistoric($request);
         }

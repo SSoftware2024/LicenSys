@@ -27,7 +27,7 @@
                             style="text-transform: uppercase"
                             :selected="form.company_uuid == value.uuid"
                         >
-                            {{ `${value.uuid} - ${value.name}` }}
+                            {{ `${value.company_name} - ${value.uuid}` }}
                         </option>
                     </select>
                     <div

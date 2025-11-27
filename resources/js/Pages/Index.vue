@@ -99,7 +99,10 @@
                     </thead>
                     <tbody>
                         <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 cursor-pointer hover:bg-gray-100"
+                            :class="{
+                                'bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 cursor-pointer hover:bg-gray-100': true,
+                                 '!bg-green-500 font-bold text-white':value.higher_value
+                            }"
                             v-for="(value, index) in $page.props
                                 .array_days_max_values"
                             :key="value"
@@ -113,7 +116,7 @@
                             >
                                 {{ index }}
                             </th>
-                            <td class="px-6 py-4">{{ value }}</td>
+                            <td class="px-6 py-4">{{ value.formatted }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -147,12 +150,13 @@
                     <tr>
                         <th scope="col" class="px-6 py-3">Nome</th>
                         <th scope="col" class="px-6 py-3">UUID</th>
+                        <th scope="col" class="px-6 py-3">Valor</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 cursor-pointer hover:bg-gray-100"
-                        v-for="(value, index) in companies_the_day"
+                        v-for="(value, index) in $page.props.companies"
                         :key="index"
                         data-modal-target="modal-company-in-day"
                         data-modal-toggle="modal-company-in-day"
@@ -169,8 +173,10 @@
                                 type="button"
                                 typeButton="primary"
                                 class="relative top-1.5"
+                                @click="_copyText(value?.uuid)"
                             ></Button>
                         </td>
+                        <td class="px-6 py-4">{{ value?.historic_company?.amount_paid_formated }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -191,6 +197,7 @@
 import { ref } from "vue";
 import { useForm, router, usePage } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
+import {_copyText} from "@utils/functions.js"
 import SidebarLayout from "../layouts/SidebarLayout.vue";
 import Input from "@/components/Input.vue";
 import Modal from "@/components/Modal.vue";
@@ -198,10 +205,9 @@ import Button from "@/components/Button.vue";
 
 const page = usePage();
 const form = useForm({
-    date_month: new Date().toISOString().slice(0, 7), //pega só até primeiro hífen YYYY-MM
+    date_month: page.props.date_month, //pega só até primeiro hífen YYYY-MM
 });
 
-const companies_the_day = ref({});
 const title_modal = ref("");
 const load_table_company_in_day = ref(true);
 
@@ -218,6 +224,24 @@ function _filter() {
     );
 }
 
+function _companiesTheDay(day) {
+    title_modal.value = day;
+    load_table_company_in_day.value = true;
+    router.get(
+        route("index"),
+        {
+            companies_the_day: day,
+            date_month: form.date_month,
+        },
+        {
+            onSuccess: (page) => {
+                load_table_company_in_day.value = false;
+            },
+            preserveState:true,
+        }
+    );
+}
+
 function _linkCards(month_status) {
     router.get(
         route("historic_company"),
@@ -228,27 +252,12 @@ function _linkCards(month_status) {
             month_status: [month_status],
         },
         {
-            preserveScroll: true,
+            preserveState: true,
         }
     );
 }
 
-function _companiesTheDay(day) {
-    title_modal.value = day;
-    load_table_company_in_day.value = true;
-    router.post(
-        route("index"),
-        {
-            companies_the_day: day,
-        },
-        {
-            onSuccess: (page) => {
-                companies_the_day.value = page.props.companies;
-                load_table_company_in_day.value = false;
-            },
-        }
-    );
-}
+
 
 defineOptions({
     layout: SidebarLayout,

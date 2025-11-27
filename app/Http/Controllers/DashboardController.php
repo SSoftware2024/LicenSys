@@ -38,13 +38,35 @@ class DashboardController extends Controller
         $array_days_max_values = [];
         $total_value = 0;
         $total_recieve = 0;
+        $max_number = 0;
+        $max_day_index = null;
+
         for ($i = 1; $i <= $max_day; $i++) {
             $day = $i <= 9 ? "0$i" : $i;
-            $array_days_max_values[$i] = HistoricCompany::whereMonth('pay_date', $date->month)
+
+            $amount = HistoricCompany::whereMonth('pay_date', $date->month)
                 ->whereYear('pay_date', $date->year)
-                ->whereDay('pay_date', $day)->sum('amount_paid');
-            $total_value += $array_days_max_values[$i];
-            $array_days_max_values[$i] = getMoneyToStringBr($array_days_max_values[$i]);
+                ->whereDay('pay_date', $day)
+                ->sum('amount_paid');
+
+            // verifica se é o maior valor até agora
+            if ($amount > $max_number) {
+                $max_number = $amount;
+                $max_day_index = $i;
+            }
+
+            $total_value += $amount;
+
+            $array_days_max_values[$i] = [
+                'value' => $amount,
+                'formatted' => getMoneyToStringBr($amount),
+                'higher_value' => false,
+            ];
+        }
+
+        // marca o maior dia
+        if ($max_day_index !== null && $max_number > 0) {
+            $array_days_max_values[$max_day_index]['higher_value'] = true;
         }
         //total recebido(pago)
         $total_recieve += HistoricCompany::whereMonth('pay_date', $date->month)
@@ -55,11 +77,25 @@ class DashboardController extends Controller
         #------------------------- FIM FILTRO GANHOS POR DIA NO MÊS ----------------------------#
 
         #---------------------------------FILTRO EMPRESAS QUE PAGAM NO DIA x ------------------------------------#
-        if(isset($request->companies_the_day)){
-            $date_complete = date('Y-m-d', strtotime($date_string."-".$request->companies_the_day));
-            $companies = Company::whereHas('historicCompany', function ($query) use($date_complete) {
+        if (isset($request->companies_the_day)) {
+            $date_complete = date('Y-m-d', strtotime($date_string . "-" . $request->companies_the_day));
+            ds($date_complete);
+            $companies = Company::with(['historicCompany' => function ($query) use ($date_complete) {
                 $query->whereDate('pay_date', $date_complete);
-            })->select('company_name','uuid')->get();
+                $query->select('company_id', 'amount_paid');
+            }])->whereHas('historicCompany', function ($query) use ($date_complete) {
+                $query->whereDate('pay_date', $date_complete);
+            })->select('id', 'company_name', 'uuid')->get();
+
+            $companies->each(function ($company) {
+                $historic = $company->historicCompany->first(); //pega primeiro registro(único) já com filtro aplicado acima
+                if (!empty($historic)) {
+                    $historic->amount_paid_formated = getMoneyToStringBr($historic->amount_paid);
+                }
+                $company->historic_company = $historic;
+                //remove o array e vira objeto
+                unset($company->historicCompany);
+            });
         }
         #---------------------------------FIM FILTRO EMPRESAS QUE PAGAM NO DIA x ------------------------------------#
 
@@ -71,6 +107,7 @@ class DashboardController extends Controller
             'companies' => $companies,
             'year' => $date->year,
             'month' => $date->month,
+            'date_month' => $date->year."-".$date->month,
             'images' => [
                 'load_gif' => asset('img/load.gif')
             ]

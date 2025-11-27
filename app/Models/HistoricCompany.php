@@ -92,7 +92,7 @@ class HistoricCompany extends Model
         $paymentDay = $company->payment_day;
         $newValue = $company->value_monthly_fee;
 
-        // Se o novo dia de pagamento já passou neste mês, começa no próximo
+        // Se o novo dia de pagamento já passou neste mês, começa no próximo, caso não começa no atual
         $startMonth = $paymentDay > $currentDay ? $currentMonth : $currentMonth + 1;
         if ($startMonth > 12) {
             return;
