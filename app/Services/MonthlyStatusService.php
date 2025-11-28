@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\System;
 use App\Enum\MonthlyFee;
 use App\Models\HistoricCompany;
+use Illuminate\Support\Facades\Log;
 
 final class MonthlyStatusService
 {
@@ -27,7 +28,7 @@ final class MonthlyStatusService
      * @param  bool $is_removal
      * @return string
      */
-    public function getStatusMonthByDate(HistoricCompany $historic, bool $is_removal = false) : string
+    public function getStatusMonthByDate(HistoricCompany $historic, bool $is_removal = false): string
     {
         $date = now();
         $date_payment = Carbon::parse($historic->pay_date);
@@ -81,16 +82,34 @@ final class MonthlyStatusService
         return $status_original;
     }
 
-    public static function updateAllCompaniesMonthlyStatus() : void
+    public function updateAllCompaniesMonthlyStatus(): void
     {
         $historics = HistoricCompany::whereYear('pay_date', now()->year)->orderBy('id')->cursor();
         $service = new MonthlyStatusService();
+        $date = now();
         foreach ($historics as $value) {
             $new_status = $service->getStatusMonthByDate($value, false);
+            $date_payment = Carbon::parse($value->pay_date);
+            $date_payment_limit = $date_payment->copy()->addDays($this->limit_days);
+
+            //muda status
             if ($new_status !== $value->monthly_fee_status) {
                 $value->monthly_fee_status = $new_status;
                 $value->save();
             }
+
+            //desativa empresa, se mês atual, vencido e passou do limite
+            if (
+                $new_status == MonthlyFee::OVERDUE->value &&
+                $date->greaterThan($date_payment_limit) &&
+                $date_payment->month == $date->month
+            ) {
+                $value->company()->update([
+                    'activated' => false
+                ]);
+            }
+
+            // Log::info("Empresa ID {$value->company_id} - Status Mensalidade atualizado para: {$new_status}");
         }
     }
 }
