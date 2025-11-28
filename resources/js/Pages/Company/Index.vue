@@ -168,7 +168,7 @@
                                 >ATRASADO</span
                             >
                             <span
-                                class="inline-flex items-center rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-600/10 ring-inset"
+                                class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-purple-600/10 ring-inset"
                                 v-else-if="
                                     data.current_month_status == 'overdue'
                                 "
@@ -354,7 +354,7 @@
                     >ATRASADO</span
                 >
                 <span
-                    class="inline-flex items-center rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-600/10 ring-inset"
+                    class="inline-flex items-center rounded-md bg-purple-200 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-purple-600/10  ring-inset"
                     v-else-if="data_modal?.current_month_status == 'overdue'"
                     >VENCIDA</span
                 >
@@ -437,6 +437,7 @@ const isShowDropDown = ref(false);
 
 function _getPaymentDayDate(day) {
     let date = new Date();
+    date.setHours(12, 0, 0, 0); // evita problemas de timezone
     date.setDate(day);
     return date.toLocaleDateString("pt-BR", {
         day: "2-digit",

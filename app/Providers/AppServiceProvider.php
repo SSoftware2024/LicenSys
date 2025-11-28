@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\MonthlyStatusServiceCommand;
 use App\Enum\TypeUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;

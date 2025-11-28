@@ -67,7 +67,7 @@
                 <!-- FIM CARD 03 -->
                 <!-- CARD 04 -->
                 <div
-                    class="flex flex-col items-center w-50 p-5 rounded-md bg-slate-700 cursor-pointer hover:bg-slate-800"
+                    class="flex flex-col items-center w-50 p-5 rounded-md bg-purple-700 cursor-pointer hover:bg-slate-800"
                     @click.prevent="_linkCards('overdue')"
                 >
                     <h5 class="text-white text-2xl">VENCIDA</h5>

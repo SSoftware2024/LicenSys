@@ -84,7 +84,7 @@ class HistoricCompanyController extends Controller
         $historicCompany = HistoricCompany::find($request->historic_company_id);
         $historicCompany->monthly_fee_status = (new MonthlyStatusService())->getStatusMonthByDate($historicCompany, true);
         $historicCompany->save();
-        Toast::success('Remoção de pagamento aplicada');
+        Toast::info('Remoção de pagamento aplicada');
 
     }
 }
