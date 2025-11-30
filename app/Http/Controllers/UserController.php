@@ -77,6 +77,18 @@ class UserController extends Controller
         ]);
     }
 
+    public function profileEditView(): InertiaResponse
+    {
+        $user = User::select('id', 'name', 'email', 'activated')->find(Auth::id());
+        return Inertia::render('Auth/ProfileEdit', [
+            'user' => $user,
+        ]);
+    }
+    public function profileEdit(Request $request)
+    {
+
+    }
+
     public function save(Request $request)
     {
         $data = $request->except('operation', 'type');

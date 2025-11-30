@@ -332,8 +332,8 @@
                 </li>
 
                 <li>
-                    <a
-                        href="#"
+                    <Link
+                        :href="route('user.profileEditView')"
                         class="flex items-center p-2 text-neutral-50 rounded-lg hover:text-gray-500 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                     >
                         <svg
@@ -355,7 +355,7 @@
                         <span class="flex-1 ms-3 whitespace-nowrap"
                             >Perfil</span
                         >
-                    </a>
+                    </Link>
                 </li>
                 <li>
                     <a

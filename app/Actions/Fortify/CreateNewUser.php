@@ -32,12 +32,15 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        $user =  User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'type' => TypeUser::ADMIN->value,
             'activated' => (bool) $input['activated']
         ]);
+        $user->sendEmailVerificationNotification();
+        ds('envio email');
+        return $user;
     }
 }
