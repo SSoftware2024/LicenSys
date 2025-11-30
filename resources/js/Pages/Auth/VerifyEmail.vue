@@ -1,66 +1,15 @@
 <template>
     <Head title="Save User" />
-    <h2 class="font-bold text-2xl underline mb-2">Atualizar Perfil</h2>
+    <h2 class="font-bold text-2xl underline mb-2">Confirmar email</h2>
+    <p>
+    Administrador récem cadastrado por favor, confirme seu email ou reenvie link para ativação. <br/>
+    As <span class="text-red-500 font-bold">páginas</span> ficarão <span class="text-red-500 font-bold">inacessíveis</span> até ativação do mesmo.
+    </p>
     <div class="xl:w-200">
         <form>
-            <div>
-                <Input
-                    type="text"
-                    label="Nome"
-                    id="name"
-                    name="name"
-                    :isInputRequired="true"
-                    :isInvalid="!!form.errors.name"
-                    v-model="form.name"
-                />
-                <div v-if="form.errors.name" class="text-red-500">
-                    {{ form.errors.name }}
-                </div>
-            </div>
-            <div>
-                <Input
-                    type="email"
-                    label="E-mail"
-                    id="email"
-                    name="email"
-                    :isInputRequired="true"
-                    :isInvalid="!!form.errors.email"
-                    v-model="form.email"
-                />
-                <div v-if="form.errors.email" class="text-red-500">
-                    {{ form.errors.email }}
-                </div>
-            </div>
-            <div class="flex">
-                <div class="flex flex-col w-full mr-1">
-                    <Input
-                        type="password"
-                        label="Senha"
-                        id="password"
-                        name="password"
-                        :isInputRequired="true"
-                        :isInvalid="!!form.errors.password"
-                        v-model="form.password"
-                    />
-                    <div v-if="form.errors.password" class="text-red-500">
-                        {{ form.errors.password }}
-                    </div>
-                </div>
-                <div class="flex flex-col w-full ml-1">
-                    <Input
-                        type="password"
-                        label="Confirmar senha"
-                        id="password_confirmation"
-                        name="password_confirmation"
-                        :isInputRequired="true"
-                        :isInvalid="!!form.errors.password_confirmation"
-                        v-model="form.password_confirmation"
-                    />
-                </div>
-            </div>
-            <div class="flex justify-end">
+            <div class="flex justify-end mt-3">
                 <Button
-                    text="Salvar"
+                    text="Enviar e-mail"
                     type="submit"
                     typeButton="primary"
                     :isDisable="form.processing"

@@ -34,7 +34,7 @@ if (!function_exists('routesFortify')) {
 
             //EMAIL VERIFICANTION
             'verificationSend_post' => route('verification.send'), // POST
-            'verificationNotice_get' => route('verification.notice'), // GET
+            'verificationNotice_get' => route('verification.notice'), // GET (VIEW)
             'verificationVerify_get' => 'verification.verify', // GET, precisa de parametro na hora execução
 
             //UPDATE PROFILE INFORMATION

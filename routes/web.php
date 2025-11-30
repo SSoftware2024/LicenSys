@@ -12,7 +12,7 @@ use App\Http\Controllers\CompanyGroupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistoricCompanyController;
 
-Route::match(['get','post'],'/', [DashboardController::class, 'index'])->middleware(['auth'])->name('index');
+
 
 Route::post('/confirm-password', function (Request $request) {
     if (! Hash::check($request->password, $request->user()->password)) {
@@ -24,7 +24,8 @@ Route::post('/confirm-password', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('password_confirm_custom');
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verify_email_admin'])->group(function () {
+    Route::match(['get','post'],'/', [DashboardController::class, 'index'])->name('index');
 
     Route::prefix('system')->name('system')->group(function () {
         Route::get('/', [SystemController::class, 'index']);
