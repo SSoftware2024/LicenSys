@@ -40,7 +40,6 @@ class CreateNewUser implements CreatesNewUsers
             'activated' => (bool) $input['activated']
         ]);
         $user->sendEmailVerificationNotification();
-        ds('envio email');
         return $user;
     }
 }

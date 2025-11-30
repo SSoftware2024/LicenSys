@@ -78,5 +78,9 @@ class FortifyServiceProvider extends ServiceProvider
                 return $user;
             }
         });
+
+        Fortify::verifyEmailView(function () {
+            return Inertia::render('Auth/VerifyEmail');
+        });
     }
 }

@@ -97,6 +97,7 @@ class UserController extends Controller
                 $user = $this->create($data, $request->type);
                 Toast::success('Usuário cadastrado com sucesso');
                 $user->fresh();
+
                 if (Gate::allows('admin-access')) {
                     return redirect()->route('user.saveView', [
                         'operation' => 'update',
