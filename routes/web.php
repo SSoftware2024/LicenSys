@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\CompanyGroupController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CompanyGroupController;
 use App\Http\Controllers\HistoricCompanyController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 
 
@@ -22,6 +23,12 @@ Route::post('/confirm-password', function (Request $request) {
     }
     $request->session()->passwordConfirmed();
 })->middleware(['auth', 'throttle:6,1'])->name('password_confirm_custom');
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('index');
+})->middleware(['auth','signed'])->name('verification.verify');
 
 
 Route::middleware(['auth','verify_email_admin'])->group(function () {

@@ -18,6 +18,7 @@ class VerfiyEmailAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+
         $user = Auth::user();
         if($user->type_user == TypeUser::DEFAULT->value){
             return $next($request);
