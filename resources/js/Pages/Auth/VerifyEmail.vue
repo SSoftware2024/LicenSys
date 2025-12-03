@@ -2,7 +2,7 @@
     <Head title="Save User" />
     <h2 class="font-bold text-2xl underline mb-2">Confirmar email</h2>
     <p>
-    Administrador récem cadastrado por favor, confirme seu email ou reenvie link para ativação. <br/>
+    Por favor, confirme seu email ou reenvie link para ativação. <br/>
     As <span class="text-red-500 font-bold">páginas</span> ficarão <span class="text-red-500 font-bold">inacessíveis</span> até ativação do mesmo.<br/>
     O e-mail é válido por 60 minutos após o envio.
     </p>

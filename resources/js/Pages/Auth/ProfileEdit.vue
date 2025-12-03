@@ -2,7 +2,7 @@
     <Head title="Save User" />
     <h2 class="font-bold text-2xl underline mb-2">Atualizar Perfil</h2>
     <div class="xl:w-200">
-        <form>
+        <form @submit.prevent="_updateProfile">
             <div>
                 <Input
                     type="text"
@@ -10,11 +10,11 @@
                     id="name"
                     name="name"
                     :isInputRequired="true"
-                    :isInvalid="!!form.errors.name"
+                    :isInvalid="!!form.errors?.name"
                     v-model="form.name"
                 />
-                <div v-if="form.errors.name" class="text-red-500">
-                    {{ form.errors.name }}
+                <div v-if="form.errors?.updateProfileInformation?.name" class="text-red-500">
+                    {{ form.errors?.updateProfileInformation?.name }}
                 </div>
             </div>
             <div>
@@ -24,26 +24,57 @@
                     id="email"
                     name="email"
                     :isInputRequired="true"
-                    :isInvalid="!!form.errors.email"
+                    :isInvalid="!!form.errors?.email"
                     v-model="form.email"
                 />
-                <div v-if="form.errors.email" class="text-red-500">
-                    {{ form.errors.email }}
+                <div v-if="form.errors?.updateProfileInformation?.email" class="text-red-500">
+                    {{ form.errors?.updateProfileInformation?.email }}
+                </div>
+            </div>
+            <div class="flex justify-end mt-2">
+                <Button
+                    text="Salvar"
+                    type="submit"
+                    typeButton="primary"
+                    :isDisable="form.processing"
+                    :isLoading="form.processing"
+                ></Button>
+            </div>
+        </form>
+
+        <div class="w-full h-0.5 bg-black mt-2 mb-2"></div>
+
+        <form @submit.prevent="_updatePassword">
+            <div>
+                <Input
+                    type="password"
+                    label="Senha antiga"
+                    id="old_password"
+                    name="old_password"
+                    :isInputRequired="true"
+                    :isInvalid="!!form_password.errors?.updatePassword?.current_password"
+                    v-model="form_password.current_password"
+                />
+                <div v-if="form_password.errors?.updatePassword?.current_password" class="text-red-500">
+                    {{ form_password.errors?.updatePassword?.current_password }}
                 </div>
             </div>
             <div class="flex">
                 <div class="flex flex-col w-full mr-1">
                     <Input
                         type="password"
-                        label="Senha"
+                        label="Nova senha"
                         id="password"
                         name="password"
                         :isInputRequired="true"
-                        :isInvalid="!!form.errors.password"
-                        v-model="form.password"
+                        :isInvalid="!!form_password.errors?.updatePassword?.password"
+                        v-model="form_password.password"
                     />
-                    <div v-if="form.errors.password" class="text-red-500">
-                        {{ form.errors.password }}
+                    <div
+                        v-if="form_password.errors?.updatePassword?.password"
+                        class="text-red-500"
+                    >
+                        {{ form_password.errors?.updatePassword?.password }}
                     </div>
                 </div>
                 <div class="flex flex-col w-full ml-1">
@@ -53,18 +84,20 @@
                         id="password_confirmation"
                         name="password_confirmation"
                         :isInputRequired="true"
-                        :isInvalid="!!form.errors.password_confirmation"
-                        v-model="form.password_confirmation"
+                        :isInvalid="
+                            !!form_password.errors?.updatePassword?.password_confirmation
+                        "
+                        v-model="form_password.password_confirmation"
                     />
                 </div>
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-end mt-2">
                 <Button
-                    text="Salvar"
+                    text="Atualizar senha"
                     type="submit"
-                    typeButton="primary"
-                    :isDisable="form.processing"
-                    :isLoading="form.processing"
+                    typeButton="dark"
+                    :isDisable="form_password.processing"
+                    :isLoading="form_password.processing"
                 ></Button>
             </div>
         </form>
@@ -80,15 +113,34 @@ import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 const page = usePage();
 const form = useForm({
-    id: 0,
     name: "",
     email: "",
+});
+
+const form_password = useForm({
     password: "",
+    current_password: "",
     password_confirmation: "",
 });
 
+function _loadUserData() {
+    form.name = page.props.user.name;
+    form.email = page.props.user.email;
+}
+
+function _updateProfile() {
+    form.patch(route("user.profileEdit"));
+}
+function _updatePassword() {
+    form_password.patch(route("user.updatePassword"), {
+        onSuccess: () => {
+            form_password.reset();
+        },
+    });
+}
 
 onMounted(() => {
+    _loadUserData();
 });
 defineOptions({
     layout: SidebarLayout,

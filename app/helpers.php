@@ -21,7 +21,7 @@ if (!function_exists('routesFortify')) {
             // 'register_post' => route('register.store'),//POST
             // 'register_get' => route('register'),//POST
 
-            //RESET(UPDATE) PASSWORDS - LOGIN INCLUÍDO
+            //ESQUECEU_SENHA E RESETAR PASSWORDS - LOGIN INCLUÍDO
             'reset_password_post' => route('password.update'), //POST
             'reset_password_get' => 'password.reset', //GET, precisa de parametro na hora execução
             'forgot_password_get' => route('password.request'), //GET

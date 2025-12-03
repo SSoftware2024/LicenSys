@@ -44,6 +44,7 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
         Route::get('/{type}', [UserController::class, 'index'])->whereIn('type', TypeUser::cases());
         Route::get('/profile_edit_view', [UserController::class, 'profileEditView'])->name('.profileEditView');
         Route::patch('/profile_edit', [UserController::class, 'profileEdit'])->name('.profileEdit');
+        Route::patch('/update_password', [UserController::class, 'updatePassword'])->name('.updatePassword');
         Route::get('save/{operation}/{type}/{id?}/', [UserController::class, 'saveView'])
             ->whereIn('operation', ['create', 'update'])
             ->whereIn('type', TypeUser::cases())

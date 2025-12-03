@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use App\Actions\Fortify\CreateNewUser;
+use App\Actions\Fortify\UpdateUserPassword;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 use Inertia\Response as InertiaResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -79,14 +81,38 @@ class UserController extends Controller
 
     public function profileEditView(): InertiaResponse
     {
-        $user = User::select('id', 'name', 'email', 'activated')->find(Auth::id());
+        $user = User::select('name', 'email')->find(Auth::id());
         return Inertia::render('Auth/ProfileEdit', [
             'user' => $user,
         ]);
     }
     public function profileEdit(Request $request)
     {
+        $user = Auth::user();
+        switch ($user->type) {
+            case TypeUser::ADMIN->value:
+                (new UpdateUserProfileInformation())->update(
+                    $user,
+                    $request->only('name', 'email')
+                );
+                break;
+            case TypeUser::DEFAULT->value:
+                $user->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                ]);
+                break;
 
+            default:
+                break;
+        }
+        Toast::success('Perfil atualizado com sucesso!');
+
+    }
+    public function updatePassword(Request $request)
+    {
+        (new UpdateUserPassword)->update(Auth::user(), $request->all());
+        Toast::success('Senha atualizada com sucesso!');
     }
 
     public function save(Request $request)
