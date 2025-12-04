@@ -24,12 +24,13 @@ class UserController extends Controller
 {
     public function index(Request $request): InertiaResponse | RedirectResponse
     {
-        if ($request->type === TypeUser::ADMIN->value && Gate::denies('admin-access')) {
+        $type = $request->type ?: TypeUser::DEFAULT->value;
+
+        if ($type === TypeUser::ADMIN->value && Gate::denies('admin-access')) {
             Toast::warning('Você não tem acesso a página requistada');
             return redirect()->back();
         }
 
-        $type = $request->type ?: TypeUser::DEFAULT->value;
         //buscar usuario de acordo com type
         $users = User::where('type', $type)->where('id', "!=", Auth::id())
             ->when($request->name_email, function ($query, $value) {
@@ -146,7 +147,7 @@ class UserController extends Controller
     }
     public function delete($id)
     {
-        User::find($id)->delete();
+        User::where('id', $id)->delete();
         Toast::success('Usuário deletado com sucesso');
     }
 

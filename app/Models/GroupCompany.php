@@ -11,7 +11,7 @@ class GroupCompany extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
-    // Relationships
+
     public function company(): HasMany
     {
         return $this->hasMany(Company::class);

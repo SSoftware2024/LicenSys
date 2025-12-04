@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\System;
 use App\Enum\MonthlyFee;
 use App\Models\HistoricCompany;
-use Illuminate\Support\Facades\Log;
 
 final class MonthlyStatusService
 {
@@ -82,6 +81,14 @@ final class MonthlyStatusService
         return $status_original;
     }
 
+    /**
+     * updateAllCompaniesMonthlyStatus
+     *
+     * Atualiza todos os status mensais das empresas no ano atual, caso mês atual esteja vencido
+     * e passou do limite desativa empresa
+     *
+     * @return void
+     */
     public function updateAllCompaniesMonthlyStatus(): void
     {
         $historics = HistoricCompany::whereYear('pay_date', now()->year)->orderBy('id')->cursor();
@@ -108,8 +115,6 @@ final class MonthlyStatusService
                     'activated' => false
                 ]);
             }
-
-            // Log::info("Empresa ID {$value->company_id} - Status Mensalidade atualizado para: {$new_status}");
         }
     }
 }
