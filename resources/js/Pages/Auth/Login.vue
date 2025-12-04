@@ -45,12 +45,18 @@
                 </label>
             </div>
             <div class="mt-1 flex justify-between">
-                <a
-                    href="#"
+                <Link
+                    :href="route('password.request')"
                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >Esqueci a senha!</a
-                >
-                <Button text="login" type="submit" typeButton='primary' :isDisable="form.processing" :isLoading="form.processing"></Button>
+                    >Esqueci a senha!
+                </Link>
+                <Button
+                    text="login"
+                    type="submit"
+                    typeButton="primary"
+                    :isDisable="form.processing"
+                    :isLoading="form.processing"
+                ></Button>
             </div>
         </form>
     </AuthLayout>

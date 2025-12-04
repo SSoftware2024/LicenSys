@@ -21,11 +21,13 @@ if (!function_exists('routesFortify')) {
             // 'register_post' => route('register.store'),//POST
             // 'register_get' => route('register'),//POST
 
-            //ESQUECEU_SENHA E RESETAR PASSWORDS - LOGIN INCLUÍDO
-            'reset_password_post' => route('password.update'), //POST
-            'reset_password_get' => 'password.reset', //GET, precisa de parametro na hora execução
+            //TELA DE SETAR EMAIL -> ESQUECEU A SENHA
             'forgot_password_get' => route('password.request'), //GET
             'forgot_password_post' => route('password.email'), //POST
+
+            //RESETAR(ATUALIZAR) -> TELA DE RESETAR SENHA APÓS O 'EMAIL ENVIADO' (TELA ACIMA)
+            'reset_password_post' => route('password.update'), //POST
+            'reset_password_get' => 'password.reset', //GET, precisa de parametro na hora execução -> VEM DO EMAIL
 
             //CONFIRM PASSWORDS
             'confirm_password_get' => route('password.confirm'), //GET (VIEW - OPCIONAL)
@@ -35,9 +37,9 @@ if (!function_exists('routesFortify')) {
             //EMAIL VERIFICANTION
             'verificationSend_post' => route('verification.send'), // POST
             'verificationNotice_get' => route('verification.notice'), // GET (VIEW)
-            'verificationVerify_get' => 'verification.verify', // GET, precisa de parametro na hora execução
+            'verificationVerify_get' => 'verification.verify', // GET, precisa de parametro na hora execução -> VEM DO EMAIL
 
-            //UPDATE PROFILE INFORMATION
+            //ATUALIZA USUÁRIO E SENHA DO MESMO
             'profile_information_put' => route('user-profile-information.update'), //PUT
             'password_user_update_put' => route('user-password.update'), //PUT
 
