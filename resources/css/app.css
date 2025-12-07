@@ -1,5 +1,11 @@
 @import 'tailwindcss';
 @import "flowbite/src/themes/default";
+/* tema: sugar, default, bootstrap */
+@import 'vue-toast-notification/dist/theme-bootstrap.css';
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
 @custom-variant dark (&:where(.dark, .dark *));
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,10 +15,17 @@
 @source "../**/*.vue";
 @source "../node_modules/flowbite";
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+
+
+.bg-gray-900\/50 {
+  --tw-bg-opacity: 0.5;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+
+.cs_readonly {
+    background-color: #e5e7eb;
+    cursor: not-allowed;
 }
 
 
-@plugin "flowbite/plugin";
+@plugin "flowbite/plugin.js";

@@ -36,7 +36,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'routes_fortify' => routesFortify(),
+            RESPONSE_DATA_KEY_INERTIA => session(RESPONSE_DATA_KEY_INERTIA) ?? null
         ]);
     }
 }
