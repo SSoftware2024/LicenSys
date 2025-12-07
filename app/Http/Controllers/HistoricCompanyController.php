@@ -72,7 +72,8 @@ class HistoricCompanyController extends Controller
         ]);
 
         HistoricCompany::where('id',$request->historic_company_id)->update([
-            'monthly_fee_status' => MonthlyFee::PAID->value
+            'monthly_fee_status' => MonthlyFee::PAID->value,
+            'date_paid' => now(),
         ]);
         Toast::success('Mensalidade paga com sucesso');
     }
@@ -83,6 +84,7 @@ class HistoricCompanyController extends Controller
         ]);
         $historicCompany = HistoricCompany::find($request->historic_company_id);
         $historicCompany->monthly_fee_status = (new MonthlyStatusService())->getStatusMonthByDate($historicCompany, true);
+        $historicCompany->date_paid = null;
         $historicCompany->save();
         Toast::info('Remoção de pagamento aplicada');
 
