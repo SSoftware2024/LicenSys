@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 #------------------------------CRON JOBS----------------------------------#
 Schedule::command('app:monthly-status-service-command')->daily(); //todos os dias à meia noite
+Schedule::command('app:monthly-status-service-command')->yearlyOn(1, 1, '00:01'); //todos os anos no (mês, dia, hora)
