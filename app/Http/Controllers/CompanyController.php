@@ -50,7 +50,7 @@ class CompanyController extends Controller
         #  ======================== AJUSTE PARA API, VINCULAÇÃO  ========================  #
         $companies->getCollection()->transform(function ($company) {
             //filtro relaizado acima, apenas cria atributo dinâmico
-            $company->current_month_status = $company->historicCompany->first()->monthly_fee_status;
+            $company->current_month_status = $company->historicCompany->first()->monthly_fee_status ?? null;
             $company->value_monthly_fee_formated = getMoneyToStringBr($company->value_monthly_fee);
             return $company;
         });
