@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\ConectorController;
 use Illuminate\Http\Request;
-use App\Services\API\ConectorService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/check-api', function (Request $request) {
@@ -14,5 +14,5 @@ Route::get('/user', function (Request $request) {
 
 
 
-Route::get('/connect', [ConectorService::class, 'connect']);
+Route::post('/connect', [ConectorController::class, 'connect']);
 
