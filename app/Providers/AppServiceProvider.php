@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use App\Console\Commands\MonthlyStatusServiceCommand;
-use App\Enum\TypeUser;
 use App\Models\User;
+use App\Enum\TypeUser;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use App\Console\Commands\MonthlyStatusServiceCommand;
 
 class AppServiceProvider extends ServiceProvider
 {
