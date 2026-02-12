@@ -16,5 +16,5 @@ Route::get('/user', function (Request $request) {
 
 
 Route::post('/connect', [ConectorController::class, 'connect']);
-Route::post('/getMonths', [MonthsManagerController::class, 'getMonths']);
+Route::post('/getMonths', [MonthsManagerController::class, 'getMonths'])->middleware('auth:sanctum');
 

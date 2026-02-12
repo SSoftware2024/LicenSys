@@ -31,4 +31,5 @@ final class MonthsManagerService
         $parameters = compact('uuid', 'month', 'year', 'monthly_fee');
         return $historicCompany->paginate(12)->appends($parameters);
     }
+
 }
