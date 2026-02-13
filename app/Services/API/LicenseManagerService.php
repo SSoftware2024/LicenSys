@@ -37,13 +37,13 @@ final class LicenseManagerService
 
     public function getData(string $uuid) {
         $company = Company::where('uuid', $uuid)->firstOrFail();
-        $companyClass = new CompanyClass($company->uuid);
-        return response()->json([
+        $companyClass = new CompanyClass($company);
+        return [
             'payment_day' => $companyClass->paymentDayCurrentMonth(),
             'value_monthly_fee' => getMoneyToStringBr($company->value_monthly_fee),
             'status_current_month' => $companyClass->getStatusCurrentMonth(),
             'limit_days_alert' => SystemClassFacade::getLimitDays(),
-        ]);
+        ];
 
     }
 
