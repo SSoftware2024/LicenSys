@@ -1,5 +1,7 @@
 <?php
-namespace App\Services;
+
+namespace App\Utils;
+
 
 use App\Enum\ToastType;
 

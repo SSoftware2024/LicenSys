@@ -155,10 +155,9 @@ class CompanyController extends Controller
             'payment_day' => [
                 'required',
                 'integer',
-                "between:1,$max_day_month",
-                function ($attribute, $value, $fail) use ($now_day, $old_payment_day) {
+                function ($attribute, $value, $fail) use ($now_day, $old_payment_day, $max_day_month) {
                     if ($value < $now_day && $value != $old_payment_day) {
-                        $fail("O {$attribute} deve ser maior ou igual ao dia atual → $now_day ou igual seu valor antigo: $old_payment_day");
+                        $fail("O {$attribute} deve ser maior ou igual ao dia atual → $now_day ou igual seu valor antigo: $old_payment_day.");
                     }
                 }
             ],

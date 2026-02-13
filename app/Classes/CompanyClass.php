@@ -6,7 +6,6 @@ use App\Models\Company;
 
 final class CompanyClass
 {
-    private string $id;
     private string $uuid;
 
     public function __construct(string $uuid)
@@ -25,5 +24,11 @@ final class CompanyClass
         }]);
         $company = $companies->first();
         return $company->historicCompany->first()->monthly_fee_status ?? null;
+    }
+
+    public function paymentDayCurrentMonth(){
+        $payment_day = Company::query()->where('uuid', $this->uuid)->select('payment_day')->first()->payment_day;
+        $max_day =  cal_days_in_month(CAL_GREGORIAN, now()->month, now()->year);
+        return $payment_day > $max_day ? $payment_day : (string)$max_day;
     }
 }

@@ -1,13 +1,12 @@
 <?php
 namespace App\Facades;
 
-
-use App\Utils\ToastFacade;
+use App\Classes\SystemClass;
 use Illuminate\Support\Facades\Facade;
 
-class Toast extends Facade
+class SystemClassFacade extends Facade
 {
     protected static function getFacadeAccessor(){
-        return ToastFacade::class;
+        return SystemClass::class;
     }
 }

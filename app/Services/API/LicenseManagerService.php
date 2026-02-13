@@ -3,9 +3,9 @@
 namespace App\Services\API;
 
 use App\Classes\CompanyClass;
+use App\Facades\SystemClassFacade;
 use App\Models\Company;
 use App\Models\HistoricCompany;
-use App\Models\System;
 
 final class LicenseManagerService
 {
@@ -39,10 +39,10 @@ final class LicenseManagerService
         $company = Company::where('uuid', $uuid)->firstOrFail();
         $companyClass = new CompanyClass($company->uuid);
         return response()->json([
-            'payment_day' => $company->payment_day,
+            'payment_day' => $companyClass->paymentDayCurrentMonth(),
             'value_monthly_fee' => getMoneyToStringBr($company->value_monthly_fee),
             'status_current_month' => $companyClass->getStatusCurrentMonth(),
-            'limit_days_alert' => System::find(1)->limit_days ?? 0
+            'limit_days_alert' => SystemClassFacade::getLimitDays(),
         ]);
 
     }

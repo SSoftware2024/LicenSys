@@ -2,17 +2,17 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-use App\Models\System;
 use App\Enum\MonthlyFee;
+use App\Facades\SystemClassFacade;
 use App\Models\HistoricCompany;
+use Carbon\Carbon;
 
 final class MonthlyStatusService
 {
     private int $limit_days = 0;
     public function __construct()
     {
-        $this->limit_days = System::find(1)->limit_days ?? 0;
+        $this->limit_days = SystemClassFacade::getLimitDays();
     }
 
 
