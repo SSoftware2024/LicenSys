@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Enum\MonthlyFee;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\API\LicenseManagerService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Services\API\MonthsManagerService;
 
 
-class MonthsManagerController extends Controller
+class LicenseManagerController extends Controller
 {
     public function getMonths(Request $request)
     {
@@ -48,12 +48,29 @@ class MonthsManagerController extends Controller
             ], 422);
         }
 
-        $data = (new MonthsManagerService())->getMonths(
+        $data = (new LicenseManagerService())->getMonths(
             $request->uuid,
             $request->month,
             $request->year,
             $request->monthly_fee
         );
+        return response()->json($data);
+    }
+
+    public function getData(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'uuid' => ['required', 'string', 'uuid'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Erro na validação dos dados',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $data = (new LicenseManagerService())->getData($request->uuid);
         return response()->json($data);
     }
 }

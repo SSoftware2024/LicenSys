@@ -1,13 +1,16 @@
 <?php
+
 namespace App\Services\API;
 
+use App\Classes\CompanyClass;
 use App\Models\Company;
-use App\Enum\MonthlyFee;
 use App\Models\HistoricCompany;
+use App\Models\System;
 
-final class MonthsManagerService
+final class LicenseManagerService
 {
-    public function getMonths(string $uuid, int $month = 0 ,int|string $year = 'all', array|string $monthly_fee = 'all') {
+    public function getMonths(string $uuid, int $month = 0, int|string $year = 'all', array|string $monthly_fee = 'all')
+    {
         //validar para uuid ser da empresa que esta fazendo requisção, só autorização de token não é suficiente
         $company = Company::query();
         $company->where('uuid', $uuid);
@@ -23,7 +26,7 @@ final class MonthsManagerService
         if ($monthly_fee != 'all' && !in_array('all', $monthly_fee) && !in_array(null, $monthly_fee)) {
             $historicCompany->whereIn('monthly_fee_status', $monthly_fee);
         }
-        if($month > 0 && $month <=12){
+        if ($month > 0 && $month <= 12) {
             $historicCompany->whereMonth('pay_date', $month);
         }
 
@@ -32,4 +35,20 @@ final class MonthsManagerService
         return $historicCompany->paginate(12)->appends($parameters);
     }
 
+    public function getData(string $uuid) {
+        $company = Company::where('uuid', $uuid)->firstOrFail();
+        $companyClass = new CompanyClass($company->uuid);
+        return response()->json([
+            'payment_day' => $company->payment_day,
+            'value_monthly_fee' => getMoneyToStringBr($company->value_monthly_fee),
+            'status_current_month' => $companyClass->getStatusCurrentMonth(),
+            'limit_days_alert' => System::find(1)->limit_days ?? 0
+        ]);
+
+    }
+
+    public function payMonth(string $uuid, int|string $month, int|string $year)
+    {
+        $company = Company::query();
+    }
 }

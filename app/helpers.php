@@ -1,8 +1,9 @@
 <?php
 
 //Flash message inertia, colocar em config
-const RESPONSE_DATA_KEY_INERTIA = 'response_data';
-
+if(defined('RESPONSE_DATA_KEY_INERTIA') === false){
+    define('RESPONSE_DATA_KEY_INERTIA', 'response_data');
+}
 
 if (!function_exists('routesFortify')) {
     /**
