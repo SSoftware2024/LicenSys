@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('code_access_api_generics_systems');
             $table->text('code_access_api_cripty')->nullable();
             $table->text('code_access_api_generics_systems_cripty')->nullable();
+            $table->string('name_owner_pix');
+            $table->text('pix_key');
             $table->timestamps();
             $table->softDeletes();
         });

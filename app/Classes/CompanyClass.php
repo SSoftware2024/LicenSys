@@ -14,7 +14,6 @@ final class CompanyClass
     }
 
     public function getStatusCurrentMonth(){
-        // $companies = Company::query()->where('uuid', $this->uuid);
         $this->company->select('id','uuid','value_monthly_fee','payment_day');
         $date = now();
         $this->company->with(['historicCompany' => function ($query) use ($date) {
@@ -22,7 +21,6 @@ final class CompanyClass
                 ->whereMonth('pay_date', $date->month)
                 ->whereYear('pay_date', $date->year);
         }]);
-        // $company = $companies->first();
         return $this->company->historicCompany->first()->monthly_fee_status ?? null;
     }
 
