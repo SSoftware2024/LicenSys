@@ -123,7 +123,7 @@
                                 typeButton="red"
                                 class="relative top-1.5"
                                 @click="
-                                    _deleteAlert(value.id, value.company_count)
+                                    _deleteAlert(value.id, value.payment_payment_method_count)
                                 "
                             ></Button>
                         </td>
@@ -213,10 +213,10 @@ function _cancelUpdate() {
     form_update.reset();
 }
 
-function _deleteAlert(id, company_count) {
+function _deleteAlert(id, payment_payment_method_count) {
     Swal.fire({
         title: "Deseja realmente proceder com a exclusão?",
-        text: `O grupo possui ${company_count} empresas vinculadas.`,
+        text: `A forma de pagamento possui ${payment_payment_method_count} baixas de pagamento vinculadas.`,
         showCancelButton: true,
         confirmButtonText: "SIM",
         cancelButtonText: "NÃO",
@@ -241,7 +241,7 @@ function paginate(page_link) {
 
 function _search() {
     router.get(
-        route("company_group"),
+        route("payment_method"),
         {
             name: form.name,
         },

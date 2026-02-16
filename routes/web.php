@@ -86,5 +86,6 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
         Route::match(['get','post'],'/', [PaymentMethodController::class, 'index']);
         Route::post('/create', [PaymentMethodController::class, 'create'])->name('.create');
         Route::patch('/update', [PaymentMethodController::class, 'update'])->name('.update');
+        Route::delete('/delete/{id}', [PaymentMethodController::class, 'delete'])->name('.delete');
     });
 });

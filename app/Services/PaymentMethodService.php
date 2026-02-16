@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Classes\Abstract\CRUD;
 use App\Models\PaymentMethod;
+use App\Models\PaymentPaymentMethod;
 
 final class PaymentMethodService extends CRUD
 {
@@ -12,16 +13,24 @@ final class PaymentMethodService extends CRUD
     }
 
     public function deleteWithRelations(int $id){
-        $payment_method = PaymentMethod::find($id);
-        $payment_method_count = 0;
-        if($payment_method_count > 0){
-            //desvincular todos
+        $is_have_relations = PaymentPaymentMethod::where('payment_method_id', $id)->exists();
+        $data = [
+            'success' => !$is_have_relations,
+            'register_deleteds' => 0
+        ];
+        if (!$is_have_relations) {
+            $data['register_deleteds'] = parent::delete($id);
+            $data['success'] = true;
         }
-        //apagar metodo de pagamento
-        return parent::delete($id);
+        return $data;
     }
 
-    public function read(){
-        return PaymentMethod::paginate();
+    public function read(string|null $search_name=''){
+       $paymentMethods = PaymentMethod::query();
+       if(isset($search_name) && !empty($search_name)){
+            $paymentMethods->where('name','like',"%$search_name%");
+        }
+        $paymentMethods = $paymentMethods->withCount('paymentPaymentMethod')->orderBy('name')->paginate();
+        return $paymentMethods;
     }
 }
