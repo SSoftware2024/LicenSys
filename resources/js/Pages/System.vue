@@ -78,6 +78,24 @@
                     />
                 </div>
             </div>
+            <div class="flex">
+                <div class="flex flex-col w-full m-1">
+                    <Input
+                        type="text"
+                        label="Nome do Pix(DONO)"
+                        id="onwer_pix"
+                        v-model="form.onwer_pix"
+                    />
+                </div>
+                <div class="flex flex-col w-full m-1">
+                    <Input
+                        type="text"
+                        label="Chave Pix"
+                        id="key_pix"
+                        v-model="form.key_pix"
+                    />
+                </div>
+            </div>
             <div class="flex justify-end">
                 <Button
                     text="Salvar"
@@ -116,6 +134,8 @@ const form = useForm({
     code_access_api_generics_systems: "",
     code_access_api_readonly: "",
     code_access_api_generics_systems_readonly: "",
+    onwer_pix: null,
+    key_pix: null,
 });
 
 function save() {

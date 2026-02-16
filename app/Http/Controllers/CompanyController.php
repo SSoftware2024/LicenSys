@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\SystemClass;
 use Inertia\Inertia;
 use App\Facades\Toast;
 use App\Models\Company;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\HistoricCompany;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Services\SystemForSaleService;
+
 
 class CompanyController extends Controller
 {
@@ -64,7 +65,7 @@ class CompanyController extends Controller
     public function createView()
     {
         $uuid = Company::uuidExists();
-        $systems_for_sale = (new SystemForSaleService())->getSystemsForSale();
+        $systems_for_sale = (new SystemClass())->getSystemsForSale();
         $groups_company = GroupCompany::orderBy('name')->get();
         $monthly_fee_status = MonthlyFee::toArrayPortuguese();
 
@@ -79,7 +80,7 @@ class CompanyController extends Controller
     {
 
         $company =  Company::findOrFail($id);
-        $systems_for_sale = (new SystemForSaleService())->getSystemsForSale();
+        $systems_for_sale = (new SystemClass())->getSystemsForSale();
         $groups_company = GroupCompany::orderBy('name')->get();
         $monthly_fee_status = MonthlyFee::toArrayPortuguese();
 
