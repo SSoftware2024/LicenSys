@@ -8,18 +8,18 @@ use App\Models\GroupCompany;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Services\CompanyGroupService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class CompanyGroupController extends Controller
 {
+    public function __construct(
+        private CompanyGroupService $service
+    ) {}
     function index(Request $request)
     {
-        $company_groups = GroupCompany::query();
-        if(isset($request->name)){
-            $company_groups->where('name','like',"%{$request->name}%");
-        }
-        $company_groups = $company_groups->withCount('company')->orderBy('name')->paginate();
+        $company_groups = $this->service->read($request->input('name', ''));
         return Inertia::render('CompanyGroup/Index', compact('company_groups'));
     }
 
@@ -30,9 +30,9 @@ class CompanyGroupController extends Controller
         ], [
             'name.unique' => 'Grupo empresa já existente na base de dados.'
         ]);
-        GroupCompany::create([
-            'name' => $request->name,
-        ]);
+
+        $data = $request->only('name');
+        $this->service->create($data);
         Toast::success('Grupo criado com sucesso!');
     }
     public function update(Request $request)
@@ -40,30 +40,23 @@ class CompanyGroupController extends Controller
         $id = $request->id;
         $request->validate([
             'name' => ['required', 'min:5', Rule::unique(GroupCompany::class, 'name')->ignore($id)],
+            'id' => ['required', 'integer', 'exists:group_companies,id'],
         ], [
             'name.unique' => 'Grupo empresa já existente na base de dados.'
         ]);
-        GroupCompany::where('id', $id)->update([
-            'name' => $request->name,
-        ]);
+
+        $data = $request->only('name');
+        $this->service->update($request->input('id'), $data);
         Toast::success('Grupo atualizado com sucesso!');
     }
 
-    function delete($id)
+    function delete(int $id)
     {
         try {
             Validator::make(['id' => $id], [
                 'id' => ['required', 'exists:group_companies,id'],
             ])->validate();
-
-            $group_company = GroupCompany::find($id);
-            $company_count = $group_company->company()->count();
-
-            if ($company_count > 0) {
-                $group_company->company()->update(['group_company_id' => null]);
-            }
-            $group_company->forceDelete();
-
+            $company_count = $this->service->deleteWithRelations($id);
             Toast::success('Grupo excluído com sucesso!');
             Toast::info("Total de $company_count desvinculadas do grupo!");
         } catch (ValidationException $e) {
