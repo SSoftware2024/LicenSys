@@ -327,6 +327,30 @@
                                 Mensalidade
                             </Link>
                         </li>
+                        <li>
+                            <Link
+                                :href="route('payment_method')"
+                                :class="{
+                                    'flex pl-11 items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                                    'text-lime-700!':
+                                        route().current('payment_method'),
+                                }"
+                            >
+                                Formas de pagamento
+                            </Link>
+                        </li>
+                        <!-- <li>
+                            <Link
+                                :href="route('historic_company')"
+                                :class="{
+                                    'flex pl-11 items-center p-2 text-neutral-50 rounded-lg dark:text-white hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+                                    'text-lime-700!':
+                                        route().current('historic_company'),
+                                }"
+                            >
+                                Baixa pagamentos
+                            </Link>
+                        </li> -->
 
                     </ul>
                 </li>
