@@ -3,8 +3,6 @@
 namespace App\Traits;
 
 
-
-
 /**
  * @method array toArray()
  */
@@ -48,4 +46,6 @@ trait EnumFunctions
         }
         return $array_translated;
     }
+
+
 }

@@ -2,27 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Inertia\Inertia;
-use App\Enum\TypeUser;
-use App\Facades\Toast;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
-use Inertia\Response as InertiaResponse;
+use App\Enum\TypeUser;
+use App\Facades\Toast;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 class UserController extends Controller
 {
-    public function index(Request $request): InertiaResponse | RedirectResponse
+    public function __construct(
+        private UserService $service
+    ) {}
+    public function index(Request $request)
     {
         $type = $request->type ?: TypeUser::DEFAULT->value;
 
@@ -31,15 +35,8 @@ class UserController extends Controller
             return redirect()->back();
         }
 
-        //buscar usuario de acordo com type
-        $users = User::where('type', $type)->where('id', "!=", Auth::id())
-            ->when($request->name_email, function ($query, $value) {
-                $query->where('name', 'like', "%{$value}%")
-                ->orWhere('email', 'like', "%{$value}%");
-            })
-            ->orderBy('created_at', 'desc')
-            ->orderBy('name', 'asc')
-            ->paginate();
+        $type = TypeUser::from($type);
+        $users = $this->service->searchWithType(type:$type, name_email:$request->name_email);
         return Inertia::render('User/Index', [
             'type_user' => $request->type,
             'users' => $users,
@@ -108,7 +105,6 @@ class UserController extends Controller
                 break;
         }
         Toast::success('Perfil atualizado com sucesso!');
-
     }
     public function updatePassword(Request $request)
     {
@@ -155,8 +151,8 @@ class UserController extends Controller
     {
         $value = $request->value;
         $value = !$value;
-        $typeToast = $value ? 'success':'info';
-        $message = 'Usuário '.($value ? 'ativado':'desativado');
+        $typeToast = $value ? 'success' : 'info';
+        $message = 'Usuário ' . ($value ? 'ativado' : 'desativado');
         User::where('id', $request->id)->update([
             'activated' => $value
         ]);
