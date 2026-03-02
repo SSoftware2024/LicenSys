@@ -32,5 +32,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('admin-access', function (User $user) {
             return $user->type === TypeUser::ADMIN->value;
         });
+        Gate::define('isMe', function (User $user, int $id) {
+            return $user->id === $id;
+        });
     }
 }

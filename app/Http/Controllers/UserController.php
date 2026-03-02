@@ -36,7 +36,7 @@ class UserController extends Controller
         }
 
         $type = TypeUser::from($type);
-        $users = $this->service->searchWithType(type:$type, name_email:$request->name_email);
+        $users = $this->service->searchWithType(type: $type, name_email: $request->name_email);
         return Inertia::render('User/Index', [
             'type_user' => $request->type,
             'users' => $users,
@@ -50,25 +50,15 @@ class UserController extends Controller
                 'type' => TypeUser::DEFAULT->value
             ]);
         }
-        $id = $request->id;
-        $user = null;
-        if (!empty($id)) {
-            $user = User::select('id', 'name', 'email', 'activated')->find($id);
-
-            //verficar se posso editar esse usuário, não pode ser eu mesmo e user comum não pode editar admin
-            if (Auth::id() === $user->id) {
-                Toast::warning('Você não pode editar a si mesmo na edição genérica de usuários.');
-                return redirect()->route('user', [
-                    'type' => $request->type
-                ]);
-            } else if (Auth::user()->type === TypeUser::DEFAULT->value && $user->type !== TypeUser::ADMIN->value) {
-                Toast::warning('Você não tem permissão para editar este usuário.');
-                return redirect()->route('user', [
-                    'type' => TypeUser::DEFAULT->value
-                ]);
-            }
+        $data = $this->service->ruleSaveView($request->id);
+        $user = $data['user'];
+        if(!$data['success']){
+            Toast::warning($data['message']);
+            return redirect()->route('user', [
+                'type' => $data['user_type']
+            ]);
         }
-
+        
         return Inertia::render('User/Save', [
             'type_user' => $request->type,
             'operation' => $request->operation,
