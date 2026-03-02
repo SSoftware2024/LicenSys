@@ -139,14 +139,8 @@ class UserController extends Controller
 
     public function toggleActivete(Request $request)
     {
-        $value = $request->value;
-        $value = !$value;
-        $typeToast = $value ? 'success' : 'info';
-        $message = 'Usuário ' . ($value ? 'ativado' : 'desativado');
-        User::where('id', $request->id)->update([
-            'activated' => $value
-        ]);
-        Toast::{$typeToast}($message);
+        $data = $this->service->toggleActivete($request->id, $request->value);
+        Toast::{$data['type_toast']}($data['message']);
     }
     /* ----------------------------- PRIVATE METHODS ---------------------------- */
 
@@ -162,14 +156,7 @@ class UserController extends Controller
             default:
                 // user default
                 $this->validateSaveData($data, 'create');
-                $user = User::create([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'email_verified_at' =>  now(),
-                    'password' => Hash::make($data['password']),
-                    'type' => TypeUser::DEFAULT->value,
-                    'activated' => (bool) $data['activated']
-                ]);
+                $user = $this->service->createDefaultUser($data);
                 break;
         }
         return $user;

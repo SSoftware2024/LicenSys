@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Actions\Fortify\CreateNewUser;
 use App\Enum\TypeUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 
 final class UserService
 {
@@ -22,6 +24,31 @@ final class UserService
             ->paginate();
     }
 
+    public function createDefaultUser(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'email_verified_at' =>  now(),
+            'password' => Hash::make($data['password']),
+            'type' => TypeUser::DEFAULT->value,
+            'activated' => (bool) $data['activated']
+        ]);
+    }
+    public function toggleActivete(int $id, bool $value)
+    {
+        $value = !$value;
+        $type_toast = $value ? 'success' : 'info';
+        $message = 'Usuário ' . ($value ? 'ativado' : 'desativado');
+        User::where('id', $id)->update([
+            'activated' => $value
+        ]);
+        return [
+            'type_toast' => $type_toast,
+            'message' => $message
+        ];
+    }
+    # =========================================================== VIEWS ================================================================== #
     public function ruleSaveView(int|null $id)
     {
         $data = [
