@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Actions\Fortify\CreateNewUser;
 use App\Enum\TypeUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -65,7 +64,7 @@ final class UserService
                 $data['success'] = false;
                 $data['message'] = 'Você não pode editar a si mesmo na edição genérica de usuários.';
                 $data['user_type'] = $user->type;
-            } else if (Gate::denies('admin-access') && $user->type == TypeUser::ADMIN->value) { //user default tentando editar user admin
+            } else if (Gate::denies('adminAccess') && $user->type == TypeUser::ADMIN->value) { //user default tentando editar user admin
                 $data['success'] = false;
                 $data['message'] = 'Você não tem permissão para editar este usuário.';
                 $data['user_type'] = TypeUser::DEFAULT->value;

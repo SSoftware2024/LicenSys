@@ -30,7 +30,7 @@ class UserController extends Controller
     {
         $type = $request->type ?: TypeUser::DEFAULT->value;
 
-        if ($type === TypeUser::ADMIN->value && Gate::denies('admin-access')) {
+        if ($type === TypeUser::ADMIN->value && Gate::denies('adminAccess')) {
             Toast::warning('Você não tem acesso a página requistada');
             return redirect()->back();
         }
@@ -44,7 +44,7 @@ class UserController extends Controller
     }
     public function saveView(Request $request): InertiaResponse | RedirectResponse
     {
-        if ($request->type === TypeUser::ADMIN->value && Gate::denies('admin-access')) {
+        if ($request->type === TypeUser::ADMIN->value && Gate::denies('adminAccess')) {
             Toast::warning('Você não tem acesso a página requistada');
             return redirect()->route('user', [
                 'type' => TypeUser::DEFAULT->value
@@ -111,7 +111,7 @@ class UserController extends Controller
                 Toast::success('Usuário cadastrado com sucesso');
                 $user->fresh();
 
-                if (Gate::allows('admin-access')) {
+                if (Gate::allows('adminAccess')) {
                     return redirect()->route('user.saveView', [
                         'operation' => 'update',
                         'type' => $request->type,
