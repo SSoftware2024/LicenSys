@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\HistoricCompanyClass;
 use App\Classes\SystemClass;
 use App\Enum\MonthlyFee;
 use App\Facades\Toast;
@@ -107,6 +108,11 @@ class CompanyController extends Controller
                     if ($value < $now_day && $value != $old_payment_day) {
                         $fail("O {$attribute} deve ser maior ou igual ao dia atual → $now_day ou igual seu valor antigo: $old_payment_day.");
                     }
+                },
+                function ($attribute, $value, $fail) use ($max_day_month) {
+                    if ($value > $max_day_month) {
+                        $fail("O {$attribute} não deve ser maior que $max_day_month");
+                    }
                 }
             ],
             'systems_useds' => ['required', 'array', 'min:1'],
@@ -124,35 +130,28 @@ class CompanyController extends Controller
         ]);
 
         // Atualiza via model para manter a instância e depois gerar atualizações nos históricos
-        $company->update([
-            'payment_day' => $request->payment_day,
-            'company_name' => strtoupper($request->company_name),
-            'systems_useds' => $request->systems_useds,
-            'value_monthly_fee' => convertToMoney($request->value_monthly_fee),
-            'group_company_id' => $request->group_company_id,
-            'activated' => $request->activated,
-            'isFiscal' => false,
-            'updated_by_user_id' => Auth::id()
-        ]);
+        $this->service->updatePrepareData($company, $request->only([
+            'payment_day',
+            'company_name',
+            'systems_useds',
+            'value_monthly_fee',
+            'group_company_id',
+            'activated'
+        ]));
         //se alterar pagamento ou dia, deve-se atualizar os meses futuros
-        HistoricCompany::generateUpdate($company, $old_payment_day, $old_value_monthly_fee);
+        HistoricCompanyClass::generateUpdate($company, $old_payment_day, $old_value_monthly_fee);
         Toast::success('Empresa atualizada com sucesso!');
     }
 
     public function toggleActive(int $id)
     {
-        $company = Company::findOrFail($id);
-        $company->activated = !$company->activated;
-        $company->updated_by_user_id = Auth::id();
-        $company->save();
-        $text = $company->activated ? 'ativada' : 'desativada';
+        $is_activeted = $this->service->toggleActive($id);
+        $text = $is_activeted ? 'ativada' : 'desativada';
         Toast::info("Empresa $text com sucesso!");
     }
     public function delete(int $id)
     {
-        $company = Company::findOrFail($id);
-        $company->historicCompany()->forceDelete();
-        $company->forceDelete();
+        $this->service->deleteWithHistoric($id);
         Toast::warning("Empresa $id deletada com sucesso!");
     }
 
