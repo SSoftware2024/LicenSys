@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-use App\Models\System;
-use App\Enum\MonthlyFee;
+use App\Classes\HistoricCompanyClass;
 use App\Models\HistoricCompany;
+use Carbon\Carbon;
 
 final class MonthsNewYear
 {
@@ -43,7 +42,7 @@ final class MonthsNewYear
         $companies = $this->companiesWithoutNewYear();
         if ($companies->count() > 0) {
             foreach ($companies as $company) {
-                HistoricCompany::generate($company);
+                HistoricCompanyClass::generate($company);
             }
         }
     }

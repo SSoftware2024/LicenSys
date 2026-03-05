@@ -48,7 +48,7 @@ final class UserService
         ];
     }
     # =========================================================== VIEWS ================================================================== #
-    public function ruleSaveView(int|null $id)
+    public function ruleSaveView(int|null $id):array
     {
         $data = [
             'user' => null,

@@ -37,7 +37,8 @@ final class LicenseManagerService
 
     public function getData(string $uuid) {
         $company = Company::where('uuid', $uuid)->firstOrFail();
-        $companyClass = new CompanyClass($company);
+        $companyClass = new CompanyClass();
+        $companyClass->setCompany($company);
         return [
             'payment_day' => $companyClass->paymentDayCurrentMonth(),
             'value_monthly_fee' => getMoneyToStringBr($company->value_monthly_fee),
