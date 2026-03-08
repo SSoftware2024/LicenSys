@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Cron\MonthlyFeeCron;
 use Illuminate\Console\Command;
-
-use App\Services\MonthsNewYear;
 
 class MonthsNewYearCommand extends Command
 {
@@ -27,6 +26,6 @@ class MonthsNewYearCommand extends Command
      */
     public function handle()
     {
-        (new MonthsNewYear())->generateMonthsToNewYear();
+        (new MonthlyFeeCron())->generateMonthsToNewYear();
     }
 }

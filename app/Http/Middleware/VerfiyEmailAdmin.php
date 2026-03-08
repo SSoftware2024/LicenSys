@@ -14,6 +14,8 @@ class VerfiyEmailAdmin
     /**
      * Handle an incoming request.
      *
+     * Verfica se o usuário administrador esta com email verificado
+     * 
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response

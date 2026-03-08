@@ -11,7 +11,16 @@ final class PaymentMethodService extends CRUD
     protected function getModel(){
         return PaymentMethod::class;
     }
-
+    
+    /**
+     * Method deleteWithRelations
+     *
+     * Deleta metodos de pagamento se não houver relações nele
+     * 
+     * @param int $id 
+     *
+     * @return void
+     */
     public function deleteWithRelations(int $id){
         $is_have_relations = PaymentPaymentMethod::where('payment_method_id', $id)->exists();
         $data = [

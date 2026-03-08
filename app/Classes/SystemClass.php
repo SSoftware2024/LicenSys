@@ -23,6 +23,15 @@ final class SystemClass
     {
         return $this->systems_for_sale;
     }
+        
+    /**
+     * Method getSystem
+     *
+     * @param string $fields 
+     * Colunas da tabela system -> 'id, other_field'
+     *
+     * @return System
+     */
     private function getSystem(string $fields = '*'): System|null
     {
         try {
@@ -31,6 +40,15 @@ final class SystemClass
             return null;
         }
     }
+        
+    
+    /**
+     * Method getLimitDays
+     * 
+     * Retorna máximo de dias de espera para expiração da licença
+     * 
+     * @return int
+     */
     public function getLimitDays(): int
     {
         try {
@@ -41,7 +59,12 @@ final class SystemClass
         }
         return $limit_days;
     }
-
+    
+    /**
+     * Method getDataPayment
+     * Retorna dados de pagamentos, atualmente apenas pix
+     * @return array
+     */
     public function getDataPayment(): array
     {
         $system = $this->getSystem('name_owner_pix, pix_key');

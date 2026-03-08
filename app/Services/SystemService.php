@@ -7,6 +7,19 @@ use Illuminate\Support\Facades\Crypt;
 
 final class SystemService
 {
+    /**
+     * Method save
+     *
+     * Cria ou atualiza dados da tabela sistema
+     * 
+     * @param string $code_access_api [explicite description]
+     * @param string $code_access_api_generics_systems [explicite description]
+     * @param int $limit_days [explicite description]
+     * @param string $onwer_pix [explicite description]
+     * @param string $key_pix [explicite description]
+     *
+     * @return void
+     */
     public function save(
         string $code_access_api,
         string $code_access_api_generics_systems,

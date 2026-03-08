@@ -202,20 +202,21 @@
                                     class="py-2 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownMenuIconButton"
                                 >
-                                    <li>
+                                    <li v-if="value.monthly_fee_status != 'paid'">
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                            @click="_pay(value.id)"
+                                           
                                         >
                                             Pagar
                                         </a>
                                     </li>
-                                    <li>
+                                    <li v-else>
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                             @click="_removePayment(value.id)"
+                                            @click="_removePayment(value.id)"
                                         >
                                             Remover pagamento
                                         </a>

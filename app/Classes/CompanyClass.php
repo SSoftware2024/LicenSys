@@ -25,8 +25,15 @@ final class CompanyClass
         throw new \Exception("Company is empty");
         
     }
-
-    public function getStatusCurrentMonth()
+    
+    /**
+     * Method getStatusCurrentMonth
+     * 
+     * Retorna status atual da empresa previamente inserida
+     * 
+     * @return  string<App\Enum\MonthlyFee>|null
+     */
+    public function getStatusCurrentMonth(): ?string
     {
         $this->getCompany()->select('id', 'uuid', 'value_monthly_fee', 'payment_day');
         $date = now();
@@ -35,14 +42,23 @@ final class CompanyClass
                 ->whereMonth('pay_date', $date->month)
                 ->whereYear('pay_date', $date->year);
         }]);
-        return $this->getCompany()->historicCompany->first()->monthly_fee_status ?? null;
+        return $this->getCompany()->historicCompany->first()?->monthly_fee_status ?? null;
     }
-
-    public function paymentDayCurrentMonth()
+    
+    /**
+     * Method paymentDayCurrentMonth
+     * 
+     * Retorna o dia do pagamento da empresa
+     * 
+     * @return int
+     */
+    public function paymentDayCurrentMonth(): int
     {
         $payment_day = $this->getCompany()->select('payment_day')->first()->payment_day;
+        //máximos de dias no mês
         $max_day =  cal_days_in_month(CAL_GREGORIAN, now()->month, now()->year);
-        return $payment_day > $max_day ? $payment_day : (string)$max_day;
+        //se dia do pagamento ultrassa o último dia do mês, retorna última dia do mês
+        return $payment_day > $max_day ? (string)$max_day : $payment_day;
     }
 
 

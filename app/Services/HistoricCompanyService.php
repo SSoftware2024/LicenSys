@@ -6,6 +6,7 @@ use App\Classes\Abstract\CRUD;
 use App\Enum\MonthlyFee;
 use App\Models\Company;
 use App\Models\HistoricCompany;
+use App\Services\Cron\MonthlyFeeCron;
 use Symfony\Component\HttpFoundation\Request;
 
 final class HistoricCompanyService extends CRUD
@@ -17,21 +18,43 @@ final class HistoricCompanyService extends CRUD
 
     public function read() {}
 
-    public function pay(int $id):mixed
+    public function pay(int $id): mixed
     {
         return HistoricCompany::where('id', $id)->update([
             'monthly_fee_status' => MonthlyFee::PAID->value,
             'date_paid' => now(),
         ]);
     }
-    public function removePayment(int $id):mixed
+    /**
+     * Method removePayment
+     *
+     * Atuaiza status de pago para atrasado ou vencido
+     * 
+     * @param int $id
+     *
+     * @return mixed
+     */
+    public function removePayment(int $id): mixed
     {
         $historicCompany = HistoricCompany::find($id);
-        $historicCompany->monthly_fee_status = (new MonthlyStatusService())->getStatusMonthByDate($historicCompany, true);
+        $historicCompany->monthly_fee_status = (new MonthlyFeeCron())->getStatusMonthByDate($historicCompany, true);
         $historicCompany->date_paid = null;
         return $historicCompany->save();
     }
 
+    /**
+     * Method loadHistoric
+     *
+     * Retorna dados da tabela HistoricCompany com filtro predefinido
+     * 
+     * @param ?string $year 
+     * @param string|int|null $month 
+     * @param array|string|null $month_fee_status 
+     * @param string $company_uuid 
+     * @param array $appends 
+     *
+     * @return mixed
+     */
     public function loadHistoric(
         ?string $year = null,
         string|int|null $month = 0,
