@@ -65,17 +65,23 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::authenticateUsing(function (Request $request) {
-            $user = User::where('email', $request->email)->first();
-            if (boolval($user->activated) == false) {
+            try {
+                $user = User::where('email', $request->email)->firstOrFail();
+                if (boolval($user->activated) == false) {
+                    throw ValidationException::withMessages([
+                        'email' => 'Usuário inativo. Favor contatar o administrador do sistema.',
+                    ]);
+                    return null;
+                } else if (
+                    $user &&
+                    Hash::check($request->password, $user->password)
+                ) {
+                    return $user;
+                }
+            } catch (\Throwable $th) {
                 throw ValidationException::withMessages([
-                    'email' => 'Usuário inativo. Favor contatar o administrador do sistema.',
+                    'email' => 'Essas credenciais não foram encontradas em nossos registros.',
                 ]);
-                return null;
-            } else if (
-                $user &&
-                Hash::check($request->password, $user->password)
-            ) {
-                return $user;
             }
         });
 
@@ -91,5 +97,10 @@ class FortifyServiceProvider extends ServiceProvider
         // Fortify::confirmPasswordView(function () {
         //     return Inertia::render('Auth/ConfirmPassword');
         // });
+        Fortify::twoFactorChallengeView(function () {
+            return Inertia::render('Auth/2FAChallenge', [
+                'logo' => asset('assets/quadro_logo.png')
+            ]);
+        });
     }
 }

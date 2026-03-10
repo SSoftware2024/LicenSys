@@ -231,7 +231,7 @@
             </div>
             <div class="flex justify-start mt-2">
                 <Button
-                    text="Baixar JSON"
+                    text="Baixar Códigos"
                     type="submit"
                     typeButton="dark"
                     @click.prevent="_downloadRecoveryCodes"
