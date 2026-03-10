@@ -69,9 +69,16 @@ class UserController extends Controller
 
     public function profileEditView(): InertiaResponse
     {
-        $user = User::select('name', 'email')->find(Auth::id());
+        $user = User::select('name', 'email','two_factor_secret','two_factor_confirmed_at')->find(Auth::id());
+        $twofa = [
+            'enabled' => $user->two_factor_secret != null,
+            'cofirmed' => $user->two_factor_secret != null && $user->two_factor_confirmed_at
+        ];
+        unset($user->two_factor_secret, $user->two_factor_confirmed_at);
         return Inertia::render('Auth/ProfileEdit', [
             'user' => $user,
+            'twofa_status' => $twofa,
+            'status' => session('status') ?? null
         ]);
     }
     public function profileEdit(Request $request)
