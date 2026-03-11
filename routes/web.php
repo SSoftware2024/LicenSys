@@ -11,6 +11,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CompanyGroupController;
 use App\Http\Controllers\HistoricCompanyController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -81,6 +82,9 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
         Route::match(['get','post'],'/', [HistoricCompanyController::class, 'index']);
         Route::patch('/pay', [HistoricCompanyController::class, 'pay'])->name('.pay');
         Route::patch('/removePayment', [HistoricCompanyController::class, 'removePayment'])->name('.removePayment');
+    });
+    Route::prefix('payment')->name('payment')->group(function () {
+        Route::match(['get','post'],'/', [PaymentController::class, 'index']);
     });
     Route::prefix('payment_method')->name('payment_method')->group(function () {
         Route::match(['get','post'],'/', [PaymentMethodController::class, 'index']);

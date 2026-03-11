@@ -10,7 +10,7 @@ class PaymentMethod extends Model
      protected $guarded = [];
 
 
-     public function paymentPaymentMethod(): HasMany
+    public function paymentPaymentMethod(): HasMany
     {
         return $this->hasMany(PaymentPaymentMethod::class);
     }
