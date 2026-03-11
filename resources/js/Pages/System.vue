@@ -148,6 +148,8 @@ function _loadForm() {
     const data = page.props.system_saved;
     if (data) {
         form.limit_days = data.limit_days;
+        form.onwer_pix = data.name_owner_pix;
+        form.key_pix = data.pix_key;
         form.code_access_api = data.code_access_api;
         form.code_access_api_generics_systems =
             data.code_access_api_generics_systems;

@@ -1,9 +1,5 @@
 <?php
-
-//Flash message inertia, colocar em config
-if(defined('RESPONSE_DATA_KEY_INERTIA') === false){
-    define('RESPONSE_DATA_KEY_INERTIA', 'response_data');
-}
+include_once __DIR__.'/global_constants.php';
 
 if (!function_exists('routesFortify')) {
     /**

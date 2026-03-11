@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Enum\TypeUser;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->gates();
+        /**
+        * Use apenas de maneira  local, em produção isso precisa estar desabilitado
+        * caso true como parametro ele habilita lazyloading
+        */
+        Model::preventLazyLoading(!app()->isProduction());
     }
 
     private function gates()

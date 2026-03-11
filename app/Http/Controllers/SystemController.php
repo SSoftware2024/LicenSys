@@ -43,7 +43,6 @@ class SystemController extends Controller
                 $request->code_access_api,
                 $request->code_access_api_generics_systems,
                 $request->limit_days,
-                $request->limit_days,
                 $request->onwer_pix,
                 $request->key_pix
             );
