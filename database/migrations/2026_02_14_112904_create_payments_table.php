@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('reference_date');
             $table->foreignIdFor(Company::class)->nullable()->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

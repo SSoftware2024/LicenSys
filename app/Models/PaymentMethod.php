@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\HistoricPaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -10,8 +11,8 @@ class PaymentMethod extends Model
      protected $guarded = [];
 
 
-    public function paymentPaymentMethod(): HasMany
+    public function historicPaymentMethod(): HasMany
     {
-        return $this->hasMany(PaymentPaymentMethod::class);
+        return $this->hasMany(HistoricPaymentMethod::class);
     }
 }

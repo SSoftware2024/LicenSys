@@ -53,4 +53,8 @@ class PaymentMethodController extends Controller
             Toast::error("Erro de validação: {$e->errors()['id'][0]}");
         }
     }
+
+    public function getPaymentMethods(){
+        $this->service->getPaymentMethods();
+    }
 }

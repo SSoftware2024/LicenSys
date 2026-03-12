@@ -3,15 +3,16 @@
 namespace App\Services;
 
 use App\Classes\Abstract\CRUD;
+use App\Models\HistoricPaymentMethod;
 use App\Models\PaymentMethod;
-use App\Models\PaymentPaymentMethod;
 
 final class PaymentMethodService extends CRUD
 {
-    protected function getModel(){
+    protected function getModel()
+    {
         return PaymentMethod::class;
     }
-    
+
     /**
      * Method deleteWithRelations
      *
@@ -21,8 +22,9 @@ final class PaymentMethodService extends CRUD
      *
      * @return void
      */
-    public function deleteWithRelations(int $id){
-        $is_have_relations = PaymentPaymentMethod::where('payment_method_id', $id)->exists();
+    public function deleteWithRelations(int $id)
+    {
+        $is_have_relations = HistoricPaymentMethod::where('payment_method_id', $id)->exists();
         $data = [
             'success' => !$is_have_relations,
             'register_deleteds' => 0
@@ -34,12 +36,16 @@ final class PaymentMethodService extends CRUD
         return $data;
     }
 
-    public function read(string|null $search_name=''){
-       $paymentMethods = PaymentMethod::query();
-       if(isset($search_name) && !empty($search_name)){
-            $paymentMethods->where('name','like',"%$search_name%");
+    public function read(string|null $search_name = '')
+    {
+        $paymentMethods = PaymentMethod::query();
+        if (isset($search_name) && !empty($search_name)) {
+            $paymentMethods->where('name', 'like', "%$search_name%");
         }
-        $paymentMethods = $paymentMethods->withCount('paymentPaymentMethod')->orderBy('name')->paginate();
+        //ajustar isso na view, variavel count, acho que aq vale a pena tirar paginte, são poucos dados
+        $paymentMethods = $paymentMethods->withCount('historicPaymentMethod')->orderBy('name')->paginate();
         return $paymentMethods;
     }
+
+    public function getPaymentMethods() {}
 }

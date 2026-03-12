@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Payment;
+use App\Models\HistoricCompany;
 use App\Models\PaymentMethod;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('payment_payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Payment::class)->nullable()->constrained();
+            $table->foreignIdFor(HistoricCompany::class)->nullable()->constrained();
             $table->foreignIdFor(PaymentMethod::class)->nullable()->constrained();
+            $table->decimal('value_paid',6,2)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
