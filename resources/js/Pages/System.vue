@@ -78,7 +78,7 @@
                     />
                 </div>
             </div>
-            <div class="flex">
+            <div class="flex sm:flex-wrap md:flex-nowrap">
                 <div class="flex flex-col w-full m-1">
                     <Input
                         type="text"
@@ -86,7 +86,11 @@
                         id="onwer_pix"
                         v-model="form.onwer_pix"
                     />
+                    <div v-if="form.errors.onwer_pix" class="text-red-500">
+                        {{ form.errors.onwer_pix }}
+                    </div>
                 </div>
+
                 <div class="flex flex-col w-full m-1">
                     <Input
                         type="text"
@@ -94,8 +98,12 @@
                         id="key_pix"
                         v-model="form.key_pix"
                     />
+                    <div v-if="form.errors.key_pix" class="text-red-500">
+                        {{ form.errors.key_pix }}
+                    </div>
                 </div>
             </div>
+
             <div class="flex justify-end">
                 <Button
                     text="Salvar"

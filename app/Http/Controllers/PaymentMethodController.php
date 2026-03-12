@@ -55,6 +55,9 @@ class PaymentMethodController extends Controller
     }
 
     public function getPaymentMethods(){
-        $this->service->getPaymentMethods();
+        $payment_methods = $this->service->getPaymentMethods();
+        session()->flash(RESPONSE_DATA_KEY_INERTIA, [
+            'payment_methods' => $payment_methods
+        ]);
     }
 }

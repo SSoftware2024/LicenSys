@@ -30,15 +30,12 @@
                             {{ `${value.company_name} - ${value.uuid}` }}
                         </option>
                     </select>
-                    <div
-                        v-if="form.errors.company_uuid"
-                        class="text-red-500"
-                    >
+                    <div v-if="form.errors.company_uuid" class="text-red-500">
                         {{ form.errors.company_uuid }}
                     </div>
                 </div>
                 <div class="mr-2">
-                <Input
+                    <Input
                         type="number"
                         min="0"
                         max="12"
@@ -113,7 +110,7 @@
             <table
                 :class="{
                     'w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400': true,
-                    'mb-80':isShowDropDown,
+                    'mb-80': isShowDropDown,
                 }"
             >
                 <thead
@@ -129,21 +126,24 @@
                     </tr>
                 </thead>
                 <tbody>
-
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-                        v-for="(value, index) in $page.props.historicCompany?.data"
+                        v-for="(value, index) in $page.props.historicCompany
+                            ?.data"
                     >
-                        <td class="px-6 py-4">{{ value.company.company_name ?? 'NULO' }}</td>
+                        <td class="px-6 py-4">
+                            {{ value.company.company_name ?? "NULO" }}
+                        </td>
 
                         <th
                             scope="row"
                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                             {{ _dateISOBrOnlyData(value.pay_date) }}
-
                         </th>
-                        <td class="px-6 py-4">{{ _dateISOBrOnlyData(value.date_paid) }}</td>
+                        <td class="px-6 py-4">
+                            {{ _dateISOBrOnlyData(value.date_paid) }}
+                        </td>
 
                         <td class="px-6 py-4">{{ value.amount_paid }}</td>
                         <td class="px-6 py-4">
@@ -196,18 +196,21 @@
                             <div
                                 :id="`dropdownDots${index}`"
                                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600 uppercase"
-
                             >
                                 <ul
                                     class="py-2 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownMenuIconButton"
                                 >
-                                    <li v-if="value.monthly_fee_status != 'paid'">
+                                    <li
+                                        v-if="
+                                            value.monthly_fee_status != 'paid'
+                                        "
+                                    >
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                           @click="_pay(value.id)"
-                                           
+                                            data-modal-target="modal-show-payment-methods"
+                                            data-modal-toggle="modal-show-payment-methods"
                                         >
                                             Pagar
                                         </a>
@@ -229,6 +232,10 @@
             </table>
         </div>
         <!-- END TABLE -->
+
+        <!-- MODAL MÉTODOS DE PAGAMENTO -->
+        <PaymentMethod></PaymentMethod>
+        <!-- FIM MODAL MÉTODOS DE PAGAMENTO -->
         <!-- ACTIONS -->
         <Paginate
             :pagination="$page.props.historicCompany"
@@ -243,13 +250,18 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { router, usePage, useForm } from "@inertiajs/vue3";
-import { _copyText, _dateISOBrOnlyData, _confirmPassword} from "@utils/functions";
+import {
+    _copyText,
+    _dateISOBrOnlyData,
+    _confirmPassword,
+} from "@utils/functions";
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import Paginate from "@/components/Paginate.vue";
-
+//PAGESPARTIAL
+import PaymentMethod from "@/PartialPages/PaymentMethod.vue";
 
 const isShowTable = ref(false);
 const isShowDropDown = ref(false);
@@ -260,15 +272,18 @@ const form = useForm({
     company_uuid: page.props.company_uuid,
     year: page.props.year,
     month_status: page.props.month_status,
-    month: page.props.month
+    month: page.props.month,
 });
 
-function _showDropDown(){
+function _showDropDown() {
     isShowDropDown.value = true;
 }
 function handleClickOutside(event) {
     // Fecha o dropdown se clicar fora de qualquer elemento com ID dropdownDots e dropdownMenuIconButton...
-    if (!event.target.closest("[id^='dropdownDots']") && !event.target.closest("#dropdownMenuIconButton")) {
+    if (
+        !event.target.closest("[id^='dropdownDots']") &&
+        !event.target.closest("#dropdownMenuIconButton")
+    ) {
         isShowDropDown.value = false;
     }
 }
@@ -276,7 +291,9 @@ function handleClickOutside(event) {
 function _showTableHistoricCompany() {
     form.transform((data) => ({
         ...data,
-        company_uuid: form.company_uuid ? form.company_uuid : _getUUIDURLParam(),
+        company_uuid: form.company_uuid
+            ? form.company_uuid
+            : _getUUIDURLParam(),
     })).get(route("historic_company"), {
         onSuccess: () => {
             isShowTable.value = true;
@@ -284,35 +301,35 @@ function _showTableHistoricCompany() {
         onError: () => {
             isShowTable.value = false;
         },
-        preserveState:true,
+        preserveState: true,
     });
 }
 
-function _getUUIDURLParam(){
+function _getUUIDURLParam() {
     const url = new URL(window.location.href);
-    let uuid = url.searchParams.get("company_uuid")
+    let uuid = url.searchParams.get("company_uuid");
     return uuid;
 }
 
-function _filterCompanyByUrlUUID(){
+function _filterCompanyByUrlUUID() {
     let uuid = _getUUIDURLParam();
-    if(uuid){
+    if (uuid) {
         form.company_uuid = uuid;
         _showTableHistoricCompany();
     }
 }
 
-function _pay(historic_company_id){
-    router.patch(route('historic_company.pay'), {
+function _showPaymentMethods() {}
+
+function _pay(historic_company_id) {
+    router.patch(route("historic_company.pay"), {
         historic_company_id: historic_company_id,
     });
-
 }
-function _removePayment(historic_company_id){
-    router.patch(route('historic_company.removePayment'), {
+function _removePayment(historic_company_id) {
+    router.patch(route("historic_company.removePayment"), {
         historic_company_id: historic_company_id,
     });
-
 }
 
 function paginate(page_link) {
@@ -323,10 +340,9 @@ function paginate(page_link) {
         },
         {
             preserveState: true,
-        }
+        },
     );
 }
-
 
 onMounted(() => {
     document.addEventListener("click", handleClickOutside);

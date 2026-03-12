@@ -47,5 +47,8 @@ final class PaymentMethodService extends CRUD
         return $paymentMethods;
     }
 
-    public function getPaymentMethods() {}
+    public function getPaymentMethods() {
+        $payment_methods = PaymentMethod::select('id','name')->get();
+        return $payment_methods;
+    }
 }

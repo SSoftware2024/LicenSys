@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Company;
+use App\Models\HistoricCompany;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('pix_origin_name');
+            $table->string('pix_origin_name')->nullable();
             $table->string('id_transaction_pix')->nullable();
-            $table->string('pix_receipt_photo');
-            $table->date('reference_date');
-            $table->foreignIdFor(Company::class)->nullable()->constrained();
+            $table->string('pix_receipt_photo')->nullable();
+            $table->date('reference_date')->nullable();
+            $table->string('cause')->nullable();
+            $table->foreignIdFor(Company::class)->constrained();
+            $table->foreignIdFor(HistoricCompany::class)->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();
         });
