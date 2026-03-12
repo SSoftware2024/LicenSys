@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_payment_methods', function (Blueprint $table) {
+        Schema::create('historic_payment_methods', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(HistoricCompany::class)->nullable()->constrained();
             $table->foreignIdFor(PaymentMethod::class)->nullable()->constrained();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_payment_methods');
+        Schema::dropIfExists('historic_payment_methods');
     }
 };
