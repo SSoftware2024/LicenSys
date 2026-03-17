@@ -156,7 +156,7 @@
                 <tbody>
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 cursor-pointer hover:bg-gray-100"
-                        v-for="(value, index) in $page.props.companies"
+                        v-for="(value, index) in $page.props.companies_per_payment_day"
                         :key="index"
                         data-modal-target="modal-company-in-day"
                         data-modal-toggle="modal-company-in-day"
