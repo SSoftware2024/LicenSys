@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Enum\MonthlyFee;
 use App\Models\Company;
 use App\Models\HistoricCompany;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -33,7 +33,7 @@ class DashboardController extends Controller
         }
         # -------------- FIM CONTAGEM DE STATUS MENSAL -------------- #
 
-        #-------------------------FILTRO GANHOS POR DIA NO MÊS ----------------------------#
+        #------------------------- FILTRO GANHOS POR DIA NO MÊS ----------------------------#
 
         $array_days_max_values = [];
         $total_value = 0;
@@ -76,7 +76,7 @@ class DashboardController extends Controller
 
         #------------------------- FIM FILTRO GANHOS POR DIA NO MÊS ----------------------------#
 
-        #---------------------------------FILTRO EMPRESAS QUE PAGAM NO DIA x ------------------------------------#
+        #---------------------------------FILTRO EMPRESAS QUE PAGAM NO DIA: X ------------------------------------#
         if (isset($request->companies_the_day)) {
             $date_complete = date('Y-m-d', strtotime($date_string . "-" . $request->companies_the_day));
             $companies = Company::with(['historicCompany' => function ($query) use ($date_complete) {

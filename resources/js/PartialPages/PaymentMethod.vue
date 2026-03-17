@@ -73,8 +73,10 @@
                         v-for="value in list_all"
                         v-if="list_all"
                     >
-                        <td class="px-6 py-4">{{ value['payment_method'].name }}</td>
-                        <td class="px-6 py-4">{{ value['value'] }}</td>
+                        <td class="px-6 py-4">
+                            {{ value["payment_method"].name }}
+                        </td>
+                        <td class="px-6 py-4">{{ value["value"] }}</td>
                         <td class="px-6 py-4">
                             <Button
                                 text="Excluir"
@@ -92,15 +94,19 @@
         <!-- DADOS DE VALOR E REFERÊNCIA -->
         <div>
             <ul>
-                <li>Empresa - UUID</li>
-                <li>Mês referente:</li>
+                <li>
+                    <span>Empresa - UUID:</span>
+                </li>
+                <li>
+                    <span>Mês referente:</span>
+                </li>
             </ul>
         </div>
         <div>
-            <h2 class="text-md text-right text-blue-700 text-3xl">R$ 125,99 | <span class="text-black">R$ 125,99</span></h2>
-            <h2 class="text-sm text-right text-green-700 text-xl">
-                Troco: R$ 125,99
+            <h2 class="text-right text-blue-700 text-3xl">
+                R$ 125,99 | <span class="text-black">R$ 125,99</span>
             </h2>
+            <h2 class="text-right text-green-700 text-xl">Troco: R$ 125,99</h2>
         </div>
         <!-- FIM DADOS DE VALOR E REFERÊNCIA -->
         <div class="flex justify-end">
@@ -161,7 +167,6 @@ function _addPaymentMethod() {
     });
     list_values.payment_method = null;
     list_values.value = null;
-
 }
 
 function _loadData() {

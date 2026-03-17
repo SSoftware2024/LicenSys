@@ -32,8 +32,8 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect()->route('index');
 })->middleware(['auth','signed'])->name('verification.verify');
 
-
 Route::middleware(['auth','verify_email_admin'])->group(function () {
+    //rota inicial
     Route::match(['get','post'],'/', [DashboardController::class, 'index'])->name('index');
 
     Route::prefix('system')->name('system')->group(function () {
