@@ -10,19 +10,16 @@
                 <select
                     id="countries"
                     class="uppercase bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    v-if="list_values.payment_method"
                     v-model="list_values.payment_method"
                 >
                     <option
-                        v-for="value in $page.props.response_data
-                            ?.payment_methods"
+                        v-for="value in list_values.payment_method"
                         :value="value"
                     >
                         {{ value.name }}
                     </option>
                 </select>
-                <!-- <div v-if="form.errors.company_uuid" class="text-red-500">
-                    {{ form.errors.company_uuid }}
-                </div> -->
             </div>
             <div class="grow mr-2">
                 <div class="mr-2">
@@ -43,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="relative top-1 self-center">
                 <Button
                     text="Adicionar"
                     type="submit"
@@ -170,13 +167,10 @@ function _addPaymentMethod() {
 }
 
 function _loadData() {
-    router.get(
-        route("payment_method.getPaymentMethods"),
-        {},
-        {
-            onSuccess: () => {},
-        },
-    );
+    axios.get(route("payment_method.getPaymentMethods")).then(function (response) {
+        let data = response.data;
+        list_values.payment_method = data.payment_methods;
+    });
 }
 
 onMounted(() => {

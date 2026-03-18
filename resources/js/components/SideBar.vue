@@ -447,6 +447,9 @@ function logout() {
 }
 
 function _closeSidebar() {
+    if (document.activeElement) {
+        document.activeElement.blur();
+    }
     const escEvent = new KeyboardEvent("keydown", { key: "Escape" });
     document.dispatchEvent(escEvent);
 }

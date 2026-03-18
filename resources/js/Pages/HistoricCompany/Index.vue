@@ -206,6 +206,13 @@
                                             value.monthly_fee_status != 'paid'
                                         "
                                     >
+                                        <!-- <a
+                                            href="#"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            @click.prevent="openModal"
+                                        >
+                                            Pagar
+                                        </a> -->
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -232,8 +239,13 @@
             </table>
         </div>
         <!-- END TABLE -->
-
         <!-- MODAL MÉTODOS DE PAGAMENTO -->
+        <input
+            type="hidden"
+            name=""
+            data-modal-target="modal-show-payment-methods"
+            data-modal-toggle="modal-show-payment-methods"
+        />
         <PaymentMethod></PaymentMethod>
         <!-- FIM MODAL MÉTODOS DE PAGAMENTO -->
         <!-- ACTIONS -->
@@ -262,6 +274,39 @@ import Input from "@/components/Input.vue";
 import Paginate from "@/components/Paginate.vue";
 //PAGESPARTIAL
 import PaymentMethod from "@/PartialPages/PaymentMethod.vue";
+
+//modal
+import { Modal } from "flowbite";
+// set the modal menu element
+const $targetEl = document.getElementById("modal-show-payment-methods");
+
+// options with default values
+const options = {
+    placement: "bottom-right",
+    backdrop: "dynamic",
+    backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+        console.log("modal is hidden");
+    },
+    onShow: () => {
+        console.log("modal is shown");
+    },
+    onToggle: () => {
+        console.log("modal has been toggled");
+    },
+};
+
+// instance options object
+const instanceOptions = {
+    id: "modalEl",
+    override: true,
+};
+
+function openModal() {
+    const modal = new Modal($targetEl, options, instanceOptions);
+    modal.show();
+}
 
 const isShowTable = ref(false);
 const isShowDropDown = ref(false);
@@ -318,8 +363,6 @@ function _filterCompanyByUrlUUID() {
         _showTableHistoricCompany();
     }
 }
-
-function _showPaymentMethods() {}
 
 function _pay(historic_company_id) {
     router.patch(route("historic_company.pay"), {

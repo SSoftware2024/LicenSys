@@ -16,7 +16,7 @@ class PaymentMethodController extends Controller
     ) {}
     public function index(Request $request)
     {
-        $payment_methods = $this->service->read($request->input('name',''));
+        $payment_methods = $this->service->read($request->input('name', ''));
         return Inertia::render('PaymentMethod/Index', [
             'payment_methods' => $payment_methods
         ]);
@@ -54,10 +54,11 @@ class PaymentMethodController extends Controller
         }
     }
 
-    public function getPaymentMethods(){
+    public function getPaymentMethods()
+    {
         $payment_methods = $this->service->getPaymentMethods();
-        session()->flash(RESPONSE_DATA_KEY_INERTIA, [
+        return [
             'payment_methods' => $payment_methods
-        ]);
+        ];
     }
 }

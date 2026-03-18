@@ -7,7 +7,7 @@ use App\Enum\MonthlyFee;
 use App\Models\Company;
 use App\Models\HistoricCompany;
 use App\Services\Cron\MonthlyFeeCron;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 
 final class HistoricCompanyService extends CRUD
 {
