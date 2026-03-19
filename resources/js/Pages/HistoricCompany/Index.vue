@@ -212,7 +212,7 @@
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             data-modal-target="modal-show-payment-methods"
                                             data-modal-toggle="modal-show-payment-methods"
-                                            @click="_loadDataModal(value)"
+                                            @click="_loadDataModal(value, value.company.uuid)"
                                         >
                                             Pagar
                                         </a>
@@ -302,8 +302,8 @@ function handleClickOutside(event) {
 }
 
 
-function _loadDataModal(company) {
-    companyDataPaymentModal.uuid = page.props.company_uuid;
+function _loadDataModal(company, uuid) {
+    companyDataPaymentModal.uuid = uuid;
     companyDataPaymentModal.pay_date = company.pay_date;
     companyDataPaymentModal.amount_paid = company.amount_paid
 }

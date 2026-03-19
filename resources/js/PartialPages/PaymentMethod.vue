@@ -186,10 +186,9 @@ watch(props.companyPayment, (new_value) => {
 })
 
 function cashBack(value){
-    let amount_paid = moneyBrToNumber(props.companyPayment?.amount_paid)
+    let amount_paid = props.companyPayment?.amount_paid; //já esta formatado
     if(value > amount_paid){
         cashBackData.showCashBack = true;
-        //quando pegar do objeto ele vem como string, tem que converter para money
         cashBackData.value = value - amount_paid;
     }else{
         cashBackData.showCashBack = false;
