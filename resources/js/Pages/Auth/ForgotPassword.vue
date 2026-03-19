@@ -20,10 +20,10 @@
 
             </div>
             <div class="mt-1 flex justify-between">
-                <a
+                <Link
                     :href="route('index')"
                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >Login</a
+                    >Login</Link
                 >
                 <Button text="Enviar e-mail" type="submit" typeButton='primary' :isDisable="form.processing" :isLoading="form.processing"></Button>
             </div>
