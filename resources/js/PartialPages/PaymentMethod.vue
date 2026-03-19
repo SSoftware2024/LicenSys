@@ -97,10 +97,12 @@
         <div>
             <ul>
                 <li>
-                    <span>Empresa - UUID:</span>
+                    <span class="font-medium">Empresa - UUID:</span>
+                    {{ props.companyPayment.uuid }}
                 </li>
                 <li>
-                    <span>Mês referente:</span>
+                    <span class="font-medium">Data(mês) referente:</span>
+                    {{ _dateISOBrOnlyData(props.companyPayment.pay_date )}}
                 </li>
             </ul>
         </div>
@@ -146,7 +148,7 @@
 import { onMounted, reactive, ref, watch } from "vue";
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
-import { formatMoneyBr, moneyBrToNumber } from "@utils/functions";
+import { formatMoneyBr, moneyBrToNumber, _dateISOBrOnlyData } from "@utils/functions";
 import Modal from "@/components/Modal.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
