@@ -1,5 +1,5 @@
 <template>
-    <Modal title="Métodos de pagamento" id="modal-show-payment-methods">
+    <Modal title="Métodos de pagamento" id="modal-show-payment-methods" :closeCallback="closeCallback">
         <form action="" class="flex flex-row mb-2 items-end">
             <div class="grow-14 mr-2">
                 <label
@@ -11,8 +11,9 @@
                     id="countries"
                     class="uppercase bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     v-if="list_values.payment_method"
-                    v-model="list_values.payment_method"
+                    v-model="list_values.payment_method_insert"
                 >
+                    
                     <option
                         v-for="value in list_values.payment_method"
                         :value="value"
@@ -116,7 +117,7 @@
         </div>
         <!-- ALERTA DE ERRO OU EXCEÇÕES -->
         <div
-            class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft"
+            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
             role="alert"
         >
             <span class="font-medium">Danger alert!</span> Change a few things
@@ -129,7 +130,8 @@
                 data-modal-hide="modal-show-payment-methods"
                 type="button"
                 class="cursor-pointer py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            >
+                @click.prevent="closeCallback"
+                >
                 Fechar
             </button>
         </template>
@@ -146,6 +148,7 @@ import Input from "@/components/Input.vue";
 const page = usePage();
 const list_values = reactive({
     payment_method: {},
+    payment_method_insert: {},
     value: null,
 });
 let list_all = ref([]);
@@ -159,18 +162,27 @@ function _addPaymentMethod() {
         return;
     }
     list_all.value.push({
-        payment_method: list_values.payment_method,
+        payment_method: list_values.payment_method_insert,
         value: list_values.value,
     });
-    list_values.payment_method = null;
+    list_values.payment_method_insert = null;
     list_values.value = null;
 }
 
 function _loadData() {
-    axios.get(route("payment_method.getPaymentMethods")).then(function (response) {
-        let data = response.data;
-        list_values.payment_method = data.payment_methods;
-    });
+    axios
+        .get(route("payment_method.getPaymentMethods"))
+        .then(function (response) {
+            let data = response.data;
+            list_values.payment_method = data.payment_methods;
+        });
+}
+
+
+function closeCallback(){
+    list_values.payment_method_insert = null;
+    list_values.value = null;
+    list_all.value = [];
 }
 
 onMounted(() => {
