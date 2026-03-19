@@ -81,6 +81,7 @@
                                 type="button"
                                 typeButton="red"
                                 class="relative top-1.5 self-end"
+                                @click="_removePaymentMethod(value)"
                             ></Button>
                         </td>
                     </tr>
@@ -167,6 +168,12 @@ function _addPaymentMethod() {
     });
     list_values.payment_method_insert = null;
     list_values.value = null;
+}
+
+function _removePaymentMethod(paymentMethodToRemove) {
+    list_all.value = list_all.value.filter(
+        (paymentMethod) => paymentMethod !== paymentMethodToRemove
+    );
 }
 
 function _loadData() {
