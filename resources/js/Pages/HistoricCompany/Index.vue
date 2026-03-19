@@ -145,7 +145,8 @@
                             {{ _dateISOBrOnlyData(value.date_paid) }}
                         </td>
 
-                        <td class="px-6 py-4">{{ value.amount_paid }}</td>
+                        <td class="px-6 py-4">{{ value.amount_paid_formated }}</td>
+                        <!-- <td class="px-6 py-4">{{ formatMoneyBr(value.amount_paid) }}</td> -->
                         <td class="px-6 py-4">
                             <span
                                 class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/20 ring-inset"
@@ -206,18 +207,12 @@
                                             value.monthly_fee_status != 'paid'
                                         "
                                     >
-                                        <!-- <a
-                                            href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            @click.prevent="openModal"
-                                        >
-                                            Pagar
-                                        </a> -->
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             data-modal-target="modal-show-payment-methods"
                                             data-modal-toggle="modal-show-payment-methods"
+                                            @click="_loadDataModal(value)"
                                         >
                                             Pagar
                                         </a>
@@ -246,7 +241,7 @@
             data-modal-target="modal-show-payment-methods"
             data-modal-toggle="modal-show-payment-methods"
         />
-        <PaymentMethod></PaymentMethod>
+        <PaymentMethod :companyPayment="companyDataPaymentModal"></PaymentMethod>
         <!-- FIM MODAL MÉTODOS DE PAGAMENTO -->
         <!-- ACTIONS -->
         <Paginate
@@ -260,12 +255,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, reactive } from "vue";
 import { router, usePage, useForm } from "@inertiajs/vue3";
 import {
     _copyText,
     _dateISOBrOnlyData,
     _confirmPassword,
+    formatMoneyBr
 } from "@utils/functions";
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
@@ -275,42 +271,14 @@ import Paginate from "@/components/Paginate.vue";
 //PAGESPARTIAL
 import PaymentMethod from "@/PartialPages/PaymentMethod.vue";
 
-//modal
-import { Modal } from "flowbite";
-// set the modal menu element
-const $targetEl = document.getElementById("modal-show-payment-methods");
-
-// options with default values
-const options = {
-    placement: "bottom-right",
-    backdrop: "dynamic",
-    backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
-    closable: true,
-    onHide: () => {
-        console.log("modal is hidden");
-    },
-    onShow: () => {
-        console.log("modal is shown");
-    },
-    onToggle: () => {
-        console.log("modal has been toggled");
-    },
-};
-
-// instance options object
-const instanceOptions = {
-    id: "modalEl",
-    override: true,
-};
-
-function openModal() {
-    const modal = new Modal($targetEl, options, instanceOptions);
-    modal.show();
-}
-
 const isShowTable = ref(false);
 const isShowDropDown = ref(false);
 
+const companyDataPaymentModal = reactive({
+    uuid: '',
+    pay_date: '',
+    amount_paid: ''
+});
 const page = usePage();
 
 const form = useForm({
@@ -331,6 +299,13 @@ function handleClickOutside(event) {
     ) {
         isShowDropDown.value = false;
     }
+}
+
+
+function _loadDataModal(company) {
+    companyDataPaymentModal.uuid = page.props.company_uuid;
+    companyDataPaymentModal.pay_date = company.pay_date;
+    companyDataPaymentModal.amount_paid = company.amount_paid
 }
 
 function _showTableHistoricCompany() {

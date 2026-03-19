@@ -84,7 +84,13 @@ final class HistoricCompanyService extends CRUD
         }
 
         $historicCompany->orderBy('pay_date', 'desc');
-        return $historicCompany->paginate(12)->appends($appends);
+        $historicCompany = $historicCompany->paginate(12)->appends($appends);
+        $historicCompany->getCollection()->transform(function ($historicCompany) {
+            $historicCompany->amount_paid_formated = getMoneyToStringBr($historicCompany->amount_paid);
+            return $historicCompany;
+        });
+        return $historicCompany;
+        
     }
 
 

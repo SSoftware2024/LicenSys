@@ -7,7 +7,7 @@ use App\Http\Middleware\VerfiyEmailAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

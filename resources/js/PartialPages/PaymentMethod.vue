@@ -107,7 +107,7 @@
         <div>
             <h2 class="text-right text-blue-700 text-3xl">
                 R$ {{ formatMoneyBr(list_values.all_value) }} |
-                <span class="text-black">R$ {{ value_max }}</span>
+                <span class="text-black">R$ {{ total_value_formated }}</span>
             </h2>
             <h2 class="text-right text-green-700 text-xl" v-if="cashBackData.showCashBack">Troco: R$ {{ formatMoneyBr(cashBackData.value) }}</h2>
         </div>
@@ -151,13 +151,20 @@ import Modal from "@/components/Modal.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 
+const props = defineProps({
+    companyPayment: {
+        type: Object,
+        required: true
+    }
+});
+
 const page = usePage();
+const total_value_formated = ref(0);
 
 const cashBackData = reactive({
     showCashBack: false,
     value: 0
 });
-const value_max = 125.99;
 
 const list_values = reactive({
     payment_method: {},
@@ -174,20 +181,20 @@ const form = useForm({
 watch(list_values, (new_value) => {
     cashBack(new_value.all_value);
 })
+watch(props.companyPayment, (new_value) => {
+    total_value_formated.value = formatMoneyBr(new_value.amount_paid);
+})
 
 function cashBack(value){
-    if(value > value_max){
+    let amount_paid = moneyBrToNumber(props.companyPayment?.amount_paid)
+    if(value > amount_paid){
         cashBackData.showCashBack = true;
         //quando pegar do objeto ele vem como string, tem que converter para money
-        cashBackData.value = value - value_max;
+        cashBackData.value = value - amount_paid;
     }else{
         cashBackData.showCashBack = false;
         cashBackData.value = 0;
     }
-    // console.log(value);
-    // console.log(value_max);
-    // console.log(value > value_max);
-    // console.log(cashBackData);
 }
 
 function _sumValues(value) {

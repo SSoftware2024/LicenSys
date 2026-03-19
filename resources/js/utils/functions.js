@@ -12,7 +12,7 @@ function _copyText(text) {
         },
         function (err) {
             toast.error(err);
-        }
+        },
     );
 }
 
@@ -41,22 +41,23 @@ function _dateISOBr(date) {
         })
         .replace(", ", " - ");
 }
-function _dateISOBrOnlyData(date) { //apenas dia,mes,ano e correção timezone
-    let dateReturn = '';
-    if(date){
+function _dateISOBrOnlyData(date) {
+    //apenas dia,mes,ano e correção timezone
+    let dateReturn = "";
+    if (date) {
         dateReturn = new Date(date + "T00:00:00") //correção de timezone
-        .toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        });
+            .toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            });
     }
     return dateReturn;
 }
 
-function getNormalUrlParamter(paramter){
+function getNormalUrlParamter(paramter) {
     const url = new URL(window.location.href);
-    let value = url.searchParams.get(paramter)
+    let value = url.searchParams.get(paramter);
     return value;
 }
 
@@ -92,17 +93,21 @@ function _confirmPassword(confirmPasswordCallback) {
                             text: "Senha fornecida está incorreta!",
                         });
                     },
-                }
+                },
             );
         }
     });
 }
 
-function formatMoneyBr(value){
-    return value.toLocaleString('pt-br', {minimumFractionDigits: 2});
+function formatMoneyBr(value) {
+    return new Intl.NumberFormat("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(value);
 }
-function moneyBrToNumber(value){
-    return parseFloat(value.replace(".","").replace(",", "."));
+
+function moneyBrToNumber(value) {
+    return parseFloat(value.replace(".", "").replace(",", "."));
 }
 
 export {
@@ -113,5 +118,5 @@ export {
     _confirmPassword,
     getNormalUrlParamter,
     formatMoneyBr,
-    moneyBrToNumber
+    moneyBrToNumber,
 };
