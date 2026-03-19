@@ -1,5 +1,9 @@
 <template>
-    <Modal title="Métodos de pagamento" id="modal-show-payment-methods" :closeCallback="closeCallback">
+    <Modal
+        title="Métodos de pagamento"
+        id="modal-show-payment-methods"
+        :closeCallback="closeCallback"
+    >
         <form action="" class="flex flex-row mb-2 items-end">
             <div class="grow-14 mr-2">
                 <label
@@ -13,7 +17,6 @@
                     v-if="list_values.payment_method"
                     v-model="list_values.payment_method_insert"
                 >
-                    
                     <option
                         v-for="value in list_values.payment_method"
                         :value="value"
@@ -54,7 +57,7 @@
         <!-- TABELA -->
         <div class="relative overflow-y-auto max-h-100">
             <table
-                class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                class="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-200 dark:text-gray-400"
             >
                 <thead
                     class="sticky top-0 z-10 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -67,8 +70,8 @@
                 </thead>
                 <tbody>
                     <tr
-                        class="uppercase bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-                        v-for="value in list_all"
+                        class="uppercase bg-white border-b border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+                        v-for="(value, index) in list_all"
                         v-if="list_all"
                     >
                         <td class="px-6 py-4">
@@ -81,6 +84,7 @@
                                 type="button"
                                 typeButton="red"
                                 class="relative top-1.5 self-end"
+                                @click.prevent="_removePaymentMethod(index)"
                             ></Button>
                         </td>
                     </tr>
@@ -102,9 +106,10 @@
         </div>
         <div>
             <h2 class="text-right text-blue-700 text-3xl">
-                R$ 125,99 | <span class="text-black">R$ 125,99</span>
+                R$ {{ formatMoneyBr(list_values.all_value) }} |
+                <span class="text-black">R$ {{ value_max }}</span>
             </h2>
-            <h2 class="text-right text-green-700 text-xl">Troco: R$ 125,99</h2>
+            <h2 class="text-right text-green-700 text-xl" v-if="cashBackData.showCashBack">Troco: R$ {{ formatMoneyBr(cashBackData.value) }}</h2>
         </div>
         <!-- FIM DADOS DE VALOR E REFERÊNCIA -->
         <div class="flex justify-end">
@@ -131,31 +136,63 @@
                 type="button"
                 class="cursor-pointer py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 @click.prevent="closeCallback"
-                >
+            >
                 Fechar
             </button>
         </template>
     </Modal>
 </template>
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
+import { formatMoneyBr, moneyBrToNumber } from "@utils/functions";
 import Modal from "@/components/Modal.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 
 const page = usePage();
+
+const cashBackData = reactive({
+    showCashBack: false,
+    value: 0
+});
+const value_max = 125.99;
+
 const list_values = reactive({
     payment_method: {},
     payment_method_insert: {},
     value: null,
+    all_value: 0,
 });
 let list_all = ref([]);
 
 const form = useForm({
     value_monthly_fee: null,
 });
+
+watch(list_values, (new_value) => {
+    cashBack(new_value.all_value);
+})
+
+function cashBack(value){
+    if(value > value_max){
+        cashBackData.showCashBack = true;
+        //quando pegar do objeto ele vem como string, tem que converter para money
+        cashBackData.value = value - value_max;
+    }else{
+        cashBackData.showCashBack = false;
+        cashBackData.value = 0;
+    }
+    // console.log(value);
+    // console.log(value_max);
+    // console.log(value > value_max);
+    // console.log(cashBackData);
+}
+
+function _sumValues(value) {
+    list_values.all_value += moneyBrToNumber(value);
+}
 
 function _addPaymentMethod() {
     if (!list_values.payment_method || !list_values.value) {
@@ -165,8 +202,15 @@ function _addPaymentMethod() {
         payment_method: list_values.payment_method_insert,
         value: list_values.value,
     });
+    _sumValues(list_values.value);
     list_values.payment_method_insert = null;
     list_values.value = null;
+}
+
+function _removePaymentMethod(index) {
+    let remove_value = moneyBrToNumber(list_all.value[index].value);
+    list_values.all_value -= remove_value;
+    list_all.value.splice(index, 1);
 }
 
 function _loadData() {
@@ -178,10 +222,10 @@ function _loadData() {
         });
 }
 
-
-function closeCallback(){
+function closeCallback() {
     list_values.payment_method_insert = null;
     list_values.value = null;
+    list_values.all_value = 0;
     list_all.value = [];
 }
 

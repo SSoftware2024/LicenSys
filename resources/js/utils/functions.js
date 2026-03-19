@@ -98,11 +98,20 @@ function _confirmPassword(confirmPasswordCallback) {
     });
 }
 
+function formatMoneyBr(value){
+    return value.toLocaleString('pt-br', {minimumFractionDigits: 2});
+}
+function moneyBrToNumber(value){
+    return parseFloat(value.replace(".","").replace(",", "."));
+}
+
 export {
     _copyText,
     _errorLaravelArrayElements,
     _dateISOBr,
     _dateISOBrOnlyData,
     _confirmPassword,
-    getNormalUrlParamter
+    getNormalUrlParamter,
+    formatMoneyBr,
+    moneyBrToNumber
 };

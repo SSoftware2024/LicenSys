@@ -1,15 +1,15 @@
 <?php
 
 use App\Facades\Toast;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Middleware\Admin;
-use Illuminate\Foundation\Application;
-use App\Http\Middleware\VerfiyEmailAdmin;
 use App\Http\Middleware\HandleInertiaRequests;
-use Symfony\Component\HttpFoundation\Response;
+use App\Http\Middleware\VerfiyEmailAdmin;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
