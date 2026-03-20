@@ -8,7 +8,7 @@
         <div class="relative p-4 w-full max-w-3xl max-h-full">
             <!-- Modal content -->
             <div
-                class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700"
+                class="border relative bg-white rounded-lg shadow-sm dark:bg-gray-700"
             >
                 <!-- Modal header -->
                 <div
@@ -52,7 +52,6 @@
                     class="flex justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"
                 >
                     <slot name="footer"></slot>
-
                 </div>
                 <!-- END Modal footer -->
             </div>
@@ -71,10 +70,7 @@ defineProps({
     },
     closeCallback: {
         type: Function,
-        default: null
-    }
+        default: null,
+    },
 });
-
-
-
 </script>
