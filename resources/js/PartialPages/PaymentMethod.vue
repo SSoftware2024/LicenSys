@@ -2,7 +2,8 @@
     <Modal
         title="Métodos de pagamento"
         id="modal-show-payment-methods"
-        :closeCallback="closeCallback"
+        ref="modal_payment_methods"
+        :closeClearCallback="closeCallback"
     >
         <form action="" class="flex flex-row mb-2 items-end">
             <div class="grow-14 mr-2">
@@ -97,12 +98,12 @@
         <div>
             <ul>
                 <li>
-                    <span class="font-medium">Empresa - UUID:</span>
-                    {{ props.companyPayment.uuid }}
+                    <span class="font-medium">Empresa:</span>
+                    {{ props.companyPayment.name }}
                 </li>
                 <li>
                     <span class="font-medium">Data(mês) referente:</span>
-                    {{ _dateISOBrOnlyData(props.companyPayment.pay_date )}}
+                    {{ _dateISOBrOnlyData(props.companyPayment.pay_date) }}
                 </li>
             </ul>
         </div>
@@ -111,7 +112,12 @@
                 R$ {{ formatMoneyBr(list_values.all_value) }} |
                 <span class="text-black">R$ {{ total_value_formated }}</span>
             </h2>
-            <h2 class="text-right text-green-700 text-xl" v-if="cashBackData.showCashBack">Troco: R$ {{ formatMoneyBr(cashBackData.value) }}</h2>
+            <h2
+                class="text-right text-green-700 text-xl"
+                v-if="cashBackData.showCashBack"
+            >
+                Troco: R$ {{ formatMoneyBr(cashBackData.value) }}
+            </h2>
         </div>
         <!-- FIM DADOS DE VALOR E REFERÊNCIA -->
         <div class="flex justify-end">
@@ -131,24 +137,17 @@
             up and try submitting again.
         </div>
         <!-- FIM ALERTA DE ERRO OU EXCEÇÕES -->
-        <div></div>
-        <template #footer>
-            <button
-                data-modal-hide="modal-show-payment-methods"
-                type="button"
-                class="cursor-pointer py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                @click.prevent="closeCallback"
-            >
-                Fechar
-            </button>
-        </template>
     </Modal>
 </template>
 <script setup>
 import { onMounted, reactive, ref, watch } from "vue";
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
-import { formatMoneyBr, moneyBrToNumber, _dateISOBrOnlyData } from "@utils/functions";
+import {
+    formatMoneyBr,
+    moneyBrToNumber,
+    _dateISOBrOnlyData,
+} from "@utils/functions";
 import Modal from "@/components/Modal.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
@@ -156,16 +155,17 @@ import Input from "@/components/Input.vue";
 const props = defineProps({
     companyPayment: {
         type: Object,
-        required: true
-    }
+        required: true,
+    },
 });
+const modal_payment_methods = ref(null);
 
 const page = usePage();
 const total_value_formated = ref(0);
 
 const cashBackData = reactive({
     showCashBack: false,
-    value: 0
+    value: 0,
 });
 
 const list_values = reactive({
@@ -182,17 +182,17 @@ const form = useForm({
 
 watch(list_values, (new_value) => {
     cashBack(new_value.all_value);
-})
+});
 watch(props.companyPayment, (new_value) => {
     total_value_formated.value = formatMoneyBr(new_value.amount_paid);
-})
+});
 
-function cashBack(value){
+function cashBack(value) {
     let amount_paid = props.companyPayment?.amount_paid; //já esta formatado
-    if(value > amount_paid){
+    if (value > amount_paid) {
         cashBackData.showCashBack = true;
         cashBackData.value = value - amount_paid;
-    }else{
+    } else {
         cashBackData.showCashBack = false;
         cashBackData.value = 0;
     }
@@ -236,6 +236,10 @@ function closeCallback() {
     list_values.all_value = 0;
     list_all.value = [];
 }
+
+defineExpose({
+    modal_payment_methods
+});
 
 onMounted(() => {
     _loadData();

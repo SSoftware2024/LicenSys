@@ -145,7 +145,9 @@
                             {{ _dateISOBrOnlyData(value.date_paid) }}
                         </td>
 
-                        <td class="px-6 py-4">{{ value.amount_paid_formated }}</td>
+                        <td class="px-6 py-4">
+                            {{ value.amount_paid_formated }}
+                        </td>
                         <!-- <td class="px-6 py-4">{{ formatMoneyBr(value.amount_paid) }}</td> -->
                         <td class="px-6 py-4">
                             <span
@@ -210,9 +212,11 @@
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            data-modal-target="modal-show-payment-methods"
-                                            data-modal-toggle="modal-show-payment-methods"
-                                            @click="_loadDataModal(value, value.company.uuid)"
+                                            @click="
+                                                _openModalShowPaymentMethods(
+                                                    value,
+                                                )
+                                            "
                                         >
                                             Pagar
                                         </a>
@@ -241,7 +245,10 @@
             data-modal-target="modal-show-payment-methods"
             data-modal-toggle="modal-show-payment-methods"
         />
-        <PaymentMethod :companyPayment="companyDataPaymentModal"></PaymentMethod>
+        <PaymentMethod
+            :companyPayment="companyDataPaymentModal"
+            ref="payment_methods_component"
+        ></PaymentMethod>
         <!-- FIM MODAL MÉTODOS DE PAGAMENTO -->
         <!-- ACTIONS -->
         <Paginate
@@ -261,7 +268,7 @@ import {
     _copyText,
     _dateISOBrOnlyData,
     _confirmPassword,
-    formatMoneyBr
+    formatMoneyBr,
 } from "@utils/functions";
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
@@ -273,11 +280,13 @@ import PaymentMethod from "@/PartialPages/PaymentMethod.vue";
 
 const isShowTable = ref(false);
 const isShowDropDown = ref(false);
+const payment_methods_component = ref(null);
 
 const companyDataPaymentModal = reactive({
-    uuid: '',
-    pay_date: '',
-    amount_paid: ''
+    uuid: "",
+    name: "",
+    pay_date: "",
+    amount_paid: "",
 });
 const page = usePage();
 
@@ -301,11 +310,16 @@ function handleClickOutside(event) {
     }
 }
 
+function _openModalShowPaymentMethods(historic) {
+    payment_methods_component.value.modal_payment_methods.open();
+    _loadDataModal(historic);
+}
 
-function _loadDataModal(company, uuid) {
-    companyDataPaymentModal.uuid = uuid;
-    companyDataPaymentModal.pay_date = company.pay_date;
-    companyDataPaymentModal.amount_paid = company.amount_paid
+function _loadDataModal(historic) {
+    companyDataPaymentModal.uuid = historic.company.uuid;
+    companyDataPaymentModal.name = historic.company.company_name;
+    companyDataPaymentModal.pay_date = historic.pay_date;
+    companyDataPaymentModal.amount_paid = historic.amount_paid;
 }
 
 function _showTableHistoricCompany() {

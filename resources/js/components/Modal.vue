@@ -1,65 +1,37 @@
 <template>
-    <div
-        :id="id"
-        tabindex="-1"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-        data-modal-backdrop="static"
-    >
-        <div class="relative p-4 w-full max-w-3xl max-h-full">
-            <!-- Modal content -->
-            <div
-                class="border relative bg-white rounded-lg shadow-sm dark:bg-gray-700"
-            >
-                <!-- Modal header -->
-                <div
-                    class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200"
-                >
-                    <h3
-                        class="text-xl font-semibold text-gray-900 dark:text-white"
-                    >
-                        {{ title }}
-                    </h3>
-                    <button
-                        type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        :data-modal-hide="id"
-                        @click.prevent="closeCallback"
-                    >
-                        <svg
-                            class="w-3 h-3"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 14 14"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                            />
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
+    <Teleport to="body">
+        <div class="backdrop" :id="backdrop_id"></div>
+        <div class="container-modal" :id="props.id">
+            <div class="modal">
+                <div class="container-title">
+                    <h2 class="text-xl border-b-2 border-gray-300">
+                        {{ props.title }}
+                    </h2>
+                    <div class="close" @click.prevent="close">❌</div>
                 </div>
-                <!-- Modal body -->
-                <div class="p-4 md:p-5 space-y-4">
+
+                <div class="border-b-2 border-gray-300 px-5 py-3">
                     <slot></slot>
                 </div>
-                <!-- Modal footer -->
-                <div
-                    class="flex justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"
-                >
-                    <slot name="footer"></slot>
+                <div class="footer mt-2">
+                    <div class="w-full flex justify-end">
+                        <slot name="buttons"></slot>
+                        <button
+                            @click.prevent="close()"
+                            type="button"
+                            class="cursor-pointer py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        >
+                            Fechar
+                        </button>
+                    </div>
                 </div>
-                <!-- END Modal footer -->
             </div>
         </div>
-    </div>
+    </Teleport>
 </template>
 <script setup>
-defineProps({
+const backdrop_id = "backdrop-modal";
+const props = defineProps({
     id: {
         type: String,
         required: true,
@@ -68,9 +40,78 @@ defineProps({
         type: String,
         required: true,
     },
-    closeCallback: {
+    closeClearCallback: {
         type: Function,
-        default: null,
-    },
+        default: null
+    }
+});
+
+function open() {
+    let modal = document.getElementById(props.id);
+    let backdrop = document.getElementById(backdrop_id);
+    modal.style.display = "flex";
+    backdrop.style.display = "block";
+}
+function close() {
+    let modal = document.getElementById(props.id);
+    let backdrop = document.getElementById(backdrop_id);
+    modal.style.display = "none";
+    backdrop.style.display = "none";
+    if(props.closeClearCallback){
+        props.closeClearCallback();
+    }
+}
+
+defineExpose({
+    open,
+    close,
 });
 </script>
+<style scoped>
+.backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 49;
+    display: none; /** block */
+}
+.container-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* flex */
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    overflow-y: auto;
+}
+
+.modal {
+    position: relative;
+    box-sizing: border-box;
+    width: 750px;
+    max-width: calc(100% - 300px);
+    height: calc(100% - 5rem);
+    max-height: 100%;
+    height: auto;
+    background-color: white;
+    padding: 10px 15px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    overflow-y: auto;
+    border-radius: 4px;
+}
+.container-title {
+    position: relative;
+}
+.container-title .close {
+    position: absolute;
+    right: 3px;
+    top: 0px;
+    cursor: pointer;
+}
+</style>
