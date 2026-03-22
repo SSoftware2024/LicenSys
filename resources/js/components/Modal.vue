@@ -94,7 +94,7 @@ defineExpose({
 .modal {
     position: relative;
     box-sizing: border-box;
-    width: 750px;
+    width: 800px;
     max-width: calc(100% - 300px);
     height: calc(100% - 5rem);
     max-height: 100%;

@@ -180,14 +180,12 @@ const form = useForm({
     value_monthly_fee: null,
 });
 
-watch(list_values, (new_value) => {
-    cashBack(new_value.all_value);
-});
+
 watch(props.companyPayment, (new_value) => {
     total_value_formated.value = formatMoneyBr(new_value.amount_paid);
 });
 
-function cashBack(value) {
+function _cashBack(value) {
     let amount_paid = props.companyPayment?.amount_paid; //já esta formatado
     if (value > amount_paid) {
         cashBackData.showCashBack = true;
@@ -200,6 +198,7 @@ function cashBack(value) {
 
 function _sumValues(value) {
     list_values.all_value += moneyBrToNumber(value);
+    return list_values.all_value;
 }
 
 function _addPaymentMethod() {
@@ -210,7 +209,7 @@ function _addPaymentMethod() {
         payment_method: list_values.payment_method_insert,
         value: list_values.value,
     });
-    _sumValues(list_values.value);
+    _cashBack(_sumValues(list_values.value));
     list_values.payment_method_insert = null;
     list_values.value = null;
 }
@@ -218,6 +217,7 @@ function _addPaymentMethod() {
 function _removePaymentMethod(index) {
     let remove_value = moneyBrToNumber(list_all.value[index].value);
     list_values.all_value -= remove_value;
+    _cashBack(list_values.all_value)
     list_all.value.splice(index, 1);
 }
 
@@ -235,6 +235,17 @@ function closeCallback() {
     list_values.value = null;
     list_values.all_value = 0;
     list_all.value = [];
+}
+
+function _pay(){
+    //validar se existe id, nome, valor uuid e mes referente
+    //pegar valores da lista 'list_all'
+    //mandar post para backend
+    //caso error exebir no alert, não toast
+    //fechar modal caso sucesso
+    modal_payment_methods.value.close();
+    /** no back_end */
+    //pegar valor a ser pago e comparar com se all value é maior, caso maior deduzir que o troco ja foi entregue e salvar no banco valor da mensalidade
 }
 
 defineExpose({
