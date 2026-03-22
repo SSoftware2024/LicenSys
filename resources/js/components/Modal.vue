@@ -15,7 +15,7 @@
                 </div>
                 <div class="footer mt-2">
                     <div class="w-full flex justify-end">
-                        <slot name="buttons"></slot>
+                        <slot name="footer_buttons"></slot>
                         <button
                             @click.prevent="close()"
                             type="button"
