@@ -16,7 +16,7 @@
     "dependencies": {
         "@date-fns/tz": "^1.2.0",
         "@devindex/vue-mask": "^2.0.3",
-        "@inertiajs/vue3": "^2.0.3",
+        "@inertiajs/vue3": "^3.0.0",
         "@vitejs/plugin-vue": "^6.0.0",
         "date-fns": "^4.1.0",
         "flowbite": "^4.0.0",
