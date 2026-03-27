@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" href="{{ asset('assets/favicon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @inertiaHead
+    <x-inertia::head />
+    {{-- Ziggy --}}
     @routes
 </head>
 <body>
-    @inertia
+    <x-inertia::app />
 </body>
 </html>
