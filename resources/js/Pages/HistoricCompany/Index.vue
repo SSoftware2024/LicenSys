@@ -316,6 +316,7 @@ function _openModalShowPaymentMethods(historic) {
 }
 
 function _loadDataModal(historic) {
+    companyDataPaymentModal.id = historic.company.id;
     companyDataPaymentModal.uuid = historic.company.uuid;
     companyDataPaymentModal.name = historic.company.company_name;
     companyDataPaymentModal.pay_date = historic.pay_date;

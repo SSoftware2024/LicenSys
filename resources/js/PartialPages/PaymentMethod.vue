@@ -126,6 +126,7 @@
                 type="button"
                 typeButton="green"
                 class="relative top-1.5 self-end"
+                @click.prevent="_pay"
             ></Button>
         </div>
         <!-- ALERTA DE ERRO OU EXCEÇÕES -->
@@ -238,12 +239,20 @@ function closeCallback() {
 }
 
 function _pay(){
+    const payload = list_all.value.map(item => ({
+        payment_method_id: item.payment_method.id,
+        value: item.value,
+    }));
+    router.post(route('historic_payment_methods.create'),{
+        payment_methods_list: payload,
+        historic_company_id: props.companyPayment.id
+    });
     //validar se existe id, nome, valor uuid e mes referente
     //pegar valores da lista 'list_all'
     //mandar post para backend
     //caso error exebir no alert, não toast
     //fechar modal caso sucesso
-    modal_payment_methods.value.close();
+    // modal_payment_methods.value.close();
     /** no back_end */
     //pegar valor a ser pago e comparar com se all value é maior, caso maior deduzir que o troco ja foi entregue e salvar no banco valor da mensalidade
 }

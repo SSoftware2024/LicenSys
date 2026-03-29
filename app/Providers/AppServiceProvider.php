@@ -24,10 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->gates();
-        /**
-        * Use apenas de maneira  local, em produção isso precisa estar desabilitado
-        * caso true como parametro ele habilita lazyloading
-        */
+        //em produção isto precisa estar desabilitado, parâmetro -> false
         Model::preventLazyLoading(!app()->isProduction());
     }
 
