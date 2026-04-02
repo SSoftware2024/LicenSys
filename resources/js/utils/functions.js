@@ -110,6 +110,10 @@ function moneyBrToNumber(value) {
     return parseFloat(value.replace(".", "").replace(",", "."));
 }
 
+function objectIsEmpty(object){
+    return Object.keys(object).length === 0;
+}
+
 export {
     _copyText,
     _errorLaravelArrayElements,
@@ -119,4 +123,5 @@ export {
     getNormalUrlParamter,
     formatMoneyBr,
     moneyBrToNumber,
+    objectIsEmpty
 };

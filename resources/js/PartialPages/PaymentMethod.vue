@@ -133,9 +133,11 @@
         <div
             class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
             role="alert"
+            v-if="!objectIsEmpty($page.props.errors)"
         >
-            <span class="font-medium">Danger alert!</span> Change a few things
-            up and try submitting again.
+            <span v-for="value in Object.values($page.props.errors).flat()">  
+                {{ value }} <br/>
+            </span>
         </div>
         <!-- FIM ALERTA DE ERRO OU EXCEÇÕES -->
     </Modal>
@@ -148,6 +150,7 @@ import {
     formatMoneyBr,
     moneyBrToNumber,
     _dateISOBrOnlyData,
+    objectIsEmpty
 } from "@utils/functions";
 import Modal from "@/components/Modal.vue";
 import Button from "@/components/Button.vue";
@@ -203,9 +206,8 @@ function _sumValues(value) {
 }
 
 function _addPaymentMethod() {
-    if (!list_values.payment_method || !list_values.value) {
-        return;
-    }
+    if (objectIsEmpty(list_values.payment_method_insert) || !list_values.value) return;
+
     list_all.value.push({
         payment_method: list_values.payment_method_insert,
         value: list_values.value,
@@ -236,25 +238,26 @@ function closeCallback() {
     list_values.value = null;
     list_values.all_value = 0;
     list_all.value = [];
+    page.props.errors = {};
+    _cashBack(list_values.all_value);
 }
 
 function _pay(){
     const payload = list_all.value.map(item => ({
         payment_method_id: item.payment_method.id,
-        value: item.value,
+        value: moneyBrToNumber(item.value).toFixed(2),
     }));
+
     router.post(route('historic_payment_methods.create'),{
+        company_id: props.companyPayment.id,
         payment_methods_list: payload,
         historic_company_id: props.companyPayment.id
+    }, {
+        onSuccess: () => {
+            modal_payment_methods.value.close();
+        }
     });
-    //validar se existe id, nome, valor uuid e mes referente
-    //pegar valores da lista 'list_all'
-    //mandar post para backend
-    //caso error exebir no alert, não toast
-    //fechar modal caso sucesso
-    // modal_payment_methods.value.close();
-    /** no back_end */
-    //pegar valor a ser pago e comparar com se all value é maior, caso maior deduzir que o troco ja foi entregue e salvar no banco valor da mensalidade
+
 }
 
 defineExpose({
