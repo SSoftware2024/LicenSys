@@ -225,6 +225,12 @@
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        >
+                                            Ver pagamentos
+                                        </a>
+                                        <a
+                                            href="#"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                             @click="_removePayment(value.id)"
                                         >
                                             Remover pagamento
@@ -246,7 +252,7 @@
             data-modal-toggle="modal-show-payment-methods"
         />
         <PaymentMethod
-            :companyPayment="companyDataPaymentModal"
+            :dataPayment="dataPaymentModal"
             ref="payment_methods_component"
         ></PaymentMethod>
         <!-- FIM MODAL MÉTODOS DE PAGAMENTO -->
@@ -282,11 +288,13 @@ const isShowTable = ref(false);
 const isShowDropDown = ref(false);
 const payment_methods_component = ref(null);
 
-const companyDataPaymentModal = reactive({
-    uuid: "",
+const dataPaymentModal = reactive({
+    company_id: "",
+    company_uuid: "",
     name: "",
-    pay_date: "",
-    amount_paid: "",
+    historic_company_pay_date: "",
+    historic_company_amount_paid: "",
+    historic_company_id:0
 });
 const page = usePage();
 
@@ -316,11 +324,12 @@ function _openModalShowPaymentMethods(historic) {
 }
 
 function _loadDataModal(historic) {
-    companyDataPaymentModal.id = historic.company.id;
-    companyDataPaymentModal.uuid = historic.company.uuid;
-    companyDataPaymentModal.name = historic.company.company_name;
-    companyDataPaymentModal.pay_date = historic.pay_date;
-    companyDataPaymentModal.amount_paid = historic.amount_paid;
+    dataPaymentModal.company_id = historic.company.id;
+    dataPaymentModal.company_uuid = historic.company.uuid;
+    dataPaymentModal.company_name = historic.company.company_name;
+    dataPaymentModal.historic_company_pay_date = historic.pay_date;
+    dataPaymentModal.historic_company_amount_paid = historic.amount_paid;
+    dataPaymentModal.historic_company_id = historic.id;
 }
 
 function _showTableHistoricCompany() {

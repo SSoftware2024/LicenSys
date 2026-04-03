@@ -99,11 +99,11 @@
             <ul>
                 <li>
                     <span class="font-medium">Empresa:</span>
-                    {{ props.companyPayment.name }}
+                    {{ props.dataPayment.company_name }}
                 </li>
                 <li>
                     <span class="font-medium">Data(mês) referente:</span>
-                    {{ _dateISOBrOnlyData(props.companyPayment.pay_date) }}
+                    {{ _dateISOBrOnlyData(props.dataPayment.historic_company_pay_date) }}
                 </li>
             </ul>
         </div>
@@ -126,6 +126,8 @@
                 type="button"
                 typeButton="green"
                 class="relative top-1.5 self-end"
+                :isDisable="isProcessing"
+                :isLoading="isProcessing"
                 @click.prevent="_pay"
             ></Button>
         </div>
@@ -157,15 +159,17 @@ import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 
 const props = defineProps({
-    companyPayment: {
+    dataPayment: {
         type: Object,
         required: true,
     },
 });
-const modal_payment_methods = ref(null);
 
+const modal_payment_methods = ref(null);
 const page = usePage();
 const total_value_formated = ref(0);
+
+const isProcessing = ref(false);
 
 const cashBackData = reactive({
     showCashBack: false,
@@ -185,12 +189,12 @@ const form = useForm({
 });
 
 
-watch(props.companyPayment, (new_value) => {
-    total_value_formated.value = formatMoneyBr(new_value.amount_paid);
+watch(props.dataPayment, (new_value) => {
+    total_value_formated.value = formatMoneyBr(new_value.historic_company_amount_paid);
 });
 
 function _cashBack(value) {
-    let amount_paid = props.companyPayment?.amount_paid; //já esta formatado
+    let amount_paid = props.dataPayment?.historic_company_amount_paid; //já esta formatado
     if (value > amount_paid) {
         cashBackData.showCashBack = true;
         cashBackData.value = value - amount_paid;
@@ -243,18 +247,21 @@ function closeCallback() {
 }
 
 function _pay(){
+    isProcessing.value = true;
     const payload = list_all.value.map(item => ({
         payment_method_id: item.payment_method.id,
         value: moneyBrToNumber(item.value).toFixed(2),
     }));
 
     router.post(route('historic_payment_methods.create'),{
-        company_id: props.companyPayment.id,
         payment_methods_list: payload,
-        historic_company_id: props.companyPayment.id
+        historic_company_id: props.dataPayment.historic_company_id
     }, {
         onSuccess: () => {
             modal_payment_methods.value.close();
+        },
+        onFinish: () => {
+            isProcessing.value = false;
         }
     });
 
