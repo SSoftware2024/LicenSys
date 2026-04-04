@@ -46,17 +46,23 @@ class HistoricCompanyController extends Controller
             'payment_methods_list' => 'lista de pagamentos',
             'payment_methods_list.*.value' => 'valor'
         ]);
-        $this->historicPaymentMethodService->create($request->payment_methods_list, $request->historic_company_id);
-        $this->service->pay($request->historic_company_id);
-        Toast::success('Pagamentos registrados');
-        Toast::success('Mensalidade paga com sucesso');
+        try {
+            $this->historicPaymentMethodService->create($request->payment_methods_list, $request->historic_company_id);
+            $this->service->pay($request->historic_company_id);
+            Toast::info('Pagamentos registrados');
+            Toast::success('Mensalidade paga com sucesso');
+        } catch (\Exception $e) {
+            return back()->withErrors(['payment' => $e->getMessage()]);
+        }
     }
     public function removePayment(Request $request)
     {
         $request->validate([
             'historic_company_id' => 'required|exists:historic_companies,id',
         ]);
+        $payments_methods_removed = $this->historicPaymentMethodService->removeAllPaymentsMethodsBy($request->historic_company_id);
         $this->service->removePayment($request->historic_company_id);
         Toast::info('Remoção de pagamento aplicada');
+        Toast::info("$payments_methods_removed métodos de pagamentos removidos");
     }
 }

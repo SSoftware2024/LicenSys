@@ -23,9 +23,15 @@ final class HistoricPaymentMethodsService
             $payload[] = [
                 'historic_company_id' => $historic_company_id,
                 'payment_method_id' => $value['payment_method_id'],
-                'value_paid' => floatval($value['value']) 
+                'value_paid' => floatval($value['value']),
+                'created_at' => now(),
+                'updated_at' => now()
             ];
         };
         HistoricPaymentMethod::insert($payload);
+    }
+    public function removeAllPaymentsMethodsBy(int $historic_company_id):int
+    {
+        return HistoricPaymentMethod::where('historic_company_id', $historic_company_id)->forceDelete();
     }
 }
