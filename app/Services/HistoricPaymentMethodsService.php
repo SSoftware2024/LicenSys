@@ -27,7 +27,5 @@ final class HistoricPaymentMethodsService
             ];
         };
         HistoricPaymentMethod::insert($payload);
-        //efetuando pagamento
-        (new HistoricCompanyService())->pay($historic_company_id);
     }
 }

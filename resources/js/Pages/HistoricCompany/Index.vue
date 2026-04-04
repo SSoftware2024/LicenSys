@@ -363,15 +363,13 @@ function _filterCompanyByUrlUUID() {
     }
 }
 
-function _pay(historic_company_id) {
-    router.patch(route("historic_company.pay"), {
-        historic_company_id: historic_company_id,
-    });
-}
 function _removePayment(historic_company_id) {
     router.patch(route("historic_company.removePayment"), {
         historic_company_id: historic_company_id,
     });
+    // router.patch(route("historic_company.removePayment"), {
+    //     historic_company_id: historic_company_id,
+    // });
 }
 
 function paginate(page_link) {

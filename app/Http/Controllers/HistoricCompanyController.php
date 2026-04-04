@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Facades\Toast;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\HistoricCompanyService;
+use App\Services\HistoricPaymentMethodsService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HistoricCompanyController extends Controller
 {
 
     public function __construct(
-        private HistoricCompanyService $service
+        private HistoricCompanyService $service,
+        private HistoricPaymentMethodsService $historicPaymentMethodService
     ) {}
 
     public function index(Request $request)
@@ -30,10 +32,23 @@ class HistoricCompanyController extends Controller
     }
     public function pay(Request $request)
     {
+
         $request->validate([
-            'historic_company_id' => 'required|exists:historic_companies,id',
+            'historic_company_id' => ['required', 'exists:historic_companies,id'],
+            'payment_methods_list' => ['required', 'array'],
+            'payment_methods_list.*.payment_method_id' => ['required', 'integer', 'exists:payment_methods,id'],
+            'payment_methods_list.*.value' => ['required', 'max:7'],
+        ], [
+            'payment_methods_list.*.value' => [
+                'max' => 'O campo :attribute não pode ser maior que 9.999,99'
+            ]
+        ], [
+            'payment_methods_list' => 'lista de pagamentos',
+            'payment_methods_list.*.value' => 'valor'
         ]);
+        $this->historicPaymentMethodService->create($request->payment_methods_list, $request->historic_company_id);
         $this->service->pay($request->historic_company_id);
+        Toast::success('Pagamentos registrados');
         Toast::success('Mensalidade paga com sucesso');
     }
     public function removePayment(Request $request)

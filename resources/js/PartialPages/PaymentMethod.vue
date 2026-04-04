@@ -253,7 +253,7 @@ function _pay(){
         value: moneyBrToNumber(item.value).toFixed(2),
     }));
 
-    router.post(route('historic_payment_methods.create'),{
+    router.post(route('historic_company.pay'),{
         payment_methods_list: payload,
         historic_company_id: props.dataPayment.historic_company_id
     }, {

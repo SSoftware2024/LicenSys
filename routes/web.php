@@ -82,11 +82,8 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
     });
     Route::prefix('historic_company')->name('historic_company')->group(function () {
         Route::match(['get','post'],'/', [HistoricCompanyController::class, 'index']);
-        Route::patch('/pay', [HistoricCompanyController::class, 'pay'])->name('.pay');
+        Route::post('/pay', [HistoricCompanyController::class, 'pay'])->name('.pay');
         Route::patch('/removePayment', [HistoricCompanyController::class, 'removePayment'])->name('.removePayment');
-    });
-    Route::prefix('historic_payment_methods')->name('historic_payment_methods')->group(function () {
-        Route::post('/create', [HistoricPaymentMethodsController::class, 'create'])->name('.create');
     });
     Route::prefix('payment')->name('payment')->group(function () {
         Route::match(['get','post'],'/', [PaymentController::class, 'index']);
