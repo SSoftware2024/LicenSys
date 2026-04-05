@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PaymentMethod extends Model
 {
-     protected $guarded = [];
+    protected $guarded = [];
 
 
+    /********************************************RELATIONSHIP************************************************/
     public function historicPaymentMethod(): HasMany
     {
-        return $this->hasMany(HistoricPaymentMethod::class);
+        return $this->hasMany(HistoricPaymentMethod::class, 'payment_method_id');
     }
+
 }

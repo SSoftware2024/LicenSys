@@ -65,4 +65,14 @@ class HistoricCompanyController extends Controller
         Toast::info('Remoção de pagamento aplicada');
         Toast::info("$payments_methods_removed métodos de pagamentos removidos");
     }
+
+    public function getMethodsPaymentByMonth(Request $request) 
+    {
+        $request->validate([
+            'historic_company_id' => 'required|exists:historic_companies,id',
+        ]);
+        $data = $this->historicPaymentMethodService->getMethodsPaymentByMonth($request->historic_company_id);
+        ds($data);
+        return $data;   
+    }
 }

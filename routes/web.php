@@ -84,6 +84,7 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
         Route::match(['get','post'],'/', [HistoricCompanyController::class, 'index']);
         Route::post('/pay', [HistoricCompanyController::class, 'pay'])->name('.pay');
         Route::patch('/removePayment', [HistoricCompanyController::class, 'removePayment'])->name('.removePayment');
+        Route::get('/getMethodsPaymentByMonth', [HistoricCompanyController::class, 'getMethodsPaymentByMonth'])->name('.getMethodsPaymentByMonth');
     });
     Route::prefix('payment')->name('payment')->group(function () {
         Route::match(['get','post'],'/', [PaymentController::class, 'index']);

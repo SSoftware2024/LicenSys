@@ -225,6 +225,7 @@
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            @click.prevent="_openModalShowPaymentMethodsList(value)"
                                         >
                                             Ver pagamentos
                                         </a>
@@ -255,6 +256,10 @@
             :dataPayment="dataPaymentModal"
             ref="payment_methods_component"
         ></PaymentMethod>
+        <PaymentMethodList
+            :dataModal="dataPaymentModalPaymentMethodsList"
+            ref="payment_methods_list_component"
+        ></PaymentMethodList>
         <!-- FIM MODAL MÉTODOS DE PAGAMENTO -->
         <!-- ACTIONS -->
         <Paginate
@@ -283,10 +288,12 @@ import Input from "@/components/Input.vue";
 import Paginate from "@/components/Paginate.vue";
 //PAGESPARTIAL
 import PaymentMethod from "@/PartialPages/PaymentMethod.vue";
+import PaymentMethodList from "@/PartialPages/PaymentMethodList.vue";
 
 const isShowTable = ref(false);
 const isShowDropDown = ref(false);
 const payment_methods_component = ref(null);
+const payment_methods_list_component = ref(null);
 
 const dataPaymentModal = reactive({
     company_id: "",
@@ -296,6 +303,12 @@ const dataPaymentModal = reactive({
     historic_company_amount_paid: "",
     historic_company_id:0
 });
+const dataPaymentModalPaymentMethodsList = reactive({
+    historic_company_id: "",
+    company_name: "",
+    historic_company_pay_date: "",
+});
+
 const page = usePage();
 
 const form = useForm({
@@ -322,6 +335,10 @@ function _openModalShowPaymentMethods(historic) {
     payment_methods_component.value.modal_payment_methods.open();
     _loadDataModal(historic);
 }
+function _openModalShowPaymentMethodsList(historic) {
+    _loadDataModalPaymentMethodsList(historic);
+    payment_methods_list_component.value.modal_payment_methods_list.open();
+}
 
 function _loadDataModal(historic) {
     dataPaymentModal.company_id = historic.company.id;
@@ -331,6 +348,13 @@ function _loadDataModal(historic) {
     dataPaymentModal.historic_company_amount_paid = historic.amount_paid;
     dataPaymentModal.historic_company_id = historic.id;
 }
+function _loadDataModalPaymentMethodsList(historic) {
+    dataPaymentModalPaymentMethodsList.historic_company_id = historic.id;
+    dataPaymentModalPaymentMethodsList.company_name = historic.company.company_name;
+    dataPaymentModalPaymentMethodsList.historic_company_pay_date = historic.pay_date;
+}
+
+
 
 function _showTableHistoricCompany() {
     form.transform((data) => ({

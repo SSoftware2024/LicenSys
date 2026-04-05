@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\HistoricCompany;
 use App\Models\HistoricPaymentMethod;
 
-final class HistoricPaymentMethodsService 
+final class HistoricPaymentMethodsService
 {
     public function create(array $payment_methods_list, int $historic_company_id)
     {
@@ -14,12 +14,12 @@ final class HistoricPaymentMethodsService
             return $carry += (float) $item['value'];
         });
         $value_pay = HistoricCompany::where('id', $historic_company_id)->first()->amount_paid;
-        if($all_value < $value_pay){
+        if ($all_value < $value_pay) {
             throw new \Exception('Valor do pagamento não atingido');
         }
 
         $payload = [];
-        foreach($payment_methods_list as $value){
+        foreach ($payment_methods_list as $value) {
             $payload[] = [
                 'historic_company_id' => $historic_company_id,
                 'payment_method_id' => $value['payment_method_id'],
@@ -30,8 +30,16 @@ final class HistoricPaymentMethodsService
         };
         HistoricPaymentMethod::insert($payload);
     }
-    public function removeAllPaymentsMethodsBy(int $historic_company_id):int
+    public function removeAllPaymentsMethodsBy(int $historic_company_id): int
     {
         return HistoricPaymentMethod::where('historic_company_id', $historic_company_id)->forceDelete();
+    }
+
+    public function getMethodsPaymentByMonth(int $historic_company_id)
+    {
+
+        return HistoricPaymentMethod::with('paymentMethod')
+            ->where('historic_company_id', $historic_company_id)
+            ->get();
     }
 }
