@@ -12,9 +12,10 @@ class PaymentMethod extends Model
 
 
     /********************************************RELATIONSHIP************************************************/
-    public function historicPaymentMethod(): BelongsToMany
+    public function historicCompanies(): BelongsToMany
     {
-        return $this->belongsToMany(HistoricPaymentMethod::class, 'historic_payment_methods');
+        return $this->belongsToMany(HistoricCompany::class, 'historic_payment_methods')
+            ->withPivot('value_paid')
+            ->withTimestamps();
     }
-
 }

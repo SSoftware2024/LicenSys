@@ -43,7 +43,7 @@ final class PaymentMethodService extends CRUD
             $paymentMethods->where('name', 'like', "%$search_name%");
         }
         //ajustar isso na view, variavel count, acho que aq vale a pena tirar paginte, são poucos dados
-        $paymentMethods = $paymentMethods->withCount('historicPaymentMethod')->orderBy('name')->paginate();
+        $paymentMethods = $paymentMethods->withCount('historicCompanies')->orderBy('name')->paginate();
         return $paymentMethods;
     }
 

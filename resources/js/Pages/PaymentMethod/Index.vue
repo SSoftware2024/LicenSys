@@ -123,7 +123,7 @@
                                 typeButton="red"
                                 class="relative top-1.5"
                                 @click="
-                                    _deleteAlert(value.id, value.payment_payment_method_count)
+                                    _deleteAlert(value.id, value.historic_companies_count)
                                 "
                             ></Button>
                         </td>
