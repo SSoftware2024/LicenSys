@@ -3,12 +3,12 @@
         title="Métodos de pagamento"
         id="modal-show-payment-methods-list"
         ref="modal_payment_methods_list"
-        :closeClearCallback="closeCallback"
     >
         <!-- TABELA -->
         <div class="relative overflow-y-auto max-h-100">
             <table
                 class="w-full text-sm text-left rtl:text-right text-gray-500 border border-gray-200 dark:text-gray-400"
+                v-if="!isLoading"
             >
                 <thead
                     class="sticky top-0 z-10 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -25,8 +25,13 @@
                         v-if="list_payment_methods_list"
                         v-for="value in list_payment_methods_list"
                     >
-                        <td class="px-6 py-4">teste</td>
-                        <td class="px-6 py-4">teste</td>
+                        <td class="px-6 py-4">
+                            {{ value.payment_method.name }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ formatMoneyBr(value.value_paid) }}
+                        </td>
+
                         <!-- <td class="px-6 py-4">
                             <Button
                                 text="Excluir"
@@ -39,12 +44,17 @@
                     </tr>
                 </tbody>
             </table>
+            <h2 v-else class="text-4xl">Carregando...</h2>
         </div>
 
         <!-- FIM TABELA -->
         <!-- DADOS DE VALOR E REFERÊNCIA -->
         <div>
             <ul>
+                <li>
+                    <span class="font-medium">Total / Mensalidade = Troco -> </span>
+                    {{ `${formatMoneyBr(cashData.sumValues)} - ${props.dataModal.amount_paid_formated} = ${formatMoneyBr(cashData.value_cash)}` }}
+                </li>
                 <li>
                     <span class="font-medium">Empresa:</span>
                     {{ props.dataModal.company_name }}
@@ -58,18 +68,6 @@
                     }}
                 </li>
             </ul>
-        </div>
-        <div>
-            <!-- <h2 class="text-right text-blue-700 text-3xl">
-                R$ {{ formatMoneyBr(list_values.all_value) }} |
-                <span class="text-black">R$ {{ total_value_formated }}</span>
-            </h2>
-            <h2
-                class="text-right text-green-700 text-xl"
-                v-if="cashBackData.showCashBack"
-            >
-                Troco: R$ {{ formatMoneyBr(cashBackData.value) }}
-            </h2> -->
         </div>
         <!-- FIM DADOS DE VALOR E REFERÊNCIA -->
     </Modal>
@@ -88,6 +86,17 @@ import Modal from "@/components/Modal.vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 
+const isLoading = ref(false);
+
+const defaultCashData = () => ({
+    cashBack: 0,
+    sumValues: 0,
+    value_cash: 0,
+    showCashBack: false
+});
+
+const cashData = reactive(defaultCashData());
+
 const props = defineProps({
     dataModal: {
         type: Object,
@@ -98,16 +107,26 @@ const modal_payment_methods_list = ref(null);
 
 const list_payment_methods_list = ref({});
 
-const cashBackData = reactive({
-    showCashBack: false,
-    value: 0,
-});
 
-function _cashBack(value) {}
+function _cashBack(value) {
+    let value_paid = props.dataModal.amount_paid; //já esta formatado
+    if (value > value_paid) {
+        cashData.showCashBack = true;
+        cashData.value_cash = value - value_paid;
+    } else {
+        cashData.showCashBack = false;
+        cashData.value = 0;
+    }
+}
 
-function _sumValues(value) {}
+function _sumValues(value) {
+    cashData.sumValues += value;
+}
 
 function _loadData() {
+    Object.assign(cashData, defaultCashData());
+    list_payment_methods_list.value = null;
+    isLoading.value = true;
     axios({
         method: "GET",
         url: route("historic_company.getMethodsPaymentByMonth"),
@@ -117,20 +136,16 @@ function _loadData() {
     })
         .then((response) => {
             let data = response.data;
-            console.log(response);
+            list_payment_methods_list.value = data;
+            list_payment_methods_list.value.forEach(element => {
+                _sumValues(parseFloat(element.value_paid));
+            });
         })
-        .catch((error) => {
-            console.log(error);
+        .finally(function () {
+            isLoading.value = false;
+            console.log(cashData.sumValues);
+            _cashBack(cashData.sumValues);
         });
-}
-
-function closeCallback() {
-    // list_values.payment_method_insert = null;
-    // list_values.value = null;
-    // list_values.all_value = 0;
-    // list_all.value = [];
-    // page.props.errors = {};
-    // _cashBack(list_values.all_value);
 }
 
 watch(

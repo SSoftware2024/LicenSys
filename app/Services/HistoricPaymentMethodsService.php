@@ -38,7 +38,10 @@ final class HistoricPaymentMethodsService
     public function getMethodsPaymentByMonth(int $historic_company_id)
     {
 
-        return HistoricPaymentMethod::with('paymentMethod')
+        return HistoricPaymentMethod::with(['paymentMethod' => function ($query) {
+            $query->select('id', 'name');
+        }])
+            ->select('id', 'historic_company_id','payment_method_id', 'value_paid')
             ->where('historic_company_id', $historic_company_id)
             ->get();
     }

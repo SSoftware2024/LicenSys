@@ -72,7 +72,6 @@ class HistoricCompanyController extends Controller
             'historic_company_id' => 'required|exists:historic_companies,id',
         ]);
         $data = $this->historicPaymentMethodService->getMethodsPaymentByMonth($request->historic_company_id);
-        ds($data);
         return $data;   
     }
 }

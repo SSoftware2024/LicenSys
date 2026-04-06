@@ -225,7 +225,11 @@
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            @click.prevent="_openModalShowPaymentMethodsList(value)"
+                                            @click.prevent="
+                                                _openModalShowPaymentMethodsList(
+                                                    value,
+                                                )
+                                            "
                                         >
                                             Ver pagamentos
                                         </a>
@@ -279,7 +283,6 @@ import {
     _copyText,
     _dateISOBrOnlyData,
     _confirmPassword,
-    formatMoneyBr,
 } from "@utils/functions";
 import { route } from "ziggy-js";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
@@ -301,7 +304,7 @@ const dataPaymentModal = reactive({
     name: "",
     historic_company_pay_date: "",
     historic_company_amount_paid: "",
-    historic_company_id:0
+    historic_company_id: 0,
 });
 const dataPaymentModalPaymentMethodsList = reactive({
     historic_company_id: "",
@@ -350,11 +353,14 @@ function _loadDataModal(historic) {
 }
 function _loadDataModalPaymentMethodsList(historic) {
     dataPaymentModalPaymentMethodsList.historic_company_id = historic.id;
-    dataPaymentModalPaymentMethodsList.company_name = historic.company.company_name;
-    dataPaymentModalPaymentMethodsList.historic_company_pay_date = historic.pay_date;
+    dataPaymentModalPaymentMethodsList.amount_paid = historic.amount_paid;
+    dataPaymentModalPaymentMethodsList.amount_paid_formated =
+        historic.amount_paid_formated;
+    dataPaymentModalPaymentMethodsList.company_name =
+        historic.company.company_name;
+    dataPaymentModalPaymentMethodsList.historic_company_pay_date =
+        historic.pay_date;
 }
-
-
 
 function _showTableHistoricCompany() {
     form.transform((data) => ({
@@ -388,12 +394,11 @@ function _filterCompanyByUrlUUID() {
 }
 
 function _removePayment(historic_company_id) {
-    router.patch(route("historic_company.removePayment"), {
-        historic_company_id: historic_company_id,
+    _confirmPassword(() => {
+        router.patch(route("historic_company.removePayment"), {
+            historic_company_id: historic_company_id,
+        });
     });
-    // router.patch(route("historic_company.removePayment"), {
-    //     historic_company_id: historic_company_id,
-    // });
 }
 
 function paginate(page_link) {

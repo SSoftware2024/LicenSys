@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\HistoricPaymentMethod;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PaymentMethod extends Model
 {
@@ -12,9 +12,9 @@ class PaymentMethod extends Model
 
 
     /********************************************RELATIONSHIP************************************************/
-    public function historicPaymentMethod(): HasMany
+    public function historicPaymentMethod(): BelongsToMany
     {
-        return $this->hasMany(HistoricPaymentMethod::class, 'payment_method_id');
+        return $this->belongsToMany(HistoricPaymentMethod::class, 'historic_payment_methods');
     }
 
 }
