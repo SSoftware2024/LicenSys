@@ -1,6 +1,6 @@
 <template>
     <Modal
-        title="Métodos de pagamento"
+        title="Lista de pagamentos"
         id="modal-show-payment-methods-list"
         ref="modal_payment_methods_list"
     >

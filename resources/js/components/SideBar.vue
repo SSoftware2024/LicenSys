@@ -245,7 +245,7 @@
                                     }"
                                 >
                                     <span class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"></span>
-                                    Faturamento
+                                    Transferências
                                 </Link>
                             </li>
                         </ul>

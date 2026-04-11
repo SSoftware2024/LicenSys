@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\HistoricPaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
