@@ -1,20 +1,19 @@
 <?php
 
-use Inertia\Inertia;
 use App\Enum\TypeUser;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CompanyGroupController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HistoricCompanyController;
+use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\SystemController;
+use App\Http\Controllers\TransferController;
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SystemController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CompanyGroupController;
-use App\Http\Controllers\HistoricCompanyController;
-use App\Http\Controllers\HistoricPaymentMethodsController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\PaymentMethodController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Inertia\Inertia;
 
 
 
@@ -86,9 +85,9 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
         Route::patch('/removePayment', [HistoricCompanyController::class, 'removePayment'])->name('.removePayment');
         Route::get('/getMethodsPaymentByMonth', [HistoricCompanyController::class, 'getMethodsPaymentByMonth'])->name('.getMethodsPaymentByMonth');
     });
-    Route::prefix('payment')->name('payment')->group(function () {
-        Route::match(['get','post'],'/', [PaymentController::class, 'index']);
-        Route::get('/pixReceiptPhotoUrl', [PaymentController::class, 'pixReceiptPhotoUrl'])->name('.pixReceiptPhotoUrl');
+    Route::prefix('transfer')->name('transfer')->group(function () {
+        Route::match(['get','post'],'/', [TransferController::class, 'index']);
+        Route::get('/pixReceiptPhotoUrl', [TransferController::class, 'pixReceiptPhotoUrl'])->name('.pixReceiptPhotoUrl');
     });
     Route::prefix('payment_method')->name('payment_method')->group(function () {
         Route::match(['get','post'],'/', [PaymentMethodController::class, 'index']);

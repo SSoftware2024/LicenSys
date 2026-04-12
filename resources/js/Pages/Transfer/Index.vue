@@ -31,8 +31,8 @@
                 <tbody>
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200"
-                        v-if="$page.props.payments"
-                        v-for="value in $page.props.payments"
+                        v-if="$page.props.transfers"
+                        v-for="value in $page.props.transfers"
                     >
                         <th
                             scope="row"
@@ -180,7 +180,7 @@ function _showDropDown() {
 function _openStatment(id) {
     axios({
         method: "GET",
-        url: route("payment.pixReceiptPhotoUrl"),
+        url: route("transfer.pixReceiptPhotoUrl"),
         params: {
             id: id,
         },

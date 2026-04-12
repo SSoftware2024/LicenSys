@@ -237,11 +237,11 @@
                             </li>
                             <li>
                                 <Link
-                                    :href="route('payment')"
+                                    :href="route('transfer')"
                                     :class="{
                                         'flex items-center gap-2 pl-9 pr-3 h-9 rounded-lg text-sm transition-colors': true,
-                                        'text-indigo-700 font-medium': route().current('payment'),
-                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100': !route().current('payment'),
+                                        'text-indigo-700 font-medium': route().current('transfer'),
+                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100': !route().current('transfer'),
                                     }"
                                 >
                                     <span class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"></span>

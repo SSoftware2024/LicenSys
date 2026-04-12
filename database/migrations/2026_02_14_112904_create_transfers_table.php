@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('transfers', function (Blueprint $table) {
             $table->id();
             $table->string('pix_origin_name')->nullable();
             $table->string('pix_receipt_photo')->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('transfers');
     }
 };

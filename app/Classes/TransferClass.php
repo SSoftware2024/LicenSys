@@ -2,7 +2,7 @@
 
 namespace App\Classes;
 
-final class PaymentClass
+final class TransferClass
 {
     
 }

@@ -3,7 +3,7 @@
 namespace App\Services\API;
 
 use App\Models\Company;
-use App\Models\Payment;
+use App\Models\Transfer;
 use Illuminate\Support\Facades\DB;
 
 class TransferService
@@ -16,7 +16,7 @@ class TransferService
             $company_id = Company::where('uuid', $company_uuid)->first()->id;
             $file = $data_pix['pix_receipt_photo'];
             $file->storeAs('statement/',$file->getClientOriginalName(), 'local');
-            Payment::create([
+            Transfer::create([
                 'company_id' => $company_id,
                 'historic_company_id' => $historic_company_id,
                 'pix_origin_name' => $data_pix['pix_origin_name'],

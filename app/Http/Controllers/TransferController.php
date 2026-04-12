@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PaymentService;
+use App\Services\TransferService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PaymentController extends Controller
+class TransferController extends Controller
 {
     public function __construct(
-        private PaymentService $service
+        private TransferService $service
     ) {
         
     }
     public function index()
     {
         $data = $this->service->indexView();
-        return Inertia::render('Payment/Index', [
-            'payments' => $data
+        return Inertia::render('Transfer/Index', [
+            'transfers' => $data
         ]);
     }
 
