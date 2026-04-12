@@ -45,7 +45,8 @@ function _dateISOBrOnlyData(date) {
     //apenas dia,mes,ano e correção timezone
     let dateReturn = "";
     if (date) {
-        dateReturn = new Date(date + "T00:00:00") //correção de timezone
+        const dateOnly = date.includes("T") ? date.split("T")[0] : date;
+        dateReturn = new Date(dateOnly + "T00:00:00")
             .toLocaleDateString("pt-BR", {
                 day: "2-digit",
                 month: "2-digit",

@@ -88,6 +88,7 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
     });
     Route::prefix('payment')->name('payment')->group(function () {
         Route::match(['get','post'],'/', [PaymentController::class, 'index']);
+        Route::get('/pixReceiptPhotoUrl', [PaymentController::class, 'pixReceiptPhotoUrl'])->name('.pixReceiptPhotoUrl');
     });
     Route::prefix('payment_method')->name('payment_method')->group(function () {
         Route::match(['get','post'],'/', [PaymentMethodController::class, 'index']);

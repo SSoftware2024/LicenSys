@@ -16,9 +16,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('pix_origin_name')->nullable();
-            $table->string('pix_transaction_id')->nullable();
             $table->string('pix_receipt_photo')->nullable();
-            $table->date('reference_date')->nullable();
             $table->string('cause')->nullable();
             $table->foreignIdFor(Company::class)->constrained();
             $table->foreignIdFor(HistoricCompany::class)->nullable()->constrained();
