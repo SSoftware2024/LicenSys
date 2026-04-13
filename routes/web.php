@@ -90,6 +90,9 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
         Route::get('/pixReceiptPhotoUrl', [TransferController::class, 'pixReceiptPhotoUrl'])->name('.pixReceiptPhotoUrl');
         Route::post('/processTransfer', [TransferController::class, 'processTransfer'])->name('.processTransfer');
         Route::delete('/delete/{id}', [TransferController::class, 'delete'])->name('.delete');
+
+        //axios
+        Route::get('/count', [TransferController::class, 'count'])->name('.count');
     });
     Route::prefix('payment_method')->name('payment_method')->group(function () {
         Route::match(['get','post'],'/', [PaymentMethodController::class, 'index']);

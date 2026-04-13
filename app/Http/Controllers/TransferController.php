@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Facades\Toast;
+use App\Models\Transfer;
 use App\Services\TransferService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -45,5 +46,12 @@ class TransferController extends Controller
         } catch (\Exception $e) {
             Toast::warning($e->getMessage());
         }
+    }
+
+    public function count()
+    {
+        return response()->json([
+            'count' => Transfer::count()
+        ]);
     }
 }

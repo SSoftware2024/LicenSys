@@ -135,7 +135,12 @@
                                                 value.historic_company
                                                     .monthly_fee_status == 'pay'
                                             "
-                                            @click.prevent="_proccessTransfer(value.id, value.historic_company_id)"
+                                            @click.prevent="
+                                                _proccessTransfer(
+                                                    value.id,
+                                                    value.historic_company_id,
+                                                )
+                                            "
                                         >
                                             Baixa
                                         </a>
@@ -169,10 +174,7 @@ import {
 } from "@utils/functions";
 import Swal from "sweetalert2";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
-import Button from "@/components/Button.vue";
-
-const page = usePage();
-
+import { emitter } from "@/utils/mitt";
 const isShowDropDown = ref(false);
 
 function _delete(id) {
@@ -186,15 +188,28 @@ function _delete(id) {
         confirmButtonText: "Remover",
         cancelButtonText: "Cancelar",
     }).then((result) => {
-        if (result.isConfirmed) router.delete(route("transfer.delete", [id]));
+        if (result.isConfirmed)
+            router.delete(route("transfer.delete", [id]), {
+                onSuccess: () => {
+                    emitter.emit("transferCountStart");
+                },
+            });
     });
 }
 
 function _proccessTransfer(id, historic_company_id) {
-    router.post(route("transfer.processTransfer"), {
-        id: id,
-        historic_company_id: historic_company_id,
-    });
+    router.post(
+        route("transfer.processTransfer"),
+        {
+            id: id,
+            historic_company_id: historic_company_id,
+        },
+        {
+            onSuccess: () => {
+                emitter.emit("transferCountStart");
+            },
+        },
+    );
 }
 
 function _showDropDown() {

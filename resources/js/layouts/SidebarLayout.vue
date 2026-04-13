@@ -14,7 +14,6 @@ const toast = useToast();
 function _showToast(event) {
     let messageToast = event.detail.page.props.response_data?.toast;
     if (messageToast) {
-        
         messageToast.forEach((value) => {
             toast.open({
                 message: value.message,
@@ -22,11 +21,6 @@ function _showToast(event) {
                 duration: value.duration,
             });
         });
-        // let instance = toast.open({
-        //     message: messageToast.message,
-        //     type: messageToast.type,
-        //     duration: messageToast.duration,
-        // });
     }
 }
 

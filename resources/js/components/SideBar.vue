@@ -8,8 +8,18 @@
         class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
     >
         <span class="sr-only">Open sidebar</span>
-        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"/>
+        <svg
+            class="w-6 h-6"
+            aria-hidden="true"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                clip-rule="evenodd"
+                fill-rule="evenodd"
+                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+            />
         </svg>
     </button>
     <!-- END BUTTON SIDEBAR -->
@@ -23,21 +33,35 @@
     >
         <!-- LOGO -->
         <div class="flex items-center gap-3 px-4 py-4 border-b border-gray-200">
-            <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-indigo-600">
-                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            <div
+                class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 bg-indigo-600"
+            >
+                <svg
+                    class="w-4 h-4 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                 </svg>
             </div>
-            <span class="text-sm font-medium text-gray-800 tracking-tight">LicenSys</span>
-            <span class="ml-auto text-[10px] px-2 py-0.5 rounded-full font-medium bg-indigo-50 text-indigo-600 border border-indigo-100">Pro</span>
+            <span class="text-sm font-medium text-gray-800 tracking-tight"
+                >LicenSys</span
+            >
+            <span
+                class="ml-auto text-[10px] px-2 py-0.5 rounded-full font-medium bg-indigo-50 text-indigo-600 border border-indigo-100"
+                >Pro</span
+            >
         </div>
 
         <!-- NAV -->
         <div class="flex-1 overflow-y-auto px-3 py-3">
-
             <!-- PRINCIPAL -->
             <div class="mb-5">
-                <p class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400">Principal</p>
+                <p
+                    class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400"
+                >
+                    Principal
+                </p>
                 <ul class="space-y-0.5">
                     <li class="lg:hidden">
                         <a
@@ -45,8 +69,19 @@
                             class="flex items-center gap-2.5 px-3 h-10 rounded-lg text-sm text-red-500 hover:bg-red-50 transition-colors"
                             @click="_closeSidebar"
                         >
-                            <svg class="w-4 h-4 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m17 16-4-4 4-4m-6 8-4-4 4-4"/>
+                            <svg
+                                class="w-4 h-4 flex-shrink-0"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m17 16-4-4 4-4m-6 8-4-4 4-4"
+                                />
                             </svg>
                             <span>Fechar Sidebar</span>
                         </a>
@@ -56,17 +91,28 @@
                             :href="route('index')"
                             :class="{
                                 'flex items-center gap-2.5 px-3 h-10 rounded-lg text-sm font-medium transition-colors': true,
-                                'bg-indigo-50 text-indigo-700 border border-indigo-100': route().current('index'),
-                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900': !route().current('index'),
+                                'bg-indigo-50 text-indigo-700 border border-indigo-100':
+                                    route().current('index'),
+                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900':
+                                    !route().current('index'),
                             }"
                         >
                             <svg
                                 class="w-4 h-4 flex-shrink-0"
-                                :class="route().current('index') ? 'text-indigo-500' : 'text-gray-400'"
-                                fill="currentColor" viewBox="0 0 22 21"
+                                :class="
+                                    route().current('index')
+                                        ? 'text-indigo-500'
+                                        : 'text-gray-400'
+                                "
+                                fill="currentColor"
+                                viewBox="0 0 22 21"
                             >
-                                <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                                <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                                <path
+                                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"
+                                />
+                                <path
+                                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"
+                                />
                             </svg>
                             <span>Dashboard</span>
                         </Link>
@@ -76,17 +122,30 @@
                             :href="route('system')"
                             :class="{
                                 'flex items-center gap-2.5 px-3 h-10 rounded-lg text-sm font-medium transition-colors': true,
-                                'bg-indigo-50 text-indigo-700 border border-indigo-100': route().current('system'),
-                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900': !route().current('system'),
+                                'bg-indigo-50 text-indigo-700 border border-indigo-100':
+                                    route().current('system'),
+                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900':
+                                    !route().current('system'),
                             }"
                         >
                             <svg
                                 class="w-4 h-4 flex-shrink-0"
-                                :class="route().current('system') ? 'text-indigo-500' : 'text-sky-400'"
-                                fill="currentColor" viewBox="0 0 24 24"
+                                :class="
+                                    route().current('system')
+                                        ? 'text-indigo-500'
+                                        : 'text-sky-400'
+                                "
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
                             >
-                                <path fill-rule="evenodd" d="M4 5.78571C4 4.80909 4.78639 4 5.77778 4H18.2222C19.2136 4 20 4.80909 20 5.78571V15H4V5.78571ZM12 12c0-.5523.4477-1 1-1h2c.5523 0 1 .4477 1 1s-.4477 1-1 1h-2c-.5523 0-1-.4477-1-1ZM8.27586 6.31035c.38089-.39993 1.01387-.41537 1.4138-.03449l2.62504 2.5c.1981.18875.3103.45047.3103.72414 0 .27368-.1122.5354-.3103.7241l-2.62504 2.5c-.39993.3809-1.03291.3655-1.4138-.0344-.38088-.4-.36544-1.033.03449-1.4138L10.175 9.5 8.31035 7.72414c-.39993-.38089-.41537-1.01386-.03449-1.41379Z" clip-rule="evenodd"/>
-                                <path d="M2 17v1c0 1.1046.89543 2 2 2h16c1.1046 0 2-.8954 2-2v-1H2Z"/>
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M4 5.78571C4 4.80909 4.78639 4 5.77778 4H18.2222C19.2136 4 20 4.80909 20 5.78571V15H4V5.78571ZM12 12c0-.5523.4477-1 1-1h2c.5523 0 1 .4477 1 1s-.4477 1-1 1h-2c-.5523 0-1-.4477-1-1ZM8.27586 6.31035c.38089-.39993 1.01387-.41537 1.4138-.03449l2.62504 2.5c.1981.18875.3103.45047.3103.72414 0 .27368-.1122.5354-.3103.7241l-2.62504 2.5c-.39993.3809-1.03291.3655-1.4138-.0344-.38088-.4-.36544-1.033.03449-1.4138L10.175 9.5 8.31035 7.72414c-.39993-.38089-.41537-1.01386-.03449-1.41379Z"
+                                    clip-rule="evenodd"
+                                />
+                                <path
+                                    d="M2 17v1c0 1.1046.89543 2 2 2h16c1.1046 0 2-.8954 2-2v-1H2Z"
+                                />
                             </svg>
                             <span>Sistema</span>
                         </Link>
@@ -96,7 +155,11 @@
 
             <!-- GESTÃO -->
             <div class="mb-5">
-                <p class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400">Gestão</p>
+                <p
+                    class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400"
+                >
+                    Gestão
+                </p>
                 <ul class="space-y-0.5">
                     <li>
                         <button
@@ -105,27 +168,56 @@
                             aria-controls="dropdown-example"
                             data-collapse-toggle="dropdown-example"
                         >
-                            <svg class="w-4 h-4 flex-shrink-0 text-violet-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
+                            <svg
+                                class="w-4 h-4 flex-shrink-0 text-violet-400"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
+                                    clip-rule="evenodd"
+                                />
                             </svg>
                             <span class="flex-1 text-left">Usuários</span>
                             <!-- Quantidade usuários -->
                             <!-- <span class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-indigo-50 text-indigo-600 border border-indigo-100">24</span> -->
-                            <svg class="w-3 h-3 text-gray-400 ml-1" fill="none" viewBox="0 0 10 6" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m1 1 4 4 4-4"/>
+                            <svg
+                                class="w-3 h-3 text-gray-400 ml-1"
+                                fill="none"
+                                viewBox="0 0 10 6"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m1 1 4 4 4-4"
+                                />
                             </svg>
                         </button>
-                        <ul id="dropdown-example" class="hidden py-1 space-y-0.5">
+                        <ul
+                            id="dropdown-example"
+                            class="hidden py-1 space-y-0.5"
+                        >
                             <li>
                                 <Link
                                     :href="route('user', { type: 'default' })"
                                     :class="{
                                         'flex items-center gap-2 pl-9 pr-3 h-9 rounded-lg text-sm transition-colors': true,
-                                        'text-indigo-700 font-medium': route().current('user', { type: 'default' }),
-                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100': !route().current('user', { type: 'default' }),
+                                        'text-indigo-700 font-medium':
+                                            route().current('user', {
+                                                type: 'default',
+                                            }),
+                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100':
+                                            !route().current('user', {
+                                                type: 'default',
+                                            }),
                                     }"
                                 >
-                                    <span class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"></span>
+                                    <span
+                                        class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"
+                                    ></span>
                                     Comum
                                 </Link>
                             </li>
@@ -134,11 +226,19 @@
                                     :href="route('user', { type: 'admin' })"
                                     :class="{
                                         'flex items-center gap-2 pl-9 pr-3 h-9 rounded-lg text-sm transition-colors': true,
-                                        'text-indigo-700 font-medium': route().current('user', { type: 'admin' }),
-                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100': !route().current('user', { type: 'admin' }),
+                                        'text-indigo-700 font-medium':
+                                            route().current('user', {
+                                                type: 'admin',
+                                            }),
+                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100':
+                                            !route().current('user', {
+                                                type: 'admin',
+                                            }),
                                     }"
                                 >
-                                    <span class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"></span>
+                                    <span
+                                        class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"
+                                    ></span>
                                     Administrador
                                 </Link>
                             </li>
@@ -150,16 +250,29 @@
                             :href="route('company')"
                             :class="{
                                 'flex items-center gap-2.5 px-3 h-10 rounded-lg text-sm font-medium transition-colors': true,
-                                'bg-indigo-50 text-indigo-700 border border-indigo-100': route().current('company'),
-                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900': !route().current('company'),
+                                'bg-indigo-50 text-indigo-700 border border-indigo-100':
+                                    route().current('company'),
+                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900':
+                                    !route().current('company'),
                             }"
                         >
                             <svg
                                 class="w-4 h-4 flex-shrink-0"
-                                :class="route().current('company') ? 'text-indigo-500' : 'text-amber-400'"
-                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                                :class="
+                                    route().current('company')
+                                        ? 'text-indigo-500'
+                                        : 'text-amber-400'
+                                "
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
                             >
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"/>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 4h12M6 4v16M6 4H5m13 0v16m0-16h1m-1 16H6m12 0h1M6 20H5M9 7h1v1H9V7Zm5 0h1v1h-1V7Zm-5 4h1v1H9v-1Zm5 0h1v1h-1v-1Zm-3 4h2a1 1 0 0 1 1 1v4h-4v-4a1 1 0 0 1 1-1Z"
+                                />
                             </svg>
                             <span>Empresas</span>
                         </Link>
@@ -170,16 +283,27 @@
                             :href="route('company_group')"
                             :class="{
                                 'flex items-center gap-2.5 px-3 h-10 rounded-lg text-sm font-medium transition-colors': true,
-                                'bg-indigo-50 text-indigo-700 border border-indigo-100': route().current('company_group'),
-                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900': !route().current('company_group'),
+                                'bg-indigo-50 text-indigo-700 border border-indigo-100':
+                                    route().current('company_group'),
+                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900':
+                                    !route().current('company_group'),
                             }"
                         >
                             <svg
                                 class="w-4 h-4 flex-shrink-0"
-                                :class="route().current('company_group') ? 'text-indigo-500' : 'text-teal-400'"
-                                fill="currentColor" viewBox="0 0 24 24"
+                                :class="
+                                    route().current('company_group')
+                                        ? 'text-indigo-500'
+                                        : 'text-teal-400'
+                                "
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
                             >
-                                <path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z" clip-rule="evenodd"/>
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M3 6a2 2 0 0 1 2-2h5.532a2 2 0 0 1 1.536.72l1.9 2.28H3V6Zm0 3v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9H3Z"
+                                    clip-rule="evenodd"
+                                />
                             </svg>
                             <span>Grupo Empresa</span>
                         </Link>
@@ -189,7 +313,11 @@
 
             <!-- FINANCEIRO -->
             <div class="mb-5">
-                <p class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400">Financeiro</p>
+                <p
+                    class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400"
+                >
+                    Financeiro
+                </p>
                 <ul class="space-y-0.5">
                     <li>
                         <button
@@ -198,27 +326,52 @@
                             aria-controls="dropdown-examples"
                             data-collapse-toggle="dropdown-examples"
                         >
-                            <svg class="w-4 h-4 flex-shrink-0 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd"/>
+                            <svg
+                                class="w-4 h-4 flex-shrink-0 text-emerald-400"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M5.617 2.076a1 1 0 0 1 1.09.217L8 3.586l1.293-1.293a1 1 0 0 1 1.414 0L12 3.586l1.293-1.293a1 1 0 0 1 1.414 0L16 3.586l1.293-1.293A1 1 0 0 1 19 3v18a1 1 0 0 1-1.707.707L16 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L12 20.414l-1.293 1.293a1 1 0 0 1-1.414 0L8 20.414l-1.293 1.293A1 1 0 0 1 5 21V3a1 1 0 0 1 .617-.924ZM9 7a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Zm0 4a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z"
+                                    clip-rule="evenodd"
+                                />
                             </svg>
                             <span class="flex-1 text-left">Mensalidade</span>
                             <!-- Quantidade mensalidade -->
-                            <!-- <span class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-500 border border-red-100">3</span> -->
-                            <svg class="w-3 h-3 text-gray-400 ml-1" fill="none" viewBox="0 0 10 6" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m1 1 4 4 4-4"/>
+                            <span class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-500 border border-red-100">{{ transfer_count }}</span>
+                            <svg
+                                class="w-3 h-3 text-gray-400 ml-1"
+                                fill="none"
+                                viewBox="0 0 10 6"
+                                stroke="currentColor"
+                                stroke-width="2"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m1 1 4 4 4-4"
+                                />
                             </svg>
                         </button>
-                        <ul id="dropdown-examples" class="hidden py-1 space-y-0.5">
+                        <ul
+                            id="dropdown-examples"
+                            class="hidden py-1 space-y-0.5"
+                        >
                             <li>
                                 <Link
                                     :href="route('payment_method')"
                                     :class="{
                                         'flex items-center gap-2 pl-9 pr-3 h-9 rounded-lg text-sm transition-colors': true,
-                                        'text-indigo-700 font-medium': route().current('payment_method'),
-                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100': !route().current('payment_method'),
+                                        'text-indigo-700 font-medium':
+                                            route().current('payment_method'),
+                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100':
+                                            !route().current('payment_method'),
                                     }"
                                 >
-                                    <span class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"></span>
+                                    <span
+                                        class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"
+                                    ></span>
                                     Formas de pagamento
                                 </Link>
                             </li>
@@ -227,11 +380,17 @@
                                     :href="route('historic_company')"
                                     :class="{
                                         'flex items-center gap-2 pl-9 pr-3 h-9 rounded-lg text-sm transition-colors': true,
-                                        'text-indigo-700 font-medium': route().current('historic_company'),
-                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100': !route().current('historic_company'),
+                                        'text-indigo-700 font-medium':
+                                            route().current('historic_company'),
+                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100':
+                                            !route().current(
+                                                'historic_company',
+                                            ),
                                     }"
                                 >
-                                    <span class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"></span>
+                                    <span
+                                        class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"
+                                    ></span>
                                     Mensalidade
                                 </Link>
                             </li>
@@ -240,12 +399,19 @@
                                     :href="route('transfer')"
                                     :class="{
                                         'flex items-center gap-2 pl-9 pr-3 h-9 rounded-lg text-sm transition-colors': true,
-                                        'text-indigo-700 font-medium': route().current('transfer'),
-                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100': !route().current('transfer'),
+                                        'text-indigo-700 font-medium':
+                                            route().current('transfer'),
+                                        'text-gray-500 hover:text-gray-800 hover:bg-gray-100':
+                                            !route().current('transfer'),
                                     }"
                                 >
-                                    <span class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"></span>
+                                    <span
+                                        class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"
+                                    ></span>
                                     Transferências
+                                    <span class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-500 border border-red-100">
+                                        {{ transfer_count }}
+                                    </span>
                                 </Link>
                             </li>
                         </ul>
@@ -255,40 +421,60 @@
 
             <!-- CONTA -->
             <div class="mb-2">
-                <p class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400">Conta</p>
+                <p
+                    class="text-[10px] font-semibold uppercase tracking-widest px-2 mb-1.5 text-gray-400"
+                >
+                    Conta
+                </p>
                 <ul class="space-y-0.5">
                     <li>
                         <Link
                             :href="route('user.profileEditView')"
                             :class="{
                                 'flex items-center gap-2.5 px-3 h-10 rounded-lg text-sm font-medium transition-colors': true,
-                                'bg-indigo-50 text-indigo-700 border border-indigo-100': route().current('user.profileEditView'),
-                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900': !route().current('user.profileEditView'),
+                                'bg-indigo-50 text-indigo-700 border border-indigo-100':
+                                    route().current('user.profileEditView'),
+                                'text-gray-600 hover:bg-gray-100 hover:text-gray-900':
+                                    !route().current('user.profileEditView'),
                             }"
                         >
                             <svg
                                 class="w-4 h-4 flex-shrink-0"
-                                :class="route().current('user.profileEditView') ? 'text-indigo-500' : 'text-sky-400'"
-                                fill="currentColor" viewBox="0 0 24 24"
+                                :class="
+                                    route().current('user.profileEditView')
+                                        ? 'text-indigo-500'
+                                        : 'text-sky-400'
+                                "
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
                             >
-                                <path fill-rule="evenodd" d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z" clip-rule="evenodd"/>
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M5 8a4 4 0 1 1 7.796 1.263l-2.533 2.534A4 4 0 0 1 5 8Zm4.06 5H7a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h2.172a2.999 2.999 0 0 1-.114-1.588l.674-3.372a3 3 0 0 1 .82-1.533L9.06 13Zm9.032-5a2.907 2.907 0 0 0-2.056.852L9.967 14.92a1 1 0 0 0-.273.51l-.675 3.373a1 1 0 0 0 1.177 1.177l3.372-.675a1 1 0 0 0 .511-.273l6.07-6.07a2.91 2.91 0 0 0-.944-4.742A2.907 2.907 0 0 0 18.092 8Z"
+                                    clip-rule="evenodd"
+                                />
                             </svg>
                             <span>Perfil</span>
                         </Link>
                     </li>
                 </ul>
             </div>
-
         </div>
 
         <!-- FOOTER: USER + LOGOUT -->
         <div class="px-3 py-3 border-t border-gray-200">
-            <div class="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white flex-shrink-0 bg-indigo-500">
+            <div
+                class="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+                <div
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white flex-shrink-0 bg-indigo-500"
+                >
                     TA
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-800 truncate">Tiago Alves</p>
+                    <p class="text-sm font-medium text-gray-800 truncate">
+                        Tiago Alves
+                    </p>
                     <p class="text-[11px] text-gray-400">Administrador</p>
                 </div>
                 <a
@@ -297,8 +483,18 @@
                     class="w-7 h-7 rounded-md flex items-center justify-center text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors flex-shrink-0"
                     title="Sair"
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 18 16">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                    <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 18 16"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
+                        />
                     </svg>
                 </a>
             </div>
@@ -317,18 +513,35 @@
     <!-- END CONTENT -->
 </template>
 <script setup>
+import { ref } from 'vue';
 import { usePage, router, Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
-
+import { emitter } from "@/utils/mitt";
 //LAYOUTS E COMPONENTS
 import Card from "@/components/Card.vue";
+import { onMounted } from "vue";
 
 const page = usePage();
+const transfer_count = ref(0);
 
 function logout() {
     router.post(page.props.routes_fortify.logout_post, {
         onSuccess: () => router.get(page.props.routes_fortify.login_get),
     });
+}
+function transferCountStart() {
+    axios.get(route("transfer.count")).then((response) => {
+        transfer_count.value = response.data.count;
+    });
+}
+//futuramente colocar realtime
+function transferCountInterval() {
+    setInterval(
+        () => {
+            transferCountStart();
+        },
+        10 * 60 * 1000,
+    ); //10 minutos
 }
 
 function _closeSidebar() {
@@ -338,4 +551,16 @@ function _closeSidebar() {
     const escEvent = new KeyboardEvent("keydown", { key: "Escape" });
     document.dispatchEvent(escEvent);
 }
+
+function _listenEventsMitt(){
+    emitter.on(
+        'transferCountStart', transferCountStart
+    );
+}
+
+onMounted(() => {
+    transferCountStart();
+    transferCountInterval();
+    _listenEventsMitt();
+});
 </script>
