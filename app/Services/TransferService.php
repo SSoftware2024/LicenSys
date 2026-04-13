@@ -38,11 +38,13 @@ class TransferService
             'type' => ToastType::SUCCESS->value,
             'msg' => ''
         ];
+        if(!PaymentMethod::where('name', 'pix')->exists()) throw new \Exception("Forma de pagamento 'pix' não encontrada");
+        
         if ($historicCompany->monthly_fee_status != MonthlyFee::PAID->value) {
             //inserir forma de pagamento como pix e o valor
             $payment_methods_list = [
                 [
-                    'payment_method_id' => PaymentMethod::where('name', 'pix')->firstOrFail()->id,
+                    'payment_method_id' => PaymentMethod::where('name', 'pix')->first()->id,
                     'value' => (float) $historicCompany->amount_paid
                 ]
             ];

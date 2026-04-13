@@ -47,10 +47,11 @@
             <span class="text-sm font-medium text-gray-800 tracking-tight"
                 >LicenSys</span
             >
-            <span
+            <!-- Marca pro -->
+            <!-- <span
                 class="ml-auto text-[10px] px-2 py-0.5 rounded-full font-medium bg-indigo-50 text-indigo-600 border border-indigo-100"
                 >Pro</span
-            >
+            > -->
         </div>
 
         <!-- NAV -->
@@ -466,16 +467,16 @@
             <div
                 class="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
             >
-                <div
+                <!-- <div
                     class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold text-white flex-shrink-0 bg-indigo-500"
                 >
                     TA
-                </div>
+                </div> -->
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-800 truncate">
-                        Tiago Alves
+                        {{ $page.props.user_auth.name }}
                     </p>
-                    <p class="text-[11px] text-gray-400">Administrador</p>
+                    <p class="text-[11px] text-gray-400">{{ $page.props.user_auth.email }}</p>
                 </div>
                 <a
                     href="#"
@@ -513,14 +514,13 @@
     <!-- END CONTENT -->
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref,computed } from 'vue';
 import { usePage, router, Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import { emitter } from "@/utils/mitt";
 //LAYOUTS E COMPONENTS
 import Card from "@/components/Card.vue";
 import { onMounted } from "vue";
-
 const page = usePage();
 const transfer_count = ref(0);
 
