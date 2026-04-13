@@ -88,6 +88,8 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
     Route::prefix('transfer')->name('transfer')->group(function () {
         Route::match(['get','post'],'/', [TransferController::class, 'index']);
         Route::get('/pixReceiptPhotoUrl', [TransferController::class, 'pixReceiptPhotoUrl'])->name('.pixReceiptPhotoUrl');
+        Route::post('/processTransfer', [TransferController::class, 'processTransfer'])->name('.processTransfer');
+        Route::delete('/delete/{id}', [TransferController::class, 'delete'])->name('.delete');
     });
     Route::prefix('payment_method')->name('payment_method')->group(function () {
         Route::match(['get','post'],'/', [PaymentMethodController::class, 'index']);

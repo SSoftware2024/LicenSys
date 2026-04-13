@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('pix_origin_name')->nullable();
             $table->string('pix_receipt_photo')->nullable();
-            $table->string('cause')->nullable();
             $table->foreignIdFor(Company::class)->constrained();
             $table->foreignIdFor(HistoricCompany::class)->nullable()->constrained();
             $table->timestamps();

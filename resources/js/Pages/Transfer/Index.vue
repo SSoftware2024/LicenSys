@@ -49,13 +49,10 @@
                         </td>
                         <td class="px-6 py-4">{{ value.pix_origin_name }}</td>
                         <td class="px-6 py-4 text-blue-600 underline">
-                            <a
-                                href="#"
-                                @click.prevent="_openStatment(value.id)"
+                            <a href="#" @click.prevent="_openStatment(value.id)"
                                 >CLIQUE AQUI</a
                             >
                         </td>
-                        <!-- <td class="px-6 py-4">{{ value.pix_receipt_photo }}</td> -->
                         <td class="px-6 py-4">
                             {{
                                 _dateISOBrOnlyData(
@@ -134,6 +131,11 @@
                                         <a
                                             href="#"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            v-if="
+                                                value.historic_company
+                                                    .monthly_fee_status == 'pay'
+                                            "
+                                            @click.prevent="_proccessTransfer(value.id, value.historic_company_id)"
                                         >
                                             Baixa
                                         </a>
@@ -142,6 +144,7 @@
                                 <div class="py-2">
                                     <a
                                         class="block px-4 py-2 text-sm text-red-600 font-bold hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                                        @click.prevent="_delete(value.id)"
                                         >Remover</a
                                     >
                                 </div>
@@ -164,6 +167,7 @@ import {
     moneyBrToNumber,
     _dateISOBrOnlyData,
 } from "@utils/functions";
+import Swal from "sweetalert2";
 import SidebarLayout from "@/layouts/SidebarLayout.vue";
 import Button from "@/components/Button.vue";
 
@@ -171,7 +175,27 @@ const page = usePage();
 
 const isShowDropDown = ref(false);
 
-function _delete(id) {}
+function _delete(id) {
+    Swal.fire({
+        title: "Deseja remover a tranferência?",
+        text: "A ação não tem reversão! Comprovante de pagamento será deletado!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Remover",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) router.delete(route("transfer.delete", [id]));
+    });
+}
+
+function _proccessTransfer(id, historic_company_id) {
+    router.post(route("transfer.processTransfer"), {
+        id: id,
+        historic_company_id: historic_company_id,
+    });
+}
 
 function _showDropDown() {
     isShowDropDown.value = true;

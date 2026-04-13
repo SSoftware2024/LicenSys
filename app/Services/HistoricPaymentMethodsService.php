@@ -7,6 +7,16 @@ use App\Models\HistoricPaymentMethod;
 
 final class HistoricPaymentMethodsService
 {
+        
+    /**
+     * Method create
+     *
+     * @param array $payment_methods_list 
+     *  [payment_method_id, value]
+     * @param int $historic_company_id
+     *
+     * @return void
+     */
     public function create(array $payment_methods_list, int $historic_company_id)
     {
         //convertendo e somando valores

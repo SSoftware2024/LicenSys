@@ -403,7 +403,6 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import Swal from "sweetalert2";
 import { route } from "ziggy-js";
 import { router, usePage, useForm } from "@inertiajs/vue3";
 import { _copyText, _dateISOBr, _confirmPassword, getNormalUrlParamter } from "@utils/functions";
