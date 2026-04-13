@@ -69,7 +69,7 @@ defineExpose({
 </script>
 <style scoped>
 .backdrop {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -79,7 +79,7 @@ defineExpose({
     display: none; /** block */
 }
 .container-modal {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
