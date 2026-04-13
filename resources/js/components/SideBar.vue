@@ -535,6 +535,7 @@ function transferCountStart() {
 }
 //futuramente colocar realtime
 function transferCountInterval() {
+  clearInterval(interval);
     interval = setInterval(
         () => {
             transferCountStart();
