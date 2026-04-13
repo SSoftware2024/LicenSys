@@ -514,16 +514,15 @@
     <!-- END CONTENT -->
 </template>
 <script setup>
-import { ref,computed } from 'vue';
+import { ref,onUnmounted,onMounted } from 'vue';
 import { usePage, router, Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import { emitter } from "@/utils/mitt";
 //LAYOUTS E COMPONENTS
 import Card from "@/components/Card.vue";
-import { onMounted } from "vue";
 const page = usePage();
 const transfer_count = ref(0);
-
+let interval = 0;
 function logout() {
     router.post(page.props.routes_fortify.logout_post, {
         onSuccess: () => router.get(page.props.routes_fortify.login_get),
@@ -536,7 +535,7 @@ function transferCountStart() {
 }
 //futuramente colocar realtime
 function transferCountInterval() {
-    setInterval(
+    interval = setInterval(
         () => {
             transferCountStart();
         },
@@ -562,5 +561,9 @@ onMounted(() => {
     transferCountStart();
     transferCountInterval();
     _listenEventsMitt();
+});
+
+onUnmounted(() => {
+  clearInterval(interval);
 });
 </script>
