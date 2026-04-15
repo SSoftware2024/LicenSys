@@ -26,6 +26,22 @@ class TransferController extends Controller
             ARRAY_FILTER_USE_KEY //usa como value a key
         );
         $this->service->proccess($request->company_uuid, $request->historic_company_id, $data_pix);
-
+    }
+    public function getQrCodePix(Request $request)
+    {
+        $request->validate([
+            'historic_company_id' => ['required', 'exists:historic_companies,id'],
+        ]);
+        try {
+            $payload = $this->service->getQrCodePix($request->historic_company_id);
+            return response()->json([
+                'qrcode_pix' => $payload
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }

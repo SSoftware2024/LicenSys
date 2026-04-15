@@ -23,7 +23,7 @@ final class SystemClass
     {
         return $this->systems_for_sale;
     }
-        
+
     /**
      * Method getSystem
      *
@@ -32,16 +32,17 @@ final class SystemClass
      *
      * @return System
      */
-    private function getSystem(string $fields = '*'): System|null
+    private function getSystem(array $fields = ['*']): System|null
     {
+
         try {
             return System::select($fields)->findOrFail(1);
         } catch (\Exception $e) {
             return null;
         }
     }
-        
-    
+
+
     /**
      * Method getLimitDays
      * 
@@ -59,7 +60,7 @@ final class SystemClass
         }
         return $limit_days;
     }
-    
+
     /**
      * Method getDataPayment
      * Retorna dados de pagamentos, atualmente apenas pix
@@ -67,7 +68,7 @@ final class SystemClass
      */
     public function getDataPayment(): array
     {
-        $system = $this->getSystem('name_owner_pix, pix_key');
+        $system = $this->getSystem(['name_owner_pix','pix_key']);
         return !empty($system) ? $system->toArray() : [];
     }
 }

@@ -23,4 +23,5 @@ Route::get('/getDataLicense', [LicenseManagerController::class, 'getData'])->mid
 
 Route::middleware(['auth:sanctum'])->prefix('transfer')->group(function () {
     Route::post('/proccess', [TransferController::class, 'proccess']);
+    Route::get('/getQrCodePix', [TransferController::class, 'getQrCodePix']);
 });
