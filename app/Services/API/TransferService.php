@@ -55,7 +55,7 @@ class TransferService
         if(empty($data_payment_pix)){
             throw new \Exception("Dados do recebedor pix não definidos", 400);
         }
-        $historicCompany = HistoricCompany::find($historic_company_id);
+        $historicCompany = HistoricCompany::where('id',$historic_company_id)->select('amount_paid','pay_date')->first();
         $payload = PixStatic::generatePayload(
             key: $data_payment_pix['pix_key'],
             name: $data_payment_pix['name_owner_pix'],
