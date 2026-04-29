@@ -17,11 +17,13 @@ Route::get('/user', function (Request $request) {
 
 
 Route::post('/connect', [ConectorController::class, 'connect']);
-Route::post('/getMonths', [LicenseManagerController::class, 'getMonths'])->middleware('auth:sanctum');
-Route::get('/getDataLicense', [LicenseManagerController::class, 'getData'])->middleware('auth:sanctum');
-
 
 Route::middleware(['auth:sanctum'])->prefix('transfer')->group(function () {
     Route::post('/proccess', [TransferController::class, 'proccess']);
     Route::get('/getQrCodePix', [TransferController::class, 'getQrCodePix']);
+});
+
+Route::middleware(['auth:sanctum'])->prefix('license_manager')->group(function () {
+    Route::get('/getMonths', [LicenseManagerController::class, 'getMonths']);
+    Route::get('/getDataLicense', [LicenseManagerController::class, 'getData']);
 });

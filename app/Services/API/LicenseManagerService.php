@@ -16,7 +16,7 @@ final class LicenseManagerService
         $company->where('uuid', $uuid);
 
         $historicCompany = HistoricCompany::query();
-        $historicCompany->with('company:id,company_name,uuid,systems_useds,isFiscal');
+        $historicCompany->with('company:id,company_name,uuid');
         $historicCompany->where('company_id', $company->first()->id);
 
         if ($year != 'all') {
