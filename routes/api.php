@@ -17,6 +17,7 @@ Route::get('/user', function (Request $request) {
 
 
 Route::post('/connect', [ConectorController::class, 'connect']);
+Route::post('/revokeMyTokens', [ConectorController::class, 'revokeMyTokens']);
 
 Route::middleware(['auth:sanctum'])->prefix('transfer')->group(function () {
     Route::post('/proccess', [TransferController::class, 'proccess']);

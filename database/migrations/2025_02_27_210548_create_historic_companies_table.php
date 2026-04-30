@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('pay_date')->nullable();
             $table->date('date_paid')->nullable();
             $table->boolean('is_free_month')->default(false);
-            $table->enum('monthly_fee_status', MonthlyFee::toArray())->default(MonthlyFee::PAY->value);
+            $table->enum('monthly_fee_status', MonthlyFee::toArrayValues())->default(MonthlyFee::PAY->value);
             $table->foreignIdFor(Company::class)->nullable()->constrained();
             $table->timestamps();
             $table->softDeletes();

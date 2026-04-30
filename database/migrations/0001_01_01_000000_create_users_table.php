@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('type', TypeUser::toArray())->default(TypeUser::DEFAULT->value);
+            $table->enum('type', TypeUser::toArrayValues())->default(TypeUser::DEFAULT->value);
             $table->boolean('activated')->default(true);
             $table->rememberToken();
             $table->timestamps();

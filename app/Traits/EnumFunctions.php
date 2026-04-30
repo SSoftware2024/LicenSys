@@ -14,7 +14,7 @@ trait EnumFunctions
      * Transforma valores(value) em único array
      * @return array
      */
-    public static function toArray(): array
+    public static function toArrayValues(): array
     {
         $cases = self::cases();
         $array = [];
@@ -39,7 +39,7 @@ trait EnumFunctions
             'late' => 'atrasada',
             'overdue' => 'vencida',
         ];
-        $array = self::toArray();
+        $array = self::toArrayValues();
         $array_translated = [];
         foreach ($array as $value) {
             in_array($value, $array, true) ? $array_translated[$value] = $english_portuguese[$value] : null;

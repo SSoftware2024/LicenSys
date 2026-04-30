@@ -32,7 +32,7 @@ class LicenseManagerController extends Controller
                     }
                     if (is_array($value)) {
                         foreach ($value as $item) {
-                            if (!in_array($item, MonthlyFee::cases())) {
+                            if (!in_array($item, MonthlyFee::toArrayValues()) && $item != 'all') {
                                 $fail("O {$attribute} contém um valor inválido: {$item}");
                             }
                         }
