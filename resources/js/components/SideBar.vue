@@ -340,7 +340,10 @@
                             </svg>
                             <span class="flex-1 text-left">Mensalidade</span>
                             <!-- Quantidade mensalidade -->
-                            <span class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-500 border border-red-100">{{ transfer_count }}</span>
+                            <span
+                                class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-500 border border-red-100"
+                                >{{ transfer_count }}</span
+                            >
                             <svg
                                 class="w-3 h-3 text-gray-400 ml-1"
                                 fill="none"
@@ -410,7 +413,9 @@
                                         class="w-1 h-1 rounded-full bg-current opacity-60 flex-shrink-0"
                                     ></span>
                                     Transferências
-                                    <span class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-500 border border-red-100">
+                                    <span
+                                        class="text-[11px] px-2 py-0.5 rounded-full font-medium bg-red-50 text-red-500 border border-red-100"
+                                    >
                                         {{ transfer_count }}
                                     </span>
                                 </Link>
@@ -476,7 +481,9 @@
                     <p class="text-sm font-medium text-gray-800 truncate">
                         {{ $page.props.user_auth.name }}
                     </p>
-                    <p class="text-[11px] text-gray-400">{{ $page.props.user_auth.email }}</p>
+                    <p class="text-[11px] text-gray-400">
+                        {{ $page.props.user_auth.email }}
+                    </p>
                 </div>
                 <a
                     href="#"
@@ -514,10 +521,11 @@
     <!-- END CONTENT -->
 </template>
 <script setup>
-import { ref,onUnmounted,onMounted } from 'vue';
+import { ref, onUnmounted, onMounted } from "vue";
 import { usePage, router, Link } from "@inertiajs/vue3";
 import { route } from "ziggy-js";
 import { emitter } from "@/utils/mitt";
+import { useEcho } from "@laravel/echo-vue";
 //LAYOUTS E COMPONENTS
 import Card from "@/components/Card.vue";
 const page = usePage();
@@ -528,21 +536,13 @@ function logout() {
         onSuccess: () => router.get(page.props.routes_fortify.login_get),
     });
 }
-function transferCountStart() {
-    axios.get(route("transfer.count")).then((response) => {
-        transfer_count.value = response.data.count;
-    });
-}
-//futuramente colocar realtime
-function transferCountInterval() {
-  clearInterval(interval);
-    interval = setInterval(
-        () => {
-            transferCountStart();
-        },
-        10 * 60 * 1000,
-    ); //10 minutos
-}
+
+//evento realmtime aq
+// function transferCountStart() {
+//     axios.get(route("transfer.count")).then((response) => {
+//         transfer_count.value = response.data.count;
+//     });
+// }
 
 function _closeSidebar() {
     if (document.activeElement) {
@@ -552,19 +552,17 @@ function _closeSidebar() {
     document.dispatchEvent(escEvent);
 }
 
-function _listenEventsMitt(){
-    emitter.on(
-        'transferCountStart', transferCountStart
-    );
+function _listenEventsMitt() {
+    window.Echo.channel("transfer_count").listen(".transfer.count", (e) => {
+        transfer_count.value = e.value;
+    });
 }
 
 onMounted(() => {
-    transferCountStart();
-    transferCountInterval();
     _listenEventsMitt();
 });
 
 onUnmounted(() => {
-  clearInterval(interval);
+    clearInterval(interval);
 });
 </script>

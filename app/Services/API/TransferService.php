@@ -44,6 +44,7 @@ class TransferService
                 'pix_receipt_photo' => $file->getClientOriginalName()
             ]);
             DB::commit();
+            \broadcast(new \App\Events\TransferCountEvent());
         } catch (\Throwable $th) {
             DB::rollBack();
         }

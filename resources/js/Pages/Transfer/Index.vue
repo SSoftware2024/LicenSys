@@ -189,11 +189,7 @@ function _delete(id) {
         cancelButtonText: "Cancelar",
     }).then((result) => {
         if (result.isConfirmed)
-            router.delete(route("transfer.delete", [id]), {
-                onSuccess: () => {
-                    emitter.emit("transferCountStart");
-                },
-            });
+            router.delete(route("transfer.delete", [id]));
     });
 }
 
@@ -203,11 +199,6 @@ function _proccessTransfer(id, historic_company_id) {
         {
             id: id,
             historic_company_id: historic_company_id,
-        },
-        {
-            onSuccess: () => {
-                emitter.emit("transferCountStart");
-            },
         },
     );
 }
@@ -238,8 +229,23 @@ function handleClickOutside(event) {
     }
 }
 
+function reloadPage(){
+    router.get(route('transfer'), {}, {
+        preserveState: false
+    });
+}
+
+function listenBroadcast(){
+    window.Echo.channel("transfer_count").listen(".transfer.count", (e) => {
+        if(e.value >= 1){
+            reloadPage();
+        }
+    });
+}
+
 onMounted(() => {
     document.addEventListener("click", handleClickOutside);
+    listenBroadcast();
 });
 
 onUnmounted(() => {

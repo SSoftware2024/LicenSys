@@ -16,6 +16,7 @@ class TransferController extends Controller
     public function index()
     {
         $data = $this->service->indexView();
+        // \broadcast(new \App\Events\TransferCountEvent());
         return Inertia::render('Transfer/Index', [
             'transfers' => $data
         ]);

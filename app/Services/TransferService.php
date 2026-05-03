@@ -38,8 +38,8 @@ class TransferService
             'type' => ToastType::SUCCESS->value,
             'msg' => ''
         ];
-        if(!PaymentMethod::where('name', 'pix')->exists()) throw new \Exception("Forma de pagamento 'pix' não encontrada");
-        
+        if (!PaymentMethod::where('name', 'pix')->exists()) throw new \Exception("Forma de pagamento 'pix' não encontrada");
+
         if ($historicCompany->monthly_fee_status != MonthlyFee::PAID->value) {
             //inserir forma de pagamento como pix e o valor
             $payment_methods_list = [
@@ -61,6 +61,7 @@ class TransferService
                 'msg' => 'Transferência excluida, pagamento já havia sido realizado'
             ];
         }
+        \broadcast(new \App\Events\TransferCountEvent());
         return $toast;
     }
 
@@ -73,5 +74,6 @@ class TransferService
             throw new \Exception("Caminho do arquivo não encontrado.");
         }
         $transfer->forceDelete();
+        \broadcast(new \App\Events\TransferCountEvent());
     }
 }

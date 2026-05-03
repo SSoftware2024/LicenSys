@@ -20,9 +20,9 @@ final class PaymentMethodService extends CRUD
      * 
      * @param int $id 
      *
-     * @return void
+     * @return array
      */
-    public function deleteWithRelations(int $id)
+    public function deleteWithRelations(int $id):array
     {
         $is_have_relations = HistoricPaymentMethod::where('payment_method_id', $id)->exists();
         $data = [
