@@ -2,91 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Facades\Toast;
-use App\Models\Company;
-use App\Enum\MonthlyFee;
-use Illuminate\Http\Request;
-use App\Models\HistoricCompany;
 use App\Http\Controllers\Controller;
-use App\Services\MonthlyStatusService;
+use App\Services\HistoricCompanyService;
+use App\Services\HistoricPaymentMethodsService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HistoricCompanyController extends Controller
 {
+
+    public function __construct(
+        private HistoricCompanyService $service,
+        private HistoricPaymentMethodsService $historicPaymentMethodService
+    ) {}
+
     public function index(Request $request)
     {
-        $monthly_fee_status = MonthlyFee::toArrayPortuguese();
-        $companies = Company::select('id', 'uuid','company_name')->get();
-        $allYears = range(2025, date('Y'));
-        $historicCompany = null;
-        if (isset($request->month_status)) {
-            $historicCompany = $this->loadHistoric($request);
-        }
-
+        $data = $this->service->indexViewData($request);
         return Inertia::render('HistoricCompany/Index', [
-            'companies' => $companies,
-            'monthly_fee_status' => $monthly_fee_status,
-            'allYears' => $allYears,
-            'historicCompany' => $historicCompany,
+            'companies' => $data['companies'],
+            'monthly_fee_status' => $data['monthly_fee_status'],
+            'allYears' => $data['allYears'],
+            'historicCompany' => $data['historicCompany'],
             //parametros url
-            'year' => $request->year ?? 'all',
-            'company_uuid' => $request->company_uuid ?? 'empty',
-            'month_status' => $request->month_status ?? 'all',
-            'month' => $request->month ?? 0,
+            ...$data['url_paramters']
 
         ]);
     }
-    //colocar filtro de mês
-    private function loadHistoric(Request $request)
-    {
-        $year = $request->year ?: 0;
-        $month = $request->month ?? 0;
-        $month_status = $request->month_status ?: null;
-        $historicCompany = HistoricCompany::query();
-        $historicCompany->with('company:id,company_name,uuid');
-
-        if ($year != 'all') {
-            $historicCompany->whereYear('pay_date', $year);
-        }
-        if ($request->company_uuid != 'empty') {
-            $company_id = Company::where('uuid', $request->company_uuid)->first()->id;
-            $historicCompany->where('company_id', $company_id);
-        }
-        //caso não seja vazio e caso array não contenha null == todos status
-        if ($month_status != 'all' && !in_array('all', $month_status) && !in_array(null, $month_status)) {
-            $historicCompany->whereIn('monthly_fee_status', $month_status);
-        }
-        if($month > 0 && $month <=12){
-            $historicCompany->whereMonth('pay_date', $month);
-        }
-
-        $historicCompany->orderBy('pay_date', 'desc');
-        return $historicCompany->paginate(12)->appends($request->all());
-    }
-
-
     public function pay(Request $request)
     {
-        $request->validate([
-            'historic_company_id' => 'required|exists:historic_companies,id',
-        ]);
 
-        HistoricCompany::where('id',$request->historic_company_id)->update([
-            'monthly_fee_status' => MonthlyFee::PAID->value,
-            'date_paid' => now(),
+        $request->validate([
+            'historic_company_id' => ['required', 'exists:historic_companies,id'],
+            'payment_methods_list' => ['required', 'array'],
+            'payment_methods_list.*.payment_method_id' => ['required', 'integer', 'exists:payment_methods,id'],
+            'payment_methods_list.*.value' => ['required', 'max:7'],
+        ], [
+            'payment_methods_list.*.value' => [
+                'max' => 'O campo :attribute não pode ser maior que 9.999,99'
+            ]
+        ], [
+            'payment_methods_list' => 'lista de pagamentos',
+            'payment_methods_list.*.value' => 'valor'
         ]);
-        Toast::success('Mensalidade paga com sucesso');
+        try {
+            $this->historicPaymentMethodService->create($request->payment_methods_list, $request->historic_company_id);
+            $this->service->pay($request->historic_company_id);
+            Toast::info('Pagamentos registrados');
+            Toast::success('Mensalidade paga com sucesso');
+        } catch (\Exception $e) {
+            return back()->withErrors(['payment' => $e->getMessage()]);
+        }
     }
     public function removePayment(Request $request)
     {
         $request->validate([
             'historic_company_id' => 'required|exists:historic_companies,id',
         ]);
-        $historicCompany = HistoricCompany::find($request->historic_company_id);
-        $historicCompany->monthly_fee_status = (new MonthlyStatusService())->getStatusMonthByDate($historicCompany, true);
-        $historicCompany->date_paid = null;
-        $historicCompany->save();
+        $payments_methods_removed = $this->historicPaymentMethodService->removeAllPaymentsMethodsBy($request->historic_company_id);
+        $this->service->removePayment($request->historic_company_id);
         Toast::info('Remoção de pagamento aplicada');
+        Toast::info("$payments_methods_removed métodos de pagamentos removidos");
+    }
 
+    public function getMethodsPaymentByMonth(Request $request) 
+    {
+        $request->validate([
+            'historic_company_id' => 'required|exists:historic_companies,id',
+        ]);
+        $data = $this->historicPaymentMethodService->getMethodsPaymentByMonth($request->historic_company_id);
+        return $data;   
     }
 }

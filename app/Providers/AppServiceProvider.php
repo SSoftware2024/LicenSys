@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use App\Console\Commands\MonthlyStatusServiceCommand;
 use App\Enum\TypeUser;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,12 +26,17 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->gates();
+        //em produção isto precisa estar desabilitado, parâmetro -> false
+        Model::preventLazyLoading(!app()->isProduction());
     }
 
     private function gates()
     {
-        Gate::define('admin-access', function (User $user) {
+        Gate::define('adminAccess', function (User $user) {
             return $user->type === TypeUser::ADMIN->value;
+        });
+        Gate::define('isMe', function (User $user, int $id) {
+            return $user->id === $id;
         });
     }
 }

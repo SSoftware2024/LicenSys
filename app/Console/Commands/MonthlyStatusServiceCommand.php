@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Cron\MonthlyFeeCron;
 use Illuminate\Console\Command;
-use App\Services\MonthlyStatusService;
 
 class MonthlyStatusServiceCommand extends Command
 {
@@ -26,6 +26,6 @@ class MonthlyStatusServiceCommand extends Command
      */
     public function handle()
     {
-        (new MonthlyStatusService())->updateAllCompaniesMonthlyStatus();
+        (new MonthlyFeeCron())->updateAllCompaniesMonthlyStatus();
     }
 }

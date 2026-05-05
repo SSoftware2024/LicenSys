@@ -1,20 +1,54 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Cron;
 
-use Carbon\Carbon;
-use App\Models\System;
+use App\Classes\HistoricCompanyClass;
 use App\Enum\MonthlyFee;
+use App\Facades\SystemClassFacade;
 use App\Models\HistoricCompany;
+use Carbon\Carbon;
 
-final class MonthlyStatusService
+final class MonthlyFeeCron
 {
     private int $limit_days = 0;
-    public function __construct()
+    public function __construct() {}
+
+    private function getLimitDays()
     {
-        $this->limit_days = System::find(1)->limit_days ?? 0;
+        $this->limit_days = SystemClassFacade::getLimitDays();
+    }
+    /**
+     * companiesWithoutNewYear
+     *
+     * Retorna as empresas que não possuem meses gerados para o ano atual
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function companiesWithoutNewYear(): \Illuminate\Database\Eloquent\Collection
+    {
+        $currentYear = Carbon::now()->year;
+        $companies = HistoricCompany::whereYear('pay_date', $currentYear)->pluck('company_id')->toArray();
+        $allCompanies = \App\Models\Company::pluck('id')->toArray();
+        $companiesWithoutNewYear = array_diff($allCompanies, $companies);
+        return \App\Models\Company::whereIn('id', $companiesWithoutNewYear)->get();
     }
 
+    /**
+     * generateMonthsToNewYear
+     *
+     * Gera os meses do ano novo para as empresas que não possuem meses gerados
+     *
+     * @return void
+     */
+    public function generateMonthsToNewYear(): void
+    {
+        $companies = $this->companiesWithoutNewYear();
+        if ($companies->count() > 0) {
+            foreach ($companies as $company) {
+                HistoricCompanyClass::generate($company);
+            }
+        }
+    }
 
     /**
      * getStatusMonthByDate
@@ -34,7 +68,7 @@ final class MonthlyStatusService
         $status_original = $historic->monthly_fee_status;
         $isHaveToPay = $status_original == MonthlyFee::PAY->value;
         // data de pagamento + limite
-        $date_payment_limit = $date_payment->copy()->addDays($this->limit_days);
+        $date_payment_limit = $date_payment->copy()->addDays($this->getLimitDays());
 
         if ($is_removal === false) { // LÓGICA DE ATUALIZAÇÃO APENAS
 
@@ -92,12 +126,11 @@ final class MonthlyStatusService
     public function updateAllCompaniesMonthlyStatus(): void
     {
         $historics = HistoricCompany::whereYear('pay_date', now()->year)->orderBy('id')->cursor();
-        $service = new MonthlyStatusService();
         $date = now();
         foreach ($historics as $value) {
-            $new_status = $service->getStatusMonthByDate($value, false);
+            $new_status = $this->getStatusMonthByDate($value, false);
             $date_payment = Carbon::parse($value->pay_date);
-            $date_payment_limit = $date_payment->copy()->addDays($this->limit_days);
+            $date_payment_limit = $date_payment->copy()->addDays($this->getLimitDays());
 
             //muda status
             if ($new_status !== $value->monthly_fee_status) {

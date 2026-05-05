@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Laravel\Sanctum\HasApiTokens;
 
 class Company extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasApiTokens;
     protected $guarded = [];
     protected $appends = [
         'created_by_user_name',

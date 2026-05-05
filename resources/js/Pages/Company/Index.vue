@@ -244,9 +244,7 @@
                                     <li>
                                         <a
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
-                                            data-modal-target="look-more-company"
-                                            data-modal-toggle="look-more-company"
-                                            @click.prevent="_loadModal(data)"
+                                            @click.prevent="_openModalLookMoreCompany(data)"
                                         >
                                             Visualizar empresa
                                         </a>
@@ -303,7 +301,7 @@
         <!-- END ACTIONS -->
     </div>
 
-    <Modal title="Detalhes empresa" id="look-more-company">
+    <Modal title="Detalhes empresa" id="look-more-company" ref="modal_look_more_company">
         <ul>
             <li>
                 <span class="font-semibold">Nome: </span>
@@ -400,21 +398,11 @@
                 </ul>
             </li>
         </ul>
-        <template #footer>
-            <button
-                data-modal-hide="look-more-company"
-                type="button"
-                class="cursor-pointer py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            >
-                Fechar
-            </button>
-        </template>
     </Modal>
 </template>
 
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import Swal from "sweetalert2";
 import { route } from "ziggy-js";
 import { router, usePage, useForm } from "@inertiajs/vue3";
 import { _copyText, _dateISOBr, _confirmPassword, getNormalUrlParamter } from "@utils/functions";
@@ -432,8 +420,9 @@ const form = useForm({
     group_company:"",
 });
 const data_modal = ref({});
-
 const isShowDropDown = ref(false);
+
+const modal_look_more_company = ref(null);
 
 function _getPaymentDayDate(day) {
     let date = new Date();
@@ -444,6 +433,11 @@ function _getPaymentDayDate(day) {
         month: "2-digit",
         year: "numeric",
     });
+}
+
+function _openModalLookMoreCompany(company){
+    _loadModal(company);
+    modal_look_more_company.value.open();
 }
 
 function _loadModal(company) {

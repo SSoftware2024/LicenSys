@@ -2,7 +2,8 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-    status: Number
+    status: Number,
+    message: String
 })
 
 const title = computed(() => {

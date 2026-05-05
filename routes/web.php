@@ -1,17 +1,19 @@
 <?php
 
-use Inertia\Inertia;
 use App\Enum\TypeUser;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CompanyGroupController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HistoricCompanyController;
+use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\SystemController;
+use App\Http\Controllers\TransferController;
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SystemController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CompanyGroupController;
-use App\Http\Controllers\HistoricCompanyController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Inertia\Inertia;
 
 
 
@@ -32,6 +34,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 
 Route::middleware(['auth','verify_email_admin'])->group(function () {
+    //rota inicial
     Route::match(['get','post'],'/', [DashboardController::class, 'index'])->name('index');
 
     Route::prefix('system')->name('system')->group(function () {
@@ -78,7 +81,26 @@ Route::middleware(['auth','verify_email_admin'])->group(function () {
     });
     Route::prefix('historic_company')->name('historic_company')->group(function () {
         Route::match(['get','post'],'/', [HistoricCompanyController::class, 'index']);
-        Route::patch('/pay', [HistoricCompanyController::class, 'pay'])->name('.pay');
+        Route::post('/pay', [HistoricCompanyController::class, 'pay'])->name('.pay');
         Route::patch('/removePayment', [HistoricCompanyController::class, 'removePayment'])->name('.removePayment');
+        Route::get('/getMethodsPaymentByMonth', [HistoricCompanyController::class, 'getMethodsPaymentByMonth'])->name('.getMethodsPaymentByMonth');
+    });
+    Route::prefix('transfer')->name('transfer')->group(function () {
+        Route::match(['get','post'],'/', [TransferController::class, 'index']);
+        Route::get('/pixReceiptPhotoUrl', [TransferController::class, 'pixReceiptPhotoUrl'])->name('.pixReceiptPhotoUrl');
+        Route::post('/processTransfer', [TransferController::class, 'processTransfer'])->name('.processTransfer');
+        Route::delete('/delete/{id}', [TransferController::class, 'delete'])->name('.delete');
+
+        //axios
+        Route::get('/count', [TransferController::class, 'count'])->name('.count');
+    });
+    Route::prefix('payment_method')->name('payment_method')->group(function () {
+        Route::match(['get','post'],'/', [PaymentMethodController::class, 'index']);
+        Route::post('/create', [PaymentMethodController::class, 'create'])->name('.create');
+        Route::patch('/update', [PaymentMethodController::class, 'update'])->name('.update');
+        Route::delete('/delete/{id}', [PaymentMethodController::class, 'delete'])->name('.delete');
+
+        //apenas dados -> array, json
+        Route::get('/getPaymentMethods', [PaymentMethodController::class, 'getPaymentMethods'])->name('.getPaymentMethods');
     });
 });

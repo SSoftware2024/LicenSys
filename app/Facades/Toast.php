@@ -1,7 +1,8 @@
 <?php
 namespace App\Facades;
 
-use App\Services\ToastFacade;
+
+use App\Utils\ToastFacade;
 use Illuminate\Support\Facades\Facade;
 
 class Toast extends Facade

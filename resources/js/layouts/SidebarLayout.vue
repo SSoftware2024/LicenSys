@@ -8,16 +8,18 @@ import SideBar from "../components/SideBar.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useToast } from "vue-toast-notification";
-import { initFlowbite } from "flowbite";
+import { initFlowbite, initModals } from "flowbite";
 const toast = useToast();
 
 function _showToast(event) {
     let messageToast = event.detail.page.props.response_data?.toast;
     if (messageToast) {
-        let instance = toast.open({
-            message: messageToast.message,
-            type: messageToast.type,
-            duration: messageToast.duration,
+        messageToast.forEach((value) => {
+            toast.open({
+                message: value.message,
+                type: value.type,
+                duration: value.duration,
+            });
         });
     }
 }
@@ -30,7 +32,7 @@ onMounted(() => {
     router_success = router.on("success", (event) => {
         _showToast(event);
     });
-    router_finish = router.on("finish", (event) => {
+    router_finish = router.on("finish", async (event) => {
         initFlowbite();
     });
 });

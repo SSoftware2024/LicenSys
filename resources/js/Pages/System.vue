@@ -78,6 +78,32 @@
                     />
                 </div>
             </div>
+            <div class="flex sm:flex-wrap md:flex-nowrap">
+                <div class="flex flex-col w-full m-1">
+                    <Input
+                        type="text"
+                        label="Nome do Pix(DONO)"
+                        id="onwer_pix"
+                        v-model="form.onwer_pix"
+                    />
+                    <div v-if="form.errors.onwer_pix" class="text-red-500">
+                        {{ form.errors.onwer_pix }}
+                    </div>
+                </div>
+
+                <div class="flex flex-col w-full m-1">
+                    <Input
+                        type="text"
+                        label="Chave Pix"
+                        id="key_pix"
+                        v-model="form.key_pix"
+                    />
+                    <div v-if="form.errors.key_pix" class="text-red-500">
+                        {{ form.errors.key_pix }}
+                    </div>
+                </div>
+            </div>
+
             <div class="flex justify-end">
                 <Button
                     text="Salvar"
@@ -116,6 +142,8 @@ const form = useForm({
     code_access_api_generics_systems: "",
     code_access_api_readonly: "",
     code_access_api_generics_systems_readonly: "",
+    onwer_pix: null,
+    key_pix: null,
 });
 
 function save() {
@@ -128,6 +156,8 @@ function _loadForm() {
     const data = page.props.system_saved;
     if (data) {
         form.limit_days = data.limit_days;
+        form.onwer_pix = data.name_owner_pix;
+        form.key_pix = data.pix_key;
         form.code_access_api = data.code_access_api;
         form.code_access_api_generics_systems =
             data.code_access_api_generics_systems;

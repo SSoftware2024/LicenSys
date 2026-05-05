@@ -10,7 +10,7 @@
                     id="uuid"
                     name="uuid"
                     min="1"
-                    max="31"
+                    max="30"
                     readonly
                     class="cs_readonly"
                     :isInputRequired="true"

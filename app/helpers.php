@@ -1,8 +1,5 @@
 <?php
-
-//Flash message inertia, colocar em config
-const RESPONSE_DATA_KEY_INERTIA = 'response_data';
-
+include_once __DIR__.'/global_constants.php';
 
 if (!function_exists('routesFortify')) {
     /**
@@ -44,20 +41,22 @@ if (!function_exists('routesFortify')) {
             'password_user_update_put' => route('user-password.update'), //PUT
 
             //TWO FACTOR AUTH
-            // 'two_factor_confirm_post' => route('two-factor.confirm'), //POST, confrimar senha option 'confirm', espera um 'code'
-            // 'two_factor_challenge_login_get' => route('two-factor.login'), //GET
-            // 'two_factor_challenge_login_post' => route('two-factor.login.store'), //POST
-            // 'two_factor_authentication_enable_post' => route('two-factor.enable'), //POST
-            // 'two_factor_authentication_disable_delete' => route('two-factor.disable'), // DELETE
-            // 'two_factor_qr_code_get' => route('two-factor.qr-code'), //GET
+            'two_factor_confirm_post' => route('two-factor.confirm'), //POST, confirmar senha option 'confirm', espera um 'code'
+            'two_factor_challenge_login_get' => route('two-factor.login'), //GET -> view após login, código
+            'two_factor_challenge_login_post' => route('two-factor.login.store'), //POST -> envio do código após login
+            'two_factor_authentication_enable_post' => route('two-factor.enable'), //POST, Habilitar 2FA (1ª rota)
+            'two_factor_authentication_disable_delete' => route('two-factor.disable'), // DELETE, desabilita 2FA
+            'two_factor_qr_code_get' => route('two-factor.qr-code'), //GET - (2ª rota)
+            'two_factor_secret_key_get' => route('two-factor.secret-key'), //GET - (2.1ª rota)
             /**
              * GET e POST
              *
              * GET recupera
              * POST gera novos
              */
-            // 'two_factor_recovery_codes_get_post' => route('two-factor.recovery-codes'),
-            // 'two_factor_secret_key_get' => route('two-factor.secret-key'), //GET
+            'two_factor_recovery_codes_post' => route('two-factor.regenerate-recovery-codes'),//POST - Gera novos
+            'two_factor_recovery_codes_get' => route('two-factor.recovery-codes'),//GET - Recupera - JSON - (download opcional)
+            'two_factor_secret_key_get' => route('two-factor.secret-key'), //GET - (2.2ª rota)
         ];
     }
 }

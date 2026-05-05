@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
+use function Amp\async;
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -39,7 +41,11 @@ class CreateNewUser implements CreatesNewUsers
             'type' => TypeUser::ADMIN->value,
             'activated' => (bool) $input['activated']
         ]);
-        $user->sendEmailVerificationNotification();
+        
+        async(function () use ($user){
+            $user->sendEmailVerificationNotification();
+        })->await();
+
         return $user;
     }
 }

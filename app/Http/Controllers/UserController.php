@@ -2,44 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Inertia\Inertia;
-use App\Enum\TypeUser;
-use App\Facades\Toast;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
-use Inertia\Response as InertiaResponse;
+use App\Enum\TypeUser;
+use App\Facades\Toast;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 class UserController extends Controller
 {
-    public function index(Request $request): InertiaResponse | RedirectResponse
+    public function __construct(
+        private UserService $service
+    ) {}
+    public function index(Request $request)
     {
         $type = $request->type ?: TypeUser::DEFAULT->value;
 
-        if ($type === TypeUser::ADMIN->value && Gate::denies('admin-access')) {
+        if ($type === TypeUser::ADMIN->value && Gate::denies('adminAccess')) {
             Toast::warning('Você não tem acesso a página requistada');
             return redirect()->back();
         }
 
-        //buscar usuario de acordo com type
-        $users = User::where('type', $type)->where('id', "!=", Auth::id())
-            ->when($request->name_email, function ($query, $value) {
-                $query->where('name', 'like', "%{$value}%")
-                ->orWhere('email', 'like', "%{$value}%");
-            })
-            ->orderBy('created_at', 'desc')
-            ->orderBy('name', 'asc')
-            ->paginate();
+        $type = TypeUser::from($type);
+        $users = $this->service->searchWithType(type: $type, name_email: $request->name_email);
         return Inertia::render('User/Index', [
             'type_user' => $request->type,
             'users' => $users,
@@ -47,31 +44,21 @@ class UserController extends Controller
     }
     public function saveView(Request $request): InertiaResponse | RedirectResponse
     {
-        if ($request->type === TypeUser::ADMIN->value && Gate::denies('admin-access')) {
+        if ($request->type === TypeUser::ADMIN->value && Gate::denies('adminAccess')) {
             Toast::warning('Você não tem acesso a página requistada');
             return redirect()->route('user', [
                 'type' => TypeUser::DEFAULT->value
             ]);
         }
-        $id = $request->id;
-        $user = null;
-        if (!empty($id)) {
-            $user = User::select('id', 'name', 'email', 'activated')->find($id);
-
-            //verficar se posso editar esse usuário, não pode ser eu mesmo e user comum não pode editar admin
-            if (Auth::id() === $user->id) {
-                Toast::warning('Você não pode editar a si mesmo na edição genérica de usuários.');
-                return redirect()->route('user', [
-                    'type' => $request->type
-                ]);
-            } else if (Auth::user()->type === TypeUser::DEFAULT->value && $user->type !== TypeUser::ADMIN->value) {
-                Toast::warning('Você não tem permissão para editar este usuário.');
-                return redirect()->route('user', [
-                    'type' => TypeUser::DEFAULT->value
-                ]);
-            }
+        $data = $this->service->ruleSaveView($request->id);
+        $user = $data['user'];
+        if(!$data['success']){
+            Toast::warning($data['message']);
+            return redirect()->route('user', [
+                'type' => $data['user_type']
+            ]);
         }
-
+        
         return Inertia::render('User/Save', [
             'type_user' => $request->type,
             'operation' => $request->operation,
@@ -82,9 +69,16 @@ class UserController extends Controller
 
     public function profileEditView(): InertiaResponse
     {
-        $user = User::select('name', 'email')->find(Auth::id());
+        $user = User::select('name', 'email','two_factor_secret','two_factor_confirmed_at')->find(Auth::id());
+        $twofa = [
+            'enabled' => $user->two_factor_secret != null,
+            'cofirmed' => $user->two_factor_secret != null && $user->two_factor_confirmed_at
+        ];
+        unset($user->two_factor_secret, $user->two_factor_confirmed_at);
         return Inertia::render('Auth/ProfileEdit', [
             'user' => $user,
+            'twofa_status' => $twofa,
+            'status' => session('status') ?? null
         ]);
     }
     public function profileEdit(Request $request)
@@ -108,7 +102,6 @@ class UserController extends Controller
                 break;
         }
         Toast::success('Perfil atualizado com sucesso!');
-
     }
     public function updatePassword(Request $request)
     {
@@ -125,7 +118,7 @@ class UserController extends Controller
                 Toast::success('Usuário cadastrado com sucesso');
                 $user->fresh();
 
-                if (Gate::allows('admin-access')) {
+                if (Gate::allows('adminAccess')) {
                     return redirect()->route('user.saveView', [
                         'operation' => 'update',
                         'type' => $request->type,
@@ -153,14 +146,8 @@ class UserController extends Controller
 
     public function toggleActivete(Request $request)
     {
-        $value = $request->value;
-        $value = !$value;
-        $typeToast = $value ? 'success':'info';
-        $message = 'Usuário '.($value ? 'ativado':'desativado');
-        User::where('id', $request->id)->update([
-            'activated' => $value
-        ]);
-        Toast::{$typeToast}($message);
+        $data = $this->service->toggleActivete($request->id, $request->value);
+        Toast::{$data['type_toast']}($data['message']);
     }
     /* ----------------------------- PRIVATE METHODS ---------------------------- */
 
@@ -176,14 +163,7 @@ class UserController extends Controller
             default:
                 // user default
                 $this->validateSaveData($data, 'create');
-                $user = User::create([
-                    'name' => $data['name'],
-                    'email' => $data['email'],
-                    'email_verified_at' =>  now(),
-                    'password' => Hash::make($data['password']),
-                    'type' => TypeUser::DEFAULT->value,
-                    'activated' => (bool) $data['activated']
-                ]);
+                $user = $this->service->createDefaultUser($data);
                 break;
         }
         return $user;

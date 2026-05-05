@@ -64,3 +64,248 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+```
+LicenSys
+├─ .editorconfig
+├─ app
+│  ├─ Actions
+│  │  └─ Fortify
+│  │     ├─ CreateNewUser.php
+│  │     ├─ PasswordValidationRules.php
+│  │     ├─ ResetUserPassword.php
+│  │     ├─ UpdateUserPassword.php
+│  │     └─ UpdateUserProfileInformation.php
+│  ├─ Classes
+│  │  ├─ Abstract
+│  │  │  └─ CRUD.php
+│  │  ├─ BusinessRule
+│  │  ├─ CompanyClass.php
+│  │  ├─ HistoricCompanyClass.php
+│  │  ├─ PaymentClass.php
+│  │  ├─ PaymentMethodClass.php
+│  │  └─ SystemClass.php
+│  ├─ Console
+│  │  └─ Commands
+│  │     ├─ MonthlyStatusServiceCommand.php
+│  │     └─ MonthsNewYearCommand.php
+│  ├─ Enum
+│  │  ├─ MonthlyFee.php
+│  │  ├─ ToastType.php
+│  │  └─ TypeUser.php
+│  ├─ Facades
+│  │  ├─ SystemClassFacade.php
+│  │  └─ Toast.php
+│  ├─ global_constants.php
+│  ├─ helpers.php
+│  ├─ Http
+│  │  ├─ Controllers
+│  │  │  ├─ API
+│  │  │  │  ├─ ConectorController.php
+│  │  │  │  ├─ LicenseManagerController.php
+│  │  │  │  └─ TransferController.php
+│  │  │  ├─ CompanyController.php
+│  │  │  ├─ CompanyGroupController.php
+│  │  │  ├─ Controller.php
+│  │  │  ├─ DashboardController.php
+│  │  │  ├─ HistoricCompanyController.php
+│  │  │  ├─ HistoricPaymentMethodsController.php
+│  │  │  ├─ PaymentController.php
+│  │  │  ├─ PaymentMethodController.php
+│  │  │  ├─ SystemController.php
+│  │  │  └─ UserController.php
+│  │  └─ Middleware
+│  │     ├─ Admin.php
+│  │     ├─ HandleInertiaRequests.php
+│  │     └─ VerfiyEmailAdmin.php
+│  ├─ Models
+│  │  ├─ Company.php
+│  │  ├─ GroupCompany.php
+│  │  ├─ HistoricCompany.php
+│  │  ├─ HistoricPaymentMethod.php
+│  │  ├─ Payment.php
+│  │  ├─ PaymentMethod.php
+│  │  ├─ Pivot
+│  │  ├─ System.php
+│  │  └─ User.php
+│  ├─ Providers
+│  │  ├─ AppServiceProvider.php
+│  │  └─ FortifyServiceProvider.php
+│  ├─ Services
+│  │  ├─ API
+│  │  │  ├─ CompanyService.php
+│  │  │  ├─ ConectorService.php
+│  │  │  ├─ LicenseManagerService.php
+│  │  │  ├─ TokensManagerService.php
+│  │  │  └─ TransferService.php
+│  │  ├─ CompanyGroupService.php
+│  │  ├─ CompanyService.php
+│  │  ├─ Cron
+│  │  │  └─ MonthlyFeeCron.php
+│  │  ├─ DashboardService.php
+│  │  ├─ HistoricCompanyService.php
+│  │  ├─ HistoricPaymentMethodsService.php
+│  │  ├─ PaymentMethodService.php
+│  │  ├─ PaymentService.php
+│  │  ├─ SystemService.php
+│  │  └─ UserService.php
+│  ├─ Traits
+│  │  └─ EnumFunctions.php
+│  └─ Utils
+│     └─ ToastFacade.php
+├─ artisan
+├─ bootstrap
+│  ├─ app.php
+│  ├─ cache
+│  │  ├─ pac612A.tmp
+│  │  ├─ packages.php
+│  │  ├─ ser61E6.tmp
+│  │  └─ services.php
+│  └─ providers.php
+├─ composer.json
+├─ composer.lock
+├─ config
+│  ├─ app.php
+│  ├─ auth.php
+│  ├─ cache.php
+│  ├─ database.php
+│  ├─ filesystems.php
+│  ├─ fortify.php
+│  ├─ inertia.php
+│  ├─ logging.php
+│  ├─ mail.php
+│  ├─ queue.php
+│  ├─ sanctum.php
+│  ├─ services.php
+│  └─ session.php
+├─ database
+│  ├─ factories
+│  │  └─ UserFactory.php
+│  ├─ migrations
+│  │  ├─ 0001_01_01_000000_create_users_table.php
+│  │  ├─ 0001_01_01_000001_create_cache_table.php
+│  │  ├─ 0001_01_01_000002_create_jobs_table.php
+│  │  ├─ 2025_02_27_210159_create_systems_table.php
+│  │  ├─ 2025_02_27_210403_create_group_companies_table.php
+│  │  ├─ 2025_02_27_210547_create_companies_table.php
+│  │  ├─ 2025_02_27_210548_create_historic_companies_table.php
+│  │  ├─ 2025_03_06_144728_add_two_factor_columns_to_users_table.php
+│  │  ├─ 2025_12_06_125652_create_personal_access_tokens_table.php
+│  │  ├─ 2026_02_14_112904_create_payments_table.php
+│  │  ├─ 2026_02_14_113217_create_payment_methods_table.php
+│  │  └─ 2026_02_14_113401_create_historic_payment_methods_table.php
+│  └─ seeders
+│     ├─ DatabaseSeeder.php
+│     └─ UsersTableSeeder.php
+├─ lang
+│  ├─ en
+│  │  ├─ auth.php
+│  │  ├─ pagination.php
+│  │  ├─ passwords.php
+│  │  └─ validation.php
+│  ├─ pt-BR
+│  │  ├─ auth.php
+│  │  ├─ pagination.php
+│  │  ├─ passwords.php
+│  │  └─ validation.php
+│  └─ pt-BR.json
+├─ package-lock.json
+├─ package.json
+├─ phpunit.xml
+├─ public
+│  ├─ .htaccess
+│  ├─ assets
+│  │  ├─ favicon.png
+│  │  └─ quadro_logo.png
+│  ├─ favicon.ico
+│  ├─ img
+│  │  └─ load.gif
+│  ├─ index.php
+│  └─ robots.txt
+├─ README.md
+├─ resources
+│  ├─ css
+│  │  └─ app.css
+│  ├─ js
+│  │  ├─ app.js
+│  │  ├─ bootstrap.js
+│  │  ├─ components
+│  │  │  ├─ Button.vue
+│  │  │  ├─ Card.vue
+│  │  │  ├─ Input.vue
+│  │  │  ├─ Modal.vue
+│  │  │  ├─ Paginate.vue
+│  │  │  └─ SideBar.vue
+│  │  ├─ layouts
+│  │  │  ├─ AuthLayout.vue
+│  │  │  └─ SidebarLayout.vue
+│  │  ├─ Pages
+│  │  │  ├─ Auth
+│  │  │  │  ├─ 2FAChallenge.vue
+│  │  │  │  ├─ ConfirmPassword.vue
+│  │  │  │  ├─ ForgotPassword.vue
+│  │  │  │  ├─ Login.vue
+│  │  │  │  ├─ ProfileEdit.vue
+│  │  │  │  ├─ ResetPassword.vue
+│  │  │  │  └─ VerifyEmail.vue
+│  │  │  ├─ Company
+│  │  │  │  ├─ Create.vue
+│  │  │  │  ├─ Index.vue
+│  │  │  │  └─ Update.vue
+│  │  │  ├─ CompanyGroup
+│  │  │  │  └─ Index.vue
+│  │  │  ├─ ErrorPage.vue
+│  │  │  ├─ HistoricCompany
+│  │  │  │  └─ Index.vue
+│  │  │  ├─ Index.vue
+│  │  │  ├─ Payment
+│  │  │  │  └─ Index.vue
+│  │  │  ├─ PaymentMethod
+│  │  │  │  └─ Index.vue
+│  │  │  ├─ System.vue
+│  │  │  └─ User
+│  │  │     ├─ Index.vue
+│  │  │     └─ Save.vue
+│  │  ├─ PartialPages
+│  │  │  ├─ PaymentMethod.vue
+│  │  │  └─ PaymentMethodList.vue
+│  │  └─ utils
+│  │     ├─ date.js
+│  │     ├─ enum.js
+│  │     └─ functions.js
+│  └─ views
+│     └─ app.blade.php
+├─ routes
+│  ├─ api.php
+│  ├─ console.php
+│  └─ web.php
+├─ storage
+│  ├─ app
+│  │  ├─ private
+│  │  │  └─ statement
+│  │  │     └─ eYzklUewarcV2OaJWiLIAwz3gfctgHXQeXEaEsht.pdf
+│  │  └─ public
+│  ├─ framework
+│  │  ├─ cache
+│  │  │  └─ data
+│  │  ├─ sessions
+│  │  ├─ testing
+│  │  └─ views
+│  │     ├─ 39e1cf5d8a7d9bac753d33eafffe3b99.php
+│  │     ├─ 558eac8090b750917e0401a38c4ddfab.php
+│  │     ├─ 58f6b5ecbad88fc4da15879dbc7f6e69.blade.php
+│  │     ├─ 6b4be6f7a61700d2f0d04931841f26e5.php
+│  │     ├─ 8cb0c7876f39a3bee183f637b0b306a9.php
+│  │     ├─ a811b7b72434847439fa0557af73cc05.php
+│  │     └─ dca1a29b69452d307c2c30a7b9cc0a6e.blade.php
+│  └─ logs
+│     └─ laravel.log
+├─ tests
+│  ├─ Feature
+│  │  └─ ExampleTest.php
+│  ├─ TestCase.php
+│  └─ Unit
+│     └─ ExampleTest.php
+└─ vite.config.js
+
+```
